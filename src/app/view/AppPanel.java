@@ -28,6 +28,9 @@ public class AppPanel extends JPanel
 	private JButton copyButton;
 
 	private JLabel switchLabel;
+	private JLabel portLabel;
+	private JLabel stackLabel;
+	private JLabel domainLabel;
 
 	public AppPanel(AppController controller)
 	{
@@ -42,6 +45,7 @@ public class AppPanel extends JPanel
 		twentyPortButton = new JRadioButton("24 Port");
 
 		switchNumbers = new JComboBox<Integer>();
+		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
 
 		for (int spot = 1; spot <= 9; spot++)
 		{
@@ -60,8 +64,9 @@ public class AppPanel extends JPanel
 		copyButton = new JButton("Copy the Code");
 
 		switchLabel = new JLabel("Select the Switch");
-		layout.putConstraint(SpringLayout.NORTH, switchLabel, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, switchLabel, 50, SpringLayout.WEST, this);
+		portLabel = new JLabel("Select the Amount of Ports");
+		stackLabel = new JLabel("Select the position in the stack");
+		domainLabel = new JLabel("Type Domain (Numbers Only)");
 		
 		setupChatPane();
 		buildPanel();
@@ -91,6 +96,9 @@ public class AppPanel extends JPanel
 		add(this.copyButton);
 		add(this.resetButton);
 		add(this.switchLabel);
+		add(this.portLabel);
+		add(this.stackLabel);
+		add(this.domainLabel);
 	}
 
 	private void buildListeners()
@@ -111,11 +119,18 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, userDomain, 50, SpringLayout.SOUTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, userDomain, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.EAST, userDomain, 0, SpringLayout.EAST, switchList);
-		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 50, SpringLayout.SOUTH, twentyPortButton);
 		layout.putConstraint(SpringLayout.WEST, switchNumbers, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.NORTH, fortyPortButton, 50, SpringLayout.SOUTH, switchList);
 		layout.putConstraint(SpringLayout.WEST, fortyPortButton, 0, SpringLayout.WEST, switchList);
+		layout.putConstraint(SpringLayout.NORTH, switchLabel, 20, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, switchLabel, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, portLabel, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, portLabel, -10, SpringLayout.NORTH, fortyPortButton);
+		layout.putConstraint(SpringLayout.WEST, stackLabel, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
+		layout.putConstraint(SpringLayout.WEST, domainLabel, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
 	}
 
 	private void buildPlacements()
