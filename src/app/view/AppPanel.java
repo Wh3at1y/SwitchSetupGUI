@@ -34,6 +34,7 @@ public class AppPanel extends JPanel
 		layout = new SpringLayout();
 
 		switchList = new List();
+		layout.putConstraint(SpringLayout.SOUTH, switchList, -375, SpringLayout.SOUTH, this);
 		switchList.add("5500 Switch");
 		switchList.add("5800 Switch");
 
@@ -58,7 +59,9 @@ public class AppPanel extends JPanel
 		resetButton = new JButton("Reset Options");
 		copyButton = new JButton("Copy the Code");
 
-		switchLabel = new JLabel("Select the Switch you want to re-program");
+		switchLabel = new JLabel("Select the Switch");
+		layout.putConstraint(SpringLayout.NORTH, switchLabel, 20, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, switchLabel, 50, SpringLayout.WEST, this);
 		
 		setupChatPane();
 		buildPanel();
@@ -96,7 +99,6 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, twentyPortButton, 0, SpringLayout.WEST, fortyPortButton);
 		layout.putConstraint(SpringLayout.NORTH, switchList, 50, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, switchList, 50, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, switchList, -350, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.EAST, switchList, -400, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, copyButton, 0, SpringLayout.WEST, textScrollPane);
 		layout.putConstraint(SpringLayout.NORTH, textScrollPane, 50, SpringLayout.NORTH, this);
