@@ -13,7 +13,7 @@ public class AppFrame extends JFrame
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setTitle("Default GUI");
+		this.setTitle("Switch-Setup v.1");
 		this.setSize(600, 500);
 		this.setContentPane(panel);
 		this.setVisible(true);
