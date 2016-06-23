@@ -5,6 +5,9 @@ import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
 import app.controller.AppController;
+// Clipboard Import
+import java.awt.Toolkit;
+import java.awt.datatransfer.*;
 
 public class AppPanel extends JPanel
 {
@@ -69,6 +72,7 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
 		copyButton = new JButton("Copy the Code");
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
+		
 		submitButton = new JButton("Sumbit");
 		layout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
@@ -78,7 +82,7 @@ public class AppPanel extends JPanel
 		portLabel = new JLabel("Select the Amount of Ports");
 		stackLabel = new JLabel("Select the position in the stack");
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
-
+		
 		setupChatPane();
 		buildPanel();
 		buildPlacements();
@@ -184,8 +188,22 @@ public class AppPanel extends JPanel
 				}
 			}
 		});
+		
+		this.copyButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				copyText();
+			}
+		});
 	}
 
+	private void copyText() {
+		StringSelection selection = new StringSelection(codePane.getText());
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(selection, selection);
+	}
+	
 	private void buildPlacements()
 	{
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
