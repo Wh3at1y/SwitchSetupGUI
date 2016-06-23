@@ -16,7 +16,7 @@ public class AppPanel extends JPanel
 
 	private JComboBox<Integer> switchNumbers;
 
-	private JTextField userDomain;
+	private JFormattedTextField userDomain;
 
 	private ButtonGroup radioButtons;
 
@@ -31,6 +31,7 @@ public class AppPanel extends JPanel
 	private JLabel portLabel;
 	private JLabel stackLabel;
 	private JLabel domainLabel;
+	private int domainNum;
 
 	public AppPanel(AppController controller)
 	{
@@ -41,7 +42,8 @@ public class AppPanel extends JPanel
 		switchList.add("5500 Switch");
 		switchList.add("5800 Switch");
 
-		fortyPortButton = new JRadioButton("48 Port");
+		// Auto Select 48 Port
+		fortyPortButton = new JRadioButton("48 Port", true);
 		twentyPortButton = new JRadioButton("24 Port");
 
 		switchNumbers = new JComboBox<Integer>();
@@ -52,8 +54,9 @@ public class AppPanel extends JPanel
 			switchNumbers.addItem(new Integer(spot));
 		}
 
-		userDomain = new JTextField();
-
+		userDomain = new JFormattedTextField();
+		userDomain.setValue(new Integer(domainNum));
+		
 		radioButtons = new ButtonGroup();
 		radioButtons.add(this.fortyPortButton);
 		radioButtons.add(this.twentyPortButton);
@@ -155,5 +158,7 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, domainLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
+		
+		codePane.setText("Hello World!");
 	}
 }
