@@ -1,9 +1,8 @@
 package app.view;
 
 import java.awt.List;
-
+import java.awt.event.*;
 import javax.swing.*;
-
 import app.controller.AppController;
 
 public class AppPanel extends JPanel
@@ -26,6 +25,7 @@ public class AppPanel extends JPanel
 
 	private JButton resetButton;
 	private JButton copyButton;
+	private JButton submitButton;
 
 	private JLabel switchLabel;
 	private JLabel portLabel;
@@ -61,13 +61,21 @@ public class AppPanel extends JPanel
 		codePane = new JTextArea();
 
 		resetButton = new JButton("Reset Options");
+		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
 		copyButton = new JButton("Copy the Code");
+		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
+		submitButton = new JButton("Sumbit");
+		layout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
+		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
 
 		switchLabel = new JLabel("Select the Switch");
 		portLabel = new JLabel("Select the Amount of Ports");
 		stackLabel = new JLabel("Select the position in the stack");
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
-		
+
+		updateTextCode("5800", 48, 1, 10, 32);
+
 		setupChatPane();
 		buildPanel();
 		buildPlacements();
@@ -81,6 +89,12 @@ public class AppPanel extends JPanel
 		textScrollPane = new JScrollPane(codePane);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	}
+
+	private void updateTextCode(String switchC, int portC, int positionC, int domainC, int priorityC)
+	{
+		this.codePane
+				.setText("sys" + "\nirf domain " + domainC + "\nirf member " + positionC + " priority " + priorityC);
 	}
 
 	private void buildPanel()
@@ -99,9 +113,21 @@ public class AppPanel extends JPanel
 		add(this.portLabel);
 		add(this.stackLabel);
 		add(this.domainLabel);
+		add(this.submitButton);
 	}
 
 	private void buildListeners()
+	{
+		this.submitButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				
+			}
+		});
+	}
+
+	private void buildPlacements()
 	{
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
 		layout.putConstraint(SpringLayout.WEST, twentyPortButton, 0, SpringLayout.WEST, fortyPortButton);
@@ -113,9 +139,7 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 50, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.SOUTH, textScrollPane, 0, SpringLayout.SOUTH, userDomain);
 		layout.putConstraint(SpringLayout.EAST, textScrollPane, -50, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, copyButton, -30, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.WEST, resetButton, 10, SpringLayout.EAST, copyButton);
-		layout.putConstraint(SpringLayout.SOUTH, resetButton, -30, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, userDomain, 50, SpringLayout.SOUTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, userDomain, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.EAST, userDomain, 0, SpringLayout.EAST, switchList);
@@ -131,9 +155,5 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, domainLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
-	}
-
-	private void buildPlacements()
-	{
 	}
 }
