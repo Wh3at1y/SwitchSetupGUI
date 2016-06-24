@@ -59,7 +59,7 @@ public class AppPanel extends JPanel
 			switchNumbers.addItem(new Integer(spot));
 		}
 
-		userDomain = new JFormattedTextField();
+		userDomain = new JFormattedTextField(domainNum);
 		userDomain.setText("10");
 		
 		radioButtons = new ButtonGroup();
@@ -196,12 +196,37 @@ public class AppPanel extends JPanel
 				copyText();
 			}
 		});
+		this.resetButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				resetPanel();
+			}
+		});
 	}
 
 	private void copyText() {
 		StringSelection selection = new StringSelection(codePane.getText());
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(selection, selection);
+	}
+	
+	private void resetPanel() {
+		
+		// Reset Switch
+		switchList.select(0);
+		
+		// Reset Port Selection
+		fortyPortButton.setSelected(true);
+		
+		// Reset Position
+		switchNumbers.setSelectedIndex(0);
+		
+		// Reset Domain
+		userDomain.setText("10");
+		
+		// Reset TextBox
+		codePane.setText(null);
 	}
 	
 	private void buildPlacements()
