@@ -1,16 +1,23 @@
+/**
+ * Authors : Sam Montoya (Brettly)
+ * 				 Dylan Gardener
+ * --------------------
+ * This class is applying and using components of the panel.
+ */
 package app.view;
 
 import java.awt.Color;
 import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
-import app.controller.AppController;
-// Clipboard Import
 import java.awt.Toolkit;
 import java.awt.datatransfer.*;
 
 public class AppPanel extends JPanel
 {
+	/**
+	 * Declaration Section
+	 */
 	private SpringLayout layout;
 
 	private List switchList;
@@ -22,11 +29,11 @@ public class AppPanel extends JPanel
 
 	private JFormattedTextField userDomain;
 
-	private ButtonGroup radioButtons;
-
 	private JTextArea codePane;
 	private JScrollPane textScrollPane;
 
+	private ButtonGroup radioButtons;
+	
 	private JButton resetButton;
 	private JButton copyButton;
 	private JButton submitButton;
@@ -35,25 +42,27 @@ public class AppPanel extends JPanel
 	private JLabel portLabel;
 	private JLabel stackLabel;
 	private JLabel domainLabel;
+	
 	private int domainNum;
 
-	public AppPanel(AppController controller)
+	/**
+	 * Constructor
+	 * Initializes variables from the declaration section
+	 */
+	public AppPanel()
 	{
 		layout = new SpringLayout();
 
 		switchList = new List();
-		layout.putConstraint(SpringLayout.SOUTH, switchList, -375, SpringLayout.SOUTH, this);
+		
 		switchList.add("5500 Switch");
 		switchList.add("5800 Switch");
 		switchList.select(0);
 
-		// Auto Select 48 Port
 		fortyPortButton = new JRadioButton("48 Port", true);
 		twentyPortButton = new JRadioButton("24 Port");
 
 		switchNumbers = new JComboBox<Integer>();
-		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
-
 		for (int spot = 1; spot <= 9; spot++)
 		{
 			switchNumbers.addItem(new Integer(spot));
@@ -69,14 +78,8 @@ public class AppPanel extends JPanel
 		codePane = new JTextArea();
 
 		resetButton = new JButton("Reset Options");
-		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
 		copyButton = new JButton("Copy the Code");
-		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
-		
 		submitButton = new JButton("Sumbit");
-		layout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
-		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
 
 		switchLabel = new JLabel("Select the Switch");
 		portLabel = new JLabel("Select the Amount of Ports");
@@ -94,7 +97,6 @@ public class AppPanel extends JPanel
 		codePane.setLineWrap(true);
 		codePane.setWrapStyleWord(true);
 		textScrollPane = new JScrollPane(codePane);
-		layout.putConstraint(SpringLayout.EAST, textScrollPane, -20, SpringLayout.EAST, this);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -102,8 +104,8 @@ public class AppPanel extends JPanel
 	private void updateTextCode(int positionC, String domainC, int priorityC, int interfaceInt)
 	{
 		int interfaceInt2 = interfaceInt + 1;
-		this.codePane
-				.setText("sys"
+		
+		this.codePane.setText("sys"
 		+ "\nirf domain " + domainC + "\nirf member " + positionC + " priority " + priorityC 
 		+ "\nInterface Ten " + positionC + "/0/" +  interfaceInt
 		+ "\nshut"
@@ -121,10 +123,30 @@ public class AppPanel extends JPanel
 		+ "\nsave");
 	}
 
-	private boolean selectionChecker()
+	private void resetPanel() 
+		{
+		
+		// Reset Switch
+		switchList.select(0);
+		
+		// Reset Port Selection
+		fortyPortButton.setSelected(true);
+		
+		// Reset Position
+		switchNumbers.setSelectedIndex(0);
+		
+		// Reset Domain
+		userDomain.setText("10");
+		
+		// Reset TextBox
+		codePane.setText("");
+		}
+
+	private void copyText() 
 	{
-		boolean isFilledOut = true;
-		return isFilledOut;
+		StringSelection selection = new StringSelection(codePane.getText());
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(selection, selection);
 	}
 	
 	private void buildPanel()
@@ -152,9 +174,6 @@ public class AppPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-				if(selectionChecker() == true)
-				{
-					// int positionC, int domainC, int priorityC, int interfaceInt
 					int interfaceInt = 53;
 					String domainC = userDomain.getText();
 					String switchName = switchList.getSelectedItem();
@@ -185,7 +204,6 @@ public class AppPanel extends JPanel
 						interfaceInt = 29;
 					
 					updateTextCode(positionC, domainC, priority, interfaceInt);
-				}
 			}
 		});
 		
@@ -205,30 +223,6 @@ public class AppPanel extends JPanel
 		});
 	}
 
-	private void copyText() {
-		StringSelection selection = new StringSelection(codePane.getText());
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(selection, selection);
-	}
-	
-	private void resetPanel() {
-		
-		// Reset Switch
-		switchList.select(0);
-		
-		// Reset Port Selection
-		fortyPortButton.setSelected(true);
-		
-		// Reset Position
-		switchNumbers.setSelectedIndex(0);
-		
-		// Reset Domain
-		userDomain.setText("10");
-		
-		// Reset TextBox
-		codePane.setText(null);
-	}
-	
 	private void buildPlacements()
 	{
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
@@ -256,5 +250,13 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, domainLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
+		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
+		layout.putConstraint(SpringLayout.EAST, textScrollPane, -20, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
+		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
+		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, switchList, -375, SpringLayout.SOUTH, this);
 	}
 }
