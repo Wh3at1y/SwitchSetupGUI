@@ -7,6 +7,8 @@
 package app.view;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
@@ -19,7 +21,8 @@ public class AppPanel extends JPanel
 	 * Declaration Section
 	 */
 	private SpringLayout layout;
-
+	private Font font;
+	
 	private List switchList;
 
 	private JRadioButton fortyPortButton;
@@ -37,11 +40,13 @@ public class AppPanel extends JPanel
 	private JButton resetButton;
 	private JButton copyButton;
 	private JButton submitButton;
+	private JButton infoButton;
 
 	private JLabel switchLabel;
 	private JLabel portLabel;
 	private JLabel stackLabel;
 	private JLabel domainLabel;
+	private JLabel background;
 	
 	private int domainNum;
 
@@ -51,16 +56,20 @@ public class AppPanel extends JPanel
 	 */
 	public AppPanel()
 	{
+		font = new Font("Candara", Font.BOLD, 16);
 		layout = new SpringLayout();
 
 		switchList = new List();
-		
 		switchList.add("5500 Switch");
 		switchList.add("5800 Switch");
 		switchList.select(0);
 
 		fortyPortButton = new JRadioButton("48 Port", true);
+		fortyPortButton.setOpaque(false);
 		twentyPortButton = new JRadioButton("24 Port");
+		twentyPortButton.setOpaque(false);
+		setupLabels(this.fortyPortButton);
+		setupLabels(this.twentyPortButton);
 
 		switchNumbers = new JComboBox<Integer>();
 		for (int spot = 1; spot <= 9; spot++)
@@ -80,11 +89,19 @@ public class AppPanel extends JPanel
 		resetButton = new JButton("Reset Options");
 		copyButton = new JButton("Copy the Code");
 		submitButton = new JButton("Sumbit");
-
+		infoButton = new JButton("About...");
+		
 		switchLabel = new JLabel("Select the Switch");
 		portLabel = new JLabel("Select the Amount of Ports");
 		stackLabel = new JLabel("Select the position in the stack");
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
+		setupLabels(this.switchLabel);
+		setupLabels(this.portLabel);
+		setupLabels(this.stackLabel);
+		setupLabels(this.domainLabel);
+		
+		background = new JLabel();
+		background.setIcon(new ImageIcon(AppPanel.class.getResource("/resources/network.jpg")));
 		
 		setupChatPane();
 		buildPanel();
@@ -92,6 +109,12 @@ public class AppPanel extends JPanel
 		buildListeners();
 	}
 
+	private void setupLabels(Component label)
+	{
+		label.setFont(font);
+		label.setForeground(Color.WHITE);
+	}
+	
 	private void setupChatPane()
 	{
 		codePane.setLineWrap(true);
@@ -166,6 +189,8 @@ public class AppPanel extends JPanel
 		add(this.stackLabel);
 		add(this.domainLabel);
 		add(this.submitButton);
+		add(this.infoButton);
+		add(this.background);
 	}
 
 	private void buildListeners()
@@ -225,10 +250,16 @@ public class AppPanel extends JPanel
 
 	private void buildPlacements()
 	{
+		layout.putConstraint(SpringLayout.NORTH, infoButton, 0, SpringLayout.NORTH, copyButton);
+		layout.putConstraint(SpringLayout.WEST, infoButton, 10, SpringLayout.EAST, resetButton);
+		layout.putConstraint(SpringLayout.WEST, submitButton, 25, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, switchLabel, 25, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, portLabel, 25, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, stackLabel, 25, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, domainLabel, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
 		layout.putConstraint(SpringLayout.WEST, twentyPortButton, 0, SpringLayout.WEST, fortyPortButton);
 		layout.putConstraint(SpringLayout.NORTH, switchList, 50, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, switchList, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, switchList, -400, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, copyButton, 0, SpringLayout.WEST, textScrollPane);
 		layout.putConstraint(SpringLayout.NORTH, textScrollPane, 50, SpringLayout.NORTH, this);
@@ -243,20 +274,20 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, fortyPortButton, 50, SpringLayout.SOUTH, switchList);
 		layout.putConstraint(SpringLayout.WEST, fortyPortButton, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.NORTH, switchLabel, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, switchLabel, 50, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.WEST, portLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, portLabel, -10, SpringLayout.NORTH, fortyPortButton);
-		layout.putConstraint(SpringLayout.WEST, stackLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
-		layout.putConstraint(SpringLayout.WEST, domainLabel, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
 		layout.putConstraint(SpringLayout.EAST, textScrollPane, -20, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
 		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, switchList, -375, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.NORTH, background, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, background, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, background, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, background, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, switchList, 25, SpringLayout.WEST, this);
 	}
 }
