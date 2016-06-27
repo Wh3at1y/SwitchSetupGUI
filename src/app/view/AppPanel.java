@@ -56,7 +56,7 @@ public class AppPanel extends JPanel
 	 */
 	public AppPanel()
 	{
-		font = new Font("Candara", Font.BOLD, 16);
+		font = new Font("Candara", Font.BOLD, 12);
 		layout = new SpringLayout();
 
 		switchList = new List();
