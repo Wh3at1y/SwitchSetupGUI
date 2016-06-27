@@ -1,15 +1,14 @@
 package app.view;
 
 import javax.swing.JFrame;
-import app.controller.AppController;
 
 public class AppFrame extends JFrame
 {
 	private AppPanel panel;
 	
-	public AppFrame(AppController controller)
+	public AppFrame()
 	{
-		panel = new AppPanel(controller);
+		panel = new AppPanel();
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
