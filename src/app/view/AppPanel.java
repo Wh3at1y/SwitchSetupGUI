@@ -128,7 +128,7 @@ public class AppPanel extends JPanel
 	private void setupLabels(Component label)
 	{
 		label.setFont(font);
-		label.setForeground(Color.BLACK);
+		label.setForeground(Color.WHITE);
 	}
 	
 	/**
