@@ -8,7 +8,9 @@ package app.view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
@@ -101,20 +103,37 @@ public class AppPanel extends JPanel
 		setupLabels(this.domainLabel);
 		
 		background = new JLabel();
-		background.setIcon(new ImageIcon(AppPanel.class.getResource("/resources/network.jpg")));
 		
+		setupBackground();
 		setupChatPane();
 		buildPanel();
 		buildPlacements();
 		buildListeners();
 	}
 
+	/**
+	 * 
+	 */
+	private void setupBackground()
+	{
+		ImageIcon backgroundImage = new ImageIcon(AppPanel.class.getResource("/resources/network.jpg"));
+		Image image = backgroundImage.getImage();
+		image = image.getScaledInstance(600,500, java.awt.Image.SCALE_FAST);
+		backgroundImage = new ImageIcon(image);
+		background.setIcon(backgroundImage);
+	}
+	/**
+	 * @param label
+	 */
 	private void setupLabels(Component label)
 	{
 		label.setFont(font);
 		label.setForeground(Color.WHITE);
 	}
 	
+	/**
+	 * 
+	 */
 	private void setupChatPane()
 	{
 		codePane.setLineWrap(true);
@@ -124,6 +143,12 @@ public class AppPanel extends JPanel
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
 
+	/**
+	 * @param positionC
+	 * @param domainC
+	 * @param priorityC
+	 * @param interfaceInt
+	 */
 	private void updateTextCode(int positionC, String domainC, int priorityC, int interfaceInt)
 	{
 		int interfaceInt2 = interfaceInt + 1;
@@ -146,6 +171,9 @@ public class AppPanel extends JPanel
 		+ "\nsave");
 	}
 
+	/**
+	 * 
+	 */
 	private void resetPanel() 
 		{
 		
@@ -165,6 +193,9 @@ public class AppPanel extends JPanel
 		codePane.setText("");
 		}
 
+	/**
+	 * 
+	 */
 	private void copyText() 
 	{
 		StringSelection selection = new StringSelection(codePane.getText());
@@ -172,6 +203,9 @@ public class AppPanel extends JPanel
 		clipboard.setContents(selection, selection);
 	}
 	
+	/**
+	 * 
+	 */
 	private void buildPanel()
 	{
 		setLayout(this.layout);
@@ -193,6 +227,9 @@ public class AppPanel extends JPanel
 		add(this.background);
 	}
 
+	/**
+	 * 
+	 */
 	private void buildListeners()
 	{
 		this.submitButton.addActionListener(new ActionListener()
@@ -248,10 +285,14 @@ public class AppPanel extends JPanel
 		});
 	}
 
+	/**
+	 * Window Builder Generated Code Garbage
+	 */
 	private void buildPlacements()
 	{
-		layout.putConstraint(SpringLayout.NORTH, infoButton, 0, SpringLayout.NORTH, copyButton);
-		layout.putConstraint(SpringLayout.WEST, infoButton, 10, SpringLayout.EAST, resetButton);
+		layout.putConstraint(SpringLayout.NORTH, infoButton, 5, SpringLayout.SOUTH, copyButton);
+		layout.putConstraint(SpringLayout.WEST, infoButton, 0, SpringLayout.WEST, resetButton);
+		layout.putConstraint(SpringLayout.EAST, infoButton, 0, SpringLayout.EAST, resetButton);
 		layout.putConstraint(SpringLayout.WEST, submitButton, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, switchLabel, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, portLabel, 25, SpringLayout.WEST, this);
@@ -265,7 +306,6 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, textScrollPane, 50, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 50, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.SOUTH, textScrollPane, 0, SpringLayout.SOUTH, userDomain);
-		layout.putConstraint(SpringLayout.WEST, resetButton, 10, SpringLayout.EAST, copyButton);
 		layout.putConstraint(SpringLayout.NORTH, userDomain, 50, SpringLayout.SOUTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, userDomain, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.EAST, userDomain, 0, SpringLayout.EAST, switchList);
@@ -279,7 +319,6 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
 		layout.putConstraint(SpringLayout.EAST, textScrollPane, -20, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, submitButton, 0, SpringLayout.SOUTH, copyButton);
 		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
@@ -289,5 +328,9 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, background, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.EAST, background, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, switchList, 25, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, -40, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, resetButton, -161, SpringLayout.EAST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, copyButton, 161, SpringLayout.WEST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, resetButton, 0, SpringLayout.EAST, textScrollPane);
 	}
 }
