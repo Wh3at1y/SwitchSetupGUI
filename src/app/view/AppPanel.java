@@ -236,51 +236,62 @@ public class AppPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-					int interfaceInt = 53;
-					String domainC = userDomain.getText();
-					String switchName = switchList.getSelectedItem();
-					int positionC = switchNumbers.getSelectedIndex() + 1;
+				int interfaceInt = 53;
+				String domainC = userDomain.getText();
+				String switchName = switchList.getSelectedItem();
+				int positionC = switchNumbers.getSelectedIndex() + 1;
 					
-					int priority = 32;
-					int newPriority = priority;
+				int priority = 32;
+				int newPriority = priority;
 					
-					for(int counter = 1; counter <= 9; counter++)  
+				for(int counter = 1; counter <= 9; counter++)  
+				{
+					if (positionC == counter) 
 					{
-						if (positionC == counter) 
-						{
-							priority = newPriority;
-						}
-						else
-						{
-							newPriority = priority - 2;
-						}
+						priority = newPriority;
 					}
+					else
+					{
+						newPriority = priority - 2;
+					}
+				}
 					
-					if(switchName.contains("5800") && fortyPortButton.isSelected())
-						interfaceInt = 51;
-					else if(switchName.contains("5800") && twentyPortButton.isSelected())
-						interfaceInt = 25;
-					else if(switchName.contains("5500") && fortyPortButton.isSelected())
-						interfaceInt = 53;
-					else if(switchName.contains("5500") && twentyPortButton.isSelected())
-						interfaceInt = 29;
+				if(switchName.contains("5800") && fortyPortButton.isSelected())
+					interfaceInt = 51;
+				else if(switchName.contains("5800") && twentyPortButton.isSelected())
+					interfaceInt = 25;
+				else if(switchName.contains("5500") && fortyPortButton.isSelected())
+					interfaceInt = 53;
+				else if(switchName.contains("5500") && twentyPortButton.isSelected())
+					interfaceInt = 29;
 					
-					updateTextCode(positionC, domainC, priority, interfaceInt);
+				updateTextCode(positionC, domainC, priority, interfaceInt);
 			}
 		});
-		
+		// Listener for Copy Button
 		this.copyButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
+				// copies text
 				copyText();
 			}
 		});
+		// Listener for the Reset Button
 		this.resetButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
+				// resets all options to orginal state
 				resetPanel();
+			}
+		});
+		// Listener for the About Button
+		this.infoButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				JOptionPane.showMessageDialog(codePane, "Made by Sam Montoya (Wh3at1y), Dylan G. (Dylngg) & Emily O. (Wellrabbit)");
 			}
 		});
 	}
