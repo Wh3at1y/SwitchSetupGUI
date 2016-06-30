@@ -51,15 +51,21 @@ public class AppPanel extends JPanel
 	private JLabel background;
 	
 	private int domainNum;
+	
+	private TabPanel tabPanel;
 
 	/**
 	 * Constructor
 	 * Initializes variables from the declaration section
 	 */
-	public AppPanel()
+	public AppPanel(AppFrame frame)
 	{
+		tabPanel = new TabPanel();
 		font = new Font("Candara", Font.BOLD, 12);
 		layout = new SpringLayout();
+		layout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, tabPanel, 0, SpringLayout.EAST, this);
 
 		switchList = new List();
 		switchList.add("5500 Switch");
@@ -114,11 +120,11 @@ public class AppPanel extends JPanel
 	/**
 	 * 
 	 */
-	private void setupBackground()
+	public void setupBackground()
 	{
 		ImageIcon backgroundImage = new ImageIcon(AppPanel.class.getResource("/resources/network.jpg"));
 		Image image = backgroundImage.getImage();
-		image = image.getScaledInstance(600,500, java.awt.Image.SCALE_FAST);
+		image = image.getScaledInstance(1920, 1080, java.awt.Image.SCALE_FAST);
 		backgroundImage = new ImageIcon(image);
 		background.setIcon(backgroundImage);
 	}
@@ -210,6 +216,7 @@ public class AppPanel extends JPanel
 	{
 		setLayout(this.layout);
 		this.setBackground(Color.WHITE);
+		add(this.tabPanel);
 		add(this.switchList);
 		add(this.switchNumbers);
 		add(this.fortyPortButton);
@@ -301,6 +308,10 @@ public class AppPanel extends JPanel
 	 */
 	private void buildPlacements()
 	{
+		layout.putConstraint(SpringLayout.EAST, textScrollPane, -175, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, tabPanel, 10, SpringLayout.EAST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, stackLabel);
+		layout.putConstraint(SpringLayout.WEST, textScrollPane, 50, SpringLayout.EAST, stackLabel);
 		layout.putConstraint(SpringLayout.NORTH, infoButton, 5, SpringLayout.SOUTH, copyButton);
 		layout.putConstraint(SpringLayout.WEST, infoButton, 0, SpringLayout.WEST, resetButton);
 		layout.putConstraint(SpringLayout.EAST, infoButton, 0, SpringLayout.EAST, resetButton);
@@ -312,16 +323,13 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
 		layout.putConstraint(SpringLayout.WEST, twentyPortButton, 0, SpringLayout.WEST, fortyPortButton);
 		layout.putConstraint(SpringLayout.NORTH, switchList, 50, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.EAST, switchList, -400, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, copyButton, 0, SpringLayout.WEST, textScrollPane);
 		layout.putConstraint(SpringLayout.NORTH, textScrollPane, 50, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, textScrollPane, 50, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.SOUTH, textScrollPane, 0, SpringLayout.SOUTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, userDomain, 50, SpringLayout.SOUTH, switchNumbers);
 		layout.putConstraint(SpringLayout.WEST, userDomain, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.EAST, userDomain, 0, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.WEST, switchNumbers, 0, SpringLayout.WEST, switchList);
-		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, switchList);
 		layout.putConstraint(SpringLayout.NORTH, fortyPortButton, 50, SpringLayout.SOUTH, switchList);
 		layout.putConstraint(SpringLayout.WEST, fortyPortButton, 0, SpringLayout.WEST, switchList);
 		layout.putConstraint(SpringLayout.NORTH, switchLabel, 20, SpringLayout.NORTH, this);
@@ -329,7 +337,6 @@ public class AppPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
-		layout.putConstraint(SpringLayout.EAST, textScrollPane, -20, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
