@@ -1,8 +1,12 @@
 package app.view;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -13,11 +17,9 @@ public class AppFrame extends JFrame
 	public AppFrame()
 	{
 		panel = new AppPanel();
-		
-		URL iconURL = getClass().getResource("/resources/netLogo.gif");
-		// iconURL is null when not found
-		ImageIcon icon = new ImageIcon(iconURL);
-		this.setIconImage(icon.getImage());
+		try{
+		setIconImage(ImageIO.read(AppFrame.class.getResourceAsStream("/resources/netLogo.gif")));
+    }catch(Exception e){System.out.println(e);}
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
