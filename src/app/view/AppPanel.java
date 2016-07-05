@@ -94,7 +94,7 @@ public class AppPanel extends JPanel
 
 		codePane = new JTextArea();
 
-		resetButton = new JButton("Reset Options");
+		resetButton = new JButton("Reset All");
 		copyButton = new JButton("Copy the Code");
 		submitButton = new JButton("Sumbit");
 		infoButton = new JButton("About...");
