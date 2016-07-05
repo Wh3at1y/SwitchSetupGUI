@@ -298,7 +298,9 @@ public class AppPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-				JOptionPane.showMessageDialog(codePane, "Made by Sam Montoya (Wh3at1y), Dylan G. (Dylngg) & Emily O. (Wellrabbit)");
+				JOptionPane.showMessageDialog(codePane, "Made by Sam Montoya (Wh3at1y), Dylan G. (Dylngg)\n"
+						+ "Contact Wh3at1y@gmail.com for any questions or concerns.\n"
+						+ "Version: 1.1");
 			}
 		});
 	}
