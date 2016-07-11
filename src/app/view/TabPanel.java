@@ -54,7 +54,7 @@ public class TabPanel extends JPanel
 			{
 				public void actionPerformed(ActionEvent clicked)
 				{
-					panel.setupBackground("/resources/linkBackground.jpg");
+					panel.setupBackground("/resources/linkBackground.png");
 					
 					panel.getLinkPanel().setVisible(true);
 					panel.getIRFPanel().setVisible(false);

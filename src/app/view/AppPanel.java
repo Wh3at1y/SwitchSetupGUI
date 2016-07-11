@@ -28,7 +28,7 @@ public class AppPanel extends JPanel
 	{
 		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
 		Image image = backgroundImage.getImage();
-		image = image.getScaledInstance(800, 800, java.awt.Image.SCALE_FAST);
+		image = image.getScaledInstance(900, 600, java.awt.Image.SCALE_FAST);
 		backgroundImage = new ImageIcon(image);
 		background.setIcon(backgroundImage);
 	}
