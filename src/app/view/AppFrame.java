@@ -1,5 +1,4 @@
 package app.view;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class AppFrame extends JFrame
@@ -8,7 +7,7 @@ public class AppFrame extends JFrame
 
 	public AppFrame()
 	{
-		panel = new AppPanel(this);
+		panel = new AppPanel();
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);

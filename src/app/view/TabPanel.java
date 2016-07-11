@@ -1,15 +1,22 @@
 package app.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class TabPanel extends JPanel
 {
+	private AppPanel panel;
+	
 	private JButton irfButton;
 	private JButton snmpButton;
 	private JButton linkaggButton;
 	
-	public TabPanel()
+	public TabPanel(AppPanel panel)
 	{
+		this.panel = panel;
+		
 		irfButton = new JButton("IRF Setup Script");
 		snmpButton = new JButton("SNMP Setup Script");
 		linkaggButton = new JButton("Link Agg Script");
@@ -43,7 +50,27 @@ public class TabPanel extends JPanel
 
 	private void buildListeners()
 	{
+		linkaggButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent clicked)
+				{
+					panel.setupBackground("/resources/linkBackground.jpg");
+					
+					panel.getLinkPanel().setVisible(true);
+					panel.getIRFPanel().setVisible(false);
+				}
+			});
 		
+		irfButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.setupBackground("/resources/irfBackground.jpg");
+				
+				panel.getIRFPanel().setVisible(true);
+				panel.getLinkPanel().setVisible(false);
+			}
+		});
 	}
 	
 	private void buildPlacements()
