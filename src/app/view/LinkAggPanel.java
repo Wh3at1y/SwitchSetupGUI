@@ -70,7 +70,7 @@ public class LinkAggPanel extends JPanel
 		bridgeGroupField = new JTextField();
 		layout.putConstraint(SpringLayout.WEST, bridgeGroupField, 24, SpringLayout.WEST, this);
 		portNum1 = new JTextField("Num 1");
-		layout.putConstraint(SpringLayout.EAST, portNum1, -196, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, portNum1, 25, SpringLayout.WEST, this);
 		portNum2 = new JTextField("Num 2");
 		portNum3 = new JTextField("Num 3");
 		layout.putConstraint(SpringLayout.EAST, portNum3, -10, SpringLayout.EAST, portNum2);
@@ -122,6 +122,7 @@ public class LinkAggPanel extends JPanel
 		
 		yesList = new ArrayList<JCheckBox>();
 		yesList.add(yes1 = new JCheckBox("Yes1"));
+		layout.putConstraint(SpringLayout.NORTH, yes1, 7, SpringLayout.SOUTH, portNum1);
 		yesList.add(yes2 = new JCheckBox("Yes2"));
 		yesList.add(yes3 = new JCheckBox("Yes3"));
 		yesList.add(yes4 = new JCheckBox("Yes4"));
@@ -144,7 +145,6 @@ public class LinkAggPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
 
 		irfNumbers = new JComboBox<Integer>();
-		layout.putConstraint(SpringLayout.NORTH, portNum1, -1, SpringLayout.NORTH, irfNumbers);
 		layout.putConstraint(SpringLayout.WEST, irfNumbers, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, irfNumbers, 167, SpringLayout.WEST, this);
 		for (int spot = 1; spot <= 8; spot++)
@@ -178,11 +178,14 @@ public class LinkAggPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, amountLabel, 25, SpringLayout.WEST, this);
 		amountLabel.setFont(font);
 		portNumLabel = new JLabel("Port Number (1-54) :");
+		layout.putConstraint(SpringLayout.NORTH, portNum1, 10, SpringLayout.SOUTH, portNumLabel);
+		layout.putConstraint(SpringLayout.EAST, portNum1, 0, SpringLayout.EAST, portNumLabel);
 		layout.putConstraint(SpringLayout.NORTH, portNumLabel, 50, SpringLayout.SOUTH, irfNumbers);
 		layout.putConstraint(SpringLayout.WEST, portNumLabel, 25, SpringLayout.WEST, this);
 		portNumLabel.setFont(font);
 		moduleLabel = new JLabel("Module? :");
-		layout.putConstraint(SpringLayout.NORTH, moduleLabel, 25, SpringLayout.SOUTH, bridgeLabel);
+		layout.putConstraint(SpringLayout.NORTH, moduleLabel, 10, SpringLayout.SOUTH, portNum1);
+		layout.putConstraint(SpringLayout.WEST, yes1, 0, SpringLayout.EAST, moduleLabel);
 		moduleLabel.setFont(font);
 		layout.putConstraint(SpringLayout.WEST, moduleLabel, 25, SpringLayout.WEST, this);
 		
@@ -207,12 +210,12 @@ public class LinkAggPanel extends JPanel
 		
 		add(this.portNum1);
 		
-		
 		add(this.yes1);
-		for(int spot = 0; spot <=7; spot++)
-			add(fieldList.get(spot));
-		for(int spot = 0; spot <= 7; spot++)
-			add(yesList.get(spot));
+//		for(int spot = 0; spot <=7; spot++)
+//			add(fieldList.get(spot));
+//		for(int spot = 0; spot <= 7; spot++)
+//			add(yesList.get(spot));
+		
 		add(this.submitButton);
 	}
 
