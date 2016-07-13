@@ -12,6 +12,7 @@ public class TabPanel extends JPanel
 	private JButton irfButton;
 	private JButton snmpButton;
 	private JButton linkaggButton;
+	private JButton devButton;
 	
 	public TabPanel(AppPanel panel)
 	{
@@ -20,6 +21,7 @@ public class TabPanel extends JPanel
 		irfButton = new JButton("IRF Setup Script");
 		snmpButton = new JButton("SNMP Setup Script");
 		linkaggButton = new JButton("Link Agg Script");
+		devButton = new JButton("Dev");
 		
 		buildPanel();
 		buildPlacements();
@@ -46,6 +48,7 @@ public class TabPanel extends JPanel
 		add(this.irfButton);
 		add(this.snmpButton);
 		add(this.linkaggButton);
+		add(this.devButton);
 	}
 
 	private void buildListeners()
@@ -58,6 +61,7 @@ public class TabPanel extends JPanel
 					
 					panel.getLinkPanel().setVisible(true);
 					panel.getIRFPanel().setVisible(false);
+					panel.getMenuPanel().setVisible(false);
 				}
 			});
 		
@@ -68,6 +72,19 @@ public class TabPanel extends JPanel
 				panel.setupBackground("/resources/irfBackground.jpg");
 				
 				panel.getIRFPanel().setVisible(true);
+				panel.getLinkPanel().setVisible(false);
+				panel.getMenuPanel().setVisible(false);
+			}
+		});
+		
+		devButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.setupBackground("/resources/irfBackground.jpg");
+				
+				panel.getMenuPanel().setVisible(true);
+				panel.getIRFPanel().setVisible(false);
 				panel.getLinkPanel().setVisible(false);
 			}
 		});

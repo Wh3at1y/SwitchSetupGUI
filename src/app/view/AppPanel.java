@@ -9,6 +9,7 @@ public class AppPanel extends JPanel
 	private TabPanel tabPanel;
 	private IRFPanel irfPanel;
 	private LinkAggPanel linkaggPanel;
+	private MainMenuPanel menuPanel;
 	
 	private JLabel background;
 	
@@ -19,6 +20,7 @@ public class AppPanel extends JPanel
 		tabPanel = new TabPanel(this);
 		irfPanel = new IRFPanel(this);
 		linkaggPanel = new LinkAggPanel(this);
+		menuPanel = new MainMenuPanel();
 		
 		buildPanel();
 		buildPlacements();
@@ -36,6 +38,10 @@ public class AppPanel extends JPanel
 	private void buildPanel()
 	{
 		SpringLayout springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.NORTH, menuPanel, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, menuPanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, menuPanel, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, menuPanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, linkaggPanel, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, linkaggPanel, 0, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, linkaggPanel, 0, SpringLayout.SOUTH, this);
@@ -53,6 +59,7 @@ public class AppPanel extends JPanel
 		add(this.tabPanel);
 		add(this.irfPanel);
 		add(this.linkaggPanel);
+		add(this.menuPanel);
 		add(this.background);
 	}
 
@@ -68,5 +75,10 @@ public class AppPanel extends JPanel
 	public IRFPanel getIRFPanel()
 	{
 		return this.irfPanel;
+	}
+	
+	public MainMenuPanel getMenuPanel()
+	{
+		return this.menuPanel;
 	}
 }

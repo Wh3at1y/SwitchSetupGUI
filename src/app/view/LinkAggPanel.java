@@ -1,5 +1,6 @@
 package app.view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,9 @@ public class LinkAggPanel extends JPanel
 	private JCheckBox yes6;
 	private JCheckBox yes7;
 	private JCheckBox yes8;
+	
+	private JTextArea codeArea;
+	private JScrollPane scrollPane;
 
 	private JComboBox<Integer> irfNumbers;
 
@@ -37,7 +41,8 @@ public class LinkAggPanel extends JPanel
 	private JRadioButton tengigButton;
 	private JRadioButton onegigButton;
 
-	private JButton submitButton;
+	private JButton copyButton;
+	private JButton clearButton;
 
 	private ArrayList<Component> fieldList;
 	private ArrayList<JLabel> labelList;
@@ -62,7 +67,7 @@ public class LinkAggPanel extends JPanel
 	{
 		this.setVisible(false);
 		layout = new SpringLayout();
-		font = new Font("Candara", Font.BOLD, 13);
+		font = new Font("Candara", Font.BOLD, 14);
 
 		bridgeGroupField = new JTextField();
 
@@ -85,6 +90,7 @@ public class LinkAggPanel extends JPanel
 		yesList.add(yes6 = new JCheckBox("Yes"));
 		yesList.add(yes7 = new JCheckBox("Yes"));
 		yesList.add(yes8 = new JCheckBox("Yes"));
+		yes1.setForeground(Color.WHITE);
 
 		labelList = new ArrayList<JLabel>();
 		labelList.add(port1Label = new JLabel("Port 1 Info (1-54) :"));
@@ -96,6 +102,7 @@ public class LinkAggPanel extends JPanel
 		labelList.add(port7Label = new JLabel("Port 7 Info :"));
 		labelList.add(port8Label = new JLabel("Port 8 Info :"));
 		port1Label.setFont(font);
+		port1Label.setForeground(Color.WHITE);
 
 		labelList.add(bridgeLabel = new JLabel("Enter Bridge :"));
 		labelList.add(portSpeedLabel = new JLabel("Enter Port Speed :"));
@@ -106,15 +113,21 @@ public class LinkAggPanel extends JPanel
 		{
 			labelList.get(spot).setVisible(false);
 			labelList.get(spot).setFont(font);
+			labelList.get(spot).setForeground(Color.WHITE);
 
 			yesList.get(spot).setVisible(false);
 			yesList.get(spot).setFont(font);
+			yesList.get(spot).setForeground(Color.WHITE);
 
 			fieldList.get(spot).setVisible(false);
 			fieldList.get(spot).setFont(font);
+			fieldList.get(spot).setForeground(Color.WHITE);
 
 			for (int place = 8; place <= 11; place++)
+			{
 				labelList.get(place).setFont(font);
+				labelList.get(place).setForeground(Color.WHITE);
+			}
 		}
 
 		irfNumbers = new JComboBox<Integer>();
@@ -124,14 +137,30 @@ public class LinkAggPanel extends JPanel
 		radioButtons = new ButtonGroup();
 		radioButtons.add(tengigButton = new JRadioButton("10 gig", true));
 		radioButtons.add(onegigButton = new JRadioButton("1 gig"));
+		tengigButton.setForeground(Color.WHITE);
+		tengigButton.setFont(font);
+		onegigButton.setForeground(Color.WHITE);
+		onegigButton.setFont(font);
 
-		submitButton = new JButton("Submit");
+		copyButton = new JButton("Copy");
+		clearButton = new JButton("Clear");
 
+		setupChatPane();
 		setupPanel();
 		setupPlacements();
 		setupListeners();
 	}
 
+	private void setupChatPane()
+	{
+		codeArea = new JTextArea();
+		codeArea.setLineWrap(true);
+		codeArea.setWrapStyleWord(true);
+		scrollPane = new JScrollPane(codeArea);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	}
+	
 	private void setupPanel()
 	{
 		setLayout(layout);
@@ -144,7 +173,9 @@ public class LinkAggPanel extends JPanel
 		add(this.irfNumbers);
 		add(this.tengigButton);
 		add(this.onegigButton);
-		add(this.submitButton);
+		add(this.copyButton);
+		add(this.scrollPane);
+		add(this.clearButton);
 
 		for (int spot = 0; spot <= 7; spot++)
 			add(fieldList.get(spot));
@@ -182,6 +213,16 @@ public class LinkAggPanel extends JPanel
 
 	private void setupPlacements()
 	{
+		layout.putConstraint(SpringLayout.WEST, copyButton, 325, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, copyButton, -12, SpringLayout.WEST, clearButton);
+		layout.putConstraint(SpringLayout.WEST, clearButton, 484, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, clearButton, -25, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, clearButton, -10, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.NORTH, scrollPane, 0, SpringLayout.NORTH, bridgeLabel);
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 30, SpringLayout.EAST, portNum5);
+		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, copyButton, -10, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, yes1, 7, SpringLayout.SOUTH, portNum1);
 		layout.putConstraint(SpringLayout.NORTH, yes3, 3, SpringLayout.SOUTH, portNum3);
 		layout.putConstraint(SpringLayout.EAST, yes3, 0, SpringLayout.EAST, portNum3);
@@ -232,9 +273,6 @@ public class LinkAggPanel extends JPanel
 		layout.putConstraint(SpringLayout.EAST, bridgeGroupField, -484, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, portNum1, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, portNum2, 25, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.WEST, submitButton, 188, SpringLayout.EAST, yes2);
-		layout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, submitButton, -197, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, irfNumbers, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, irfNumbers, 167, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, tengigButton, 25, SpringLayout.WEST, this);
