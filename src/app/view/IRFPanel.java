@@ -87,11 +87,10 @@ public class IRFPanel extends JPanel
 
 		resetButton = new JButton("Reset All");
 		copyButton = new JButton("Copy the Code");
-		submitButton = new JButton("Sumbit");
+		submitButton = new JButton("Submit");
 		infoButton = new JButton("About...");
 		
 		switchLabel = new JLabel("Select the Switch");
-		layout.putConstraint(SpringLayout.NORTH, switchLabel, 25, SpringLayout.NORTH, this);
 		portLabel = new JLabel("Select the Amount of Ports");
 		stackLabel = new JLabel("Select the position in the stack");
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
@@ -229,20 +228,14 @@ public class IRFPanel extends JPanel
 				String domainC = userDomain.getText();
 				String switchName = switchList.getSelectedItem();
 				int positionC = switchNumbers.getSelectedIndex() + 1;
-					
+				
 				int priority = 32;
-				int newPriority = priority;
 					
 				for(int counter = 1; counter <= 9; counter++)  
 				{
-					if (positionC == counter) 
-					{
-						priority = newPriority;
-					}
-					else
-					{
-						newPriority = priority - 2;
-					}
+					if(positionC == counter)
+						break;
+					priority--; priority--;
 				}
 					
 				if(switchName.contains("5800") && fortyPortButton.isSelected())
@@ -257,6 +250,7 @@ public class IRFPanel extends JPanel
 				updateTextCode(positionC, domainC, priority, interfaceInt);
 			}
 		});
+		
 		// Listener for Copy Button
 		this.copyButton.addActionListener(new ActionListener()
 		{
@@ -266,15 +260,17 @@ public class IRFPanel extends JPanel
 				copyText();
 			}
 		});
+		
 		// Listener for the Reset Button
 		this.resetButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-				// resets all options to orginal state
+				// resets all options to original state
 				resetPanel();
 			}
 		});
+		
 		// Listener for the About Button
 		this.infoButton.addActionListener(new ActionListener()
 		{
@@ -292,6 +288,7 @@ public class IRFPanel extends JPanel
 	 */
 	private void buildPlacements()
 	{
+		layout.putConstraint(SpringLayout.NORTH, switchLabel, 25, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 30, SpringLayout.EAST, stackLabel);
 		layout.putConstraint(SpringLayout.EAST, textScrollPane, -10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, stackLabel);

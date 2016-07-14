@@ -28,7 +28,7 @@ public class MainMenuPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, irfButton, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, irfButton, 200, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.EAST, irfButton, 0, SpringLayout.EAST, this);
-		irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/button (4).png")));
+		//irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/button (4).png")));
 		irfButton.setHorizontalTextPosition(JButton.CENTER);
 		irfButton.setVerticalTextPosition(JButton.CENTER);
 		layout.putConstraint(SpringLayout.NORTH, irfButton, 20, SpringLayout.SOUTH, title);

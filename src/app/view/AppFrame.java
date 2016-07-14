@@ -1,5 +1,7 @@
 package app.view;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import com.apple.eawt.*;
 
 public class AppFrame extends JFrame
 {
@@ -9,6 +11,9 @@ public class AppFrame extends JFrame
 	{
 		panel = new AppPanel();
 
+		Application.getApplication().setDockIconImage(new ImageIcon(AppFrame.class.getResource("/resources/netLogo.png")).getImage());
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ImageRotator");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
 		this.setTitle("Switch-Setup v.1");
