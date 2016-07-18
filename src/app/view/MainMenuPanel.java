@@ -1,14 +1,17 @@
 package app.view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class MainMenuPanel extends JPanel
 {
 	private SpringLayout layout;
+	
+	private AppPanel panel;
 	
 	private JLabel background;
 	private JLabel title;
@@ -18,56 +21,38 @@ public class MainMenuPanel extends JPanel
 	private JButton settingsButton;
 	private JButton aboutButton;
 	
+	private String buttonLoc = "/resources/netButton.png";
+	
 	public MainMenuPanel(AppPanel panel)
 	{
 		layout = new SpringLayout();
 		
+		this.panel = panel;
+		
 		background = new JLabel();
 		background.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/menuBackground.png")));
+		
 		title = new JLabel();
-		layout.putConstraint(SpringLayout.NORTH, title, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, title, 180, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, title, -100, SpringLayout.EAST, this);
 		title.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netLogoLong.png")));
 		
 		irfButton = new JButton("IRF SETUP");
-		irfButton.setBorderPainted(false);
-		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, irfButton, -200, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.NORTH, irfButton, 0, SpringLayout.SOUTH, title);
-		irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netButton.png")));
+		irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupText(irfButton);
 		
-		
 		linkAggButton = new JButton("LINK AGGREGATION");
-		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 10, SpringLayout.SOUTH, irfButton);
-		linkAggButton.setBorderPainted(false);
-		layout.putConstraint(SpringLayout.WEST, linkAggButton, 200, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, linkAggButton, -200, SpringLayout.EAST, this);
-		linkAggButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netButton.png")));
-		linkAggButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		linkAggButton.setVerticalTextPosition(SwingConstants.CENTER);
+		linkAggButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupText(linkAggButton);
 		
-		
-		
 		snmpButton = new JButton("SNMP SETUP");
-		layout.putConstraint(SpringLayout.NORTH, snmpButton, 10, SpringLayout.SOUTH, linkAggButton);
-		layout.putConstraint(SpringLayout.WEST, snmpButton, 200, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, snmpButton, -200, SpringLayout.EAST, this);
-		snmpButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netButton.png")));
+		snmpButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupText(snmpButton);
 		
 		aboutButton = new JButton("ABOUT");
-		layout.putConstraint(SpringLayout.SOUTH, aboutButton, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, aboutButton, 0, SpringLayout.EAST, this);
-		aboutButton.setIcon(setupBackground("/resources/netButton.png"));
+		aboutButton.setIcon(setupBackground(buttonLoc));
 		setupText(aboutButton);
 		
 		settingsButton = new JButton("SETTINGS");
-		layout.putConstraint(SpringLayout.SOUTH, settingsButton, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, settingsButton, -10, SpringLayout.WEST, aboutButton);
-		settingsButton.setIcon(setupBackground("/resources/netButton.png"));
+		settingsButton.setIcon(setupBackground(buttonLoc));
 		setupText(settingsButton);
 		
 		
@@ -96,7 +81,7 @@ public class MainMenuPanel extends JPanel
 	
 	private void setupPanel()
 	{
-		this.setVisible(false);
+		this.setVisible(true);
 		setLayout(layout);
 		
 		add(this.irfButton);
@@ -110,12 +95,35 @@ public class MainMenuPanel extends JPanel
 	
 	private void setupListeners()
 	{
-		
+		irfButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.getIRFPanel().setVisible(true);
+				
+				panel.getMenuPanel().setVisible(false);
+			}
+		});
 	}
 	
 	private void setupPlacements()
 	{
-		
+		layout.putConstraint(SpringLayout.NORTH, title, 20, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, title, 180, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, title, -100, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 10, SpringLayout.SOUTH, irfButton);
+		layout.putConstraint(SpringLayout.WEST, linkAggButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, linkAggButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, snmpButton, 10, SpringLayout.SOUTH, linkAggButton);
+		layout.putConstraint(SpringLayout.WEST, snmpButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, snmpButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, aboutButton, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, aboutButton, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, settingsButton, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, settingsButton, -10, SpringLayout.WEST, aboutButton);
+		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, irfButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, irfButton, 0, SpringLayout.SOUTH, title);
 	}
 }
 

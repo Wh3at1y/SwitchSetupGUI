@@ -197,6 +197,7 @@ public class IRFPanel extends JPanel
 	 */
 	private void buildPanel()
 	{
+		this.setVisible(false);
 		setLayout(this.layout);
 		this.setOpaque(false);
 		add(this.switchList);
