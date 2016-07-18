@@ -9,6 +9,7 @@ package app.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.List;
 import java.awt.event.*;
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class IRFPanel extends JPanel
 	private JButton resetButton;
 	private JButton copyButton;
 	private JButton submitButton;
-	private JButton infoButton;
+	private JButton homeButton;
 
 	private JLabel switchLabel;
 	private JLabel portLabel;
@@ -55,7 +56,7 @@ public class IRFPanel extends JPanel
 	 */
 	public IRFPanel(AppPanel panel)
 	{
-		font = new Font("Candara", Font.BOLD, 12);
+		font = new Font("Neue", Font.BOLD, 13);
 		layout = new SpringLayout();
 
 		switchList = new List();
@@ -86,9 +87,20 @@ public class IRFPanel extends JPanel
 		codePane = new JTextArea();
 
 		resetButton = new JButton("Reset All");
+		layout.putConstraint(SpringLayout.SOUTH, resetButton, -20, SpringLayout.SOUTH, this);
 		copyButton = new JButton("Copy the Code");
+		layout.putConstraint(SpringLayout.WEST, resetButton, 20, SpringLayout.EAST, copyButton);
+		layout.putConstraint(SpringLayout.SOUTH, copyButton, -20, SpringLayout.SOUTH, this);
 		submitButton = new JButton("Submit");
-		infoButton = new JButton("About...");
+		layout.putConstraint(SpringLayout.WEST, submitButton, 16, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, -20, SpringLayout.SOUTH, this);
+		homeButton = new JButton("Home");
+		
+		String buttonLoc = "/resources/netButton.png";
+		setupButton(resetButton, buttonLoc);
+		setupButton(copyButton, buttonLoc);
+		setupButton(submitButton, buttonLoc);
+		setupButton(homeButton, buttonLoc);
 		
 		switchLabel = new JLabel("Select the Switch");
 		portLabel = new JLabel("Select the Amount of Ports");
@@ -106,28 +118,42 @@ public class IRFPanel extends JPanel
 		buildPlacements();
 		buildListeners();
 	}
+	
+	private void setupButton(JButton button, String pictureLoc)
+	{
+		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
+		Image image = backgroundImage.getImage();
+		image = image.getScaledInstance(120, 35, java.awt.Image.SCALE_FAST);
+		backgroundImage = new ImageIcon(image);
+		button.setIcon(backgroundImage);
+		
+		button.setBorderPainted(false);
+		button.setHorizontalTextPosition(JButton.CENTER);
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setFont(font);
+		button.setForeground(Color.DARK_GRAY);
+	}
 
 	/**
-	 * 
-	 */
-
-	/**
-	 * @param label
+	 * @param label : JLabels in the panel, sets the font and color
 	 */
 	private void setupLabels(Component label)
 	{
 		label.setFont(font);
-		label.setForeground(Color.WHITE);
+		label.setForeground(Color.DARK_GRAY);
 	}
 	
 	/**
-	 * 
+	 * Adds scroll bars, etc
 	 */
 	private void setupChatPane()
 	{
 		codePane.setLineWrap(true);
 		codePane.setWrapStyleWord(true);
 		textScrollPane = new JScrollPane(codePane);
+		layout.putConstraint(SpringLayout.WEST, copyButton, -17, SpringLayout.WEST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, copyButton, 131, SpringLayout.WEST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, textScrollPane, -25, SpringLayout.EAST, this);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -161,7 +187,7 @@ public class IRFPanel extends JPanel
 	}
 
 	/**
-	 * 
+	 * Resets the components to defaults
 	 */
 	private void resetPanel() 
 		{
@@ -183,7 +209,7 @@ public class IRFPanel extends JPanel
 		}
 
 	/**
-	 * 
+	 * Copy Text Button Function
 	 */
 	private void copyText() 
 	{
@@ -193,13 +219,14 @@ public class IRFPanel extends JPanel
 	}
 	
 	/**
-	 * 
+	 * Adds components to the panel
 	 */
 	private void buildPanel()
 	{
 		this.setVisible(false);
-		setLayout(this.layout);
 		this.setOpaque(false);
+		setLayout(this.layout);
+		
 		add(this.switchList);
 		add(this.switchNumbers);
 		add(this.fortyPortButton);
@@ -208,16 +235,16 @@ public class IRFPanel extends JPanel
 		add(this.textScrollPane);
 		add(this.copyButton);
 		add(this.resetButton);
+		add(this.submitButton);
+		add(this.homeButton);
 		add(this.switchLabel);
 		add(this.portLabel);
 		add(this.stackLabel);
 		add(this.domainLabel);
-		add(this.submitButton);
-		add(this.infoButton);
 	}
 
 	/**
-	 * 
+	 * Listeners for the buttons
 	 */
 	private void buildListeners()
 	{
@@ -271,19 +298,7 @@ public class IRFPanel extends JPanel
 				resetPanel();
 			}
 		});
-		
-		// Listener for the About Button
-		this.infoButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent clicked)
-			{
-				JOptionPane.showMessageDialog(codePane, "Made by Sam Montoya (Wh3at1y), Dylan G. (Dylngg)\n"
-						+ "Contact Wh3at1y@gmail.com for any questions or concerns.\n"
-						+ "Version: 1.1");
-			}
-		});
 	}
-
 	/**
 	 * Window Builder Generated Code Garbage
 	 */
@@ -291,12 +306,7 @@ public class IRFPanel extends JPanel
 	{
 		layout.putConstraint(SpringLayout.NORTH, switchLabel, 25, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 30, SpringLayout.EAST, stackLabel);
-		layout.putConstraint(SpringLayout.EAST, textScrollPane, -10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, stackLabel);
-		layout.putConstraint(SpringLayout.NORTH, infoButton, 5, SpringLayout.SOUTH, copyButton);
-		layout.putConstraint(SpringLayout.WEST, infoButton, 0, SpringLayout.WEST, resetButton);
-		layout.putConstraint(SpringLayout.EAST, infoButton, 0, SpringLayout.EAST, resetButton);
-		layout.putConstraint(SpringLayout.WEST, submitButton, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, switchLabel, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, portLabel, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, stackLabel, 25, SpringLayout.WEST, this);
@@ -304,7 +314,6 @@ public class IRFPanel extends JPanel
 		layout.putConstraint(SpringLayout.NORTH, twentyPortButton, 25, SpringLayout.SOUTH, fortyPortButton);
 		layout.putConstraint(SpringLayout.WEST, twentyPortButton, 0, SpringLayout.WEST, fortyPortButton);
 		layout.putConstraint(SpringLayout.NORTH, switchList, 50, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, copyButton, 0, SpringLayout.WEST, textScrollPane);
 		layout.putConstraint(SpringLayout.NORTH, textScrollPane, 50, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, textScrollPane, 0, SpringLayout.SOUTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, userDomain, 50, SpringLayout.SOUTH, switchNumbers);
@@ -317,14 +326,7 @@ public class IRFPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, stackLabel, -10, SpringLayout.NORTH, switchNumbers);
 		layout.putConstraint(SpringLayout.SOUTH, domainLabel, -10, SpringLayout.NORTH, userDomain);
 		layout.putConstraint(SpringLayout.NORTH, switchNumbers, 60, SpringLayout.SOUTH, twentyPortButton);
-		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, userDomain);
-		layout.putConstraint(SpringLayout.SOUTH, copyButton, -40, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, resetButton, -40, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, switchList, -375, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.WEST, switchList, 25, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, submitButton, -40, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, resetButton, -161, SpringLayout.EAST, textScrollPane);
-		layout.putConstraint(SpringLayout.EAST, copyButton, 161, SpringLayout.WEST, textScrollPane);
-		layout.putConstraint(SpringLayout.EAST, resetButton, 0, SpringLayout.EAST, textScrollPane);
 	}
 }

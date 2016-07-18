@@ -13,7 +13,6 @@ public class MainMenuPanel extends JPanel
 	
 	private AppPanel panel;
 	
-	private JLabel background;
 	private JLabel title;
 	private JButton irfButton;
 	private JButton linkAggButton;
@@ -29,31 +28,28 @@ public class MainMenuPanel extends JPanel
 		
 		this.panel = panel;
 		
-		background = new JLabel();
-		background.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/menuBackground.png")));
+		panel.setupBackground("/resources/menuBackground.png");
 		
 		title = new JLabel();
 		title.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netLogoLong.png")));
 		
 		irfButton = new JButton("IRF SETUP");
 		irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
-		setupText(irfButton);
+		setupButtonText(irfButton);
 		
 		linkAggButton = new JButton("LINK AGGREGATION");
 		linkAggButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
-		setupText(linkAggButton);
+		setupButtonText(linkAggButton);
 		
 		snmpButton = new JButton("SNMP SETUP");
 		snmpButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
-		setupText(snmpButton);
+		setupButtonText(snmpButton);
 		
 		aboutButton = new JButton("ABOUT");
-		aboutButton.setIcon(setupBackground(buttonLoc));
-		setupText(aboutButton);
+		setupButton(aboutButton, buttonLoc);
 		
 		settingsButton = new JButton("SETTINGS");
-		settingsButton.setIcon(setupBackground(buttonLoc));
-		setupText(settingsButton);
+		setupButton(settingsButton, buttonLoc);
 		
 		
 		setupPanel();
@@ -61,16 +57,22 @@ public class MainMenuPanel extends JPanel
 		setupListeners();
 	}
 	
-	private ImageIcon setupBackground(String pictureLoc)
+	private void setupButton(JButton button, String pictureLoc)
 	{
 		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
 		Image image = backgroundImage.getImage();
 		image = image.getScaledInstance(150, 50, java.awt.Image.SCALE_FAST);
 		backgroundImage = new ImageIcon(image);
-		return backgroundImage;
+		button.setIcon(backgroundImage);
+		
+		button.setBorderPainted(false);
+		button.setHorizontalTextPosition(JButton.CENTER);
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setFont(new Font("Neue", Font.BOLD, 16));
+		button.setForeground(Color.DARK_GRAY);
 	}
 	
-	private void setupText(JButton button)
+	private void setupButtonText(JButton button)
 	{
 		button.setBorderPainted(false);
 		button.setHorizontalTextPosition(JButton.CENTER);
@@ -82,6 +84,7 @@ public class MainMenuPanel extends JPanel
 	private void setupPanel()
 	{
 		this.setVisible(true);
+		this.setOpaque(false);
 		setLayout(layout);
 		
 		add(this.irfButton);
@@ -90,7 +93,6 @@ public class MainMenuPanel extends JPanel
 		add(this.aboutButton);
 		add(this.settingsButton);
 		add(this.title);
-		add(this.background);
 	}
 	
 	private void setupListeners()
@@ -100,7 +102,17 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				panel.getIRFPanel().setVisible(true);
-				
+				panel.setupBackground("/resources/irfBackground.png");
+				panel.getMenuPanel().setVisible(false);
+			}
+		});
+		
+		linkAggButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.getLinkPanel().setVisible(true);
+				panel.setupBackground("/resources/linkBackground.png");
 				panel.getMenuPanel().setVisible(false);
 			}
 		});
@@ -108,6 +120,7 @@ public class MainMenuPanel extends JPanel
 	
 	private void setupPlacements()
 	{
+		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, title, 20, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, title, 180, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, title, -100, SpringLayout.EAST, this);
@@ -121,7 +134,6 @@ public class MainMenuPanel extends JPanel
 		layout.putConstraint(SpringLayout.EAST, aboutButton, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, settingsButton, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.EAST, settingsButton, -10, SpringLayout.WEST, aboutButton);
-		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, irfButton, -200, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, irfButton, 0, SpringLayout.SOUTH, title);
 	}
