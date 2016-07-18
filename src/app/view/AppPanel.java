@@ -20,7 +20,7 @@ public class AppPanel extends JPanel
 		tabPanel = new TabPanel(this);
 		irfPanel = new IRFPanel(this);
 		linkaggPanel = new LinkAggPanel(this);
-		menuPanel = new MainMenuPanel();
+		menuPanel = new MainMenuPanel(this);
 		
 		buildPanel();
 		buildPlacements();
@@ -80,5 +80,10 @@ public class AppPanel extends JPanel
 	public MainMenuPanel getMenuPanel()
 	{
 		return this.menuPanel;
+	}
+	
+	public TabPanel getTabPanel()
+	{
+		return this.tabPanel;
 	}
 }

@@ -81,11 +81,12 @@ public class TabPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-				panel.setupBackground("/resources/irfBackground.jpg");
+				panel.setupBackground("/resources/irfBackground.png");
 				
 				panel.getMenuPanel().setVisible(true);
 				panel.getIRFPanel().setVisible(false);
 				panel.getLinkPanel().setVisible(false);
+				panel.getTabPanel().setVisible(false);
 			}
 		});
 	}

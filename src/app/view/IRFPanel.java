@@ -99,7 +99,7 @@ public class IRFPanel extends JPanel
 		setupLabels(this.stackLabel);
 		setupLabels(this.domainLabel);
 		
-		panel.setupBackground("/resources/irfBackground.jpg");
+		panel.setupBackground("/resources/irfBackground.png");
 		
 		setupChatPane();
 		buildPanel();
