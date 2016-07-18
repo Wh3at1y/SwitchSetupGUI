@@ -22,6 +22,7 @@ public class IRFPanel extends JPanel
 	 * Declaration Section
 	 */
 	private SpringLayout layout;
+	private AppPanel panel;
 	private Font font;
 	
 	private List switchList;
@@ -41,12 +42,14 @@ public class IRFPanel extends JPanel
 	private JButton resetButton;
 	private JButton copyButton;
 	private JButton submitButton;
+	private JButton renumberButton;
 	private JButton homeButton;
 
 	private JLabel switchLabel;
 	private JLabel portLabel;
 	private JLabel stackLabel;
 	private JLabel domainLabel;
+	private JLabel homePicture;
 	
 	private int domainNum;
 
@@ -57,6 +60,7 @@ public class IRFPanel extends JPanel
 	public IRFPanel(AppPanel panel)
 	{
 		font = new Font("Neue", Font.BOLD, 13);
+		this.panel = panel;
 		layout = new SpringLayout();
 
 		switchList = new List();
@@ -87,25 +91,24 @@ public class IRFPanel extends JPanel
 		codePane = new JTextArea();
 
 		resetButton = new JButton("Reset All");
-		layout.putConstraint(SpringLayout.SOUTH, resetButton, -20, SpringLayout.SOUTH, this);
 		copyButton = new JButton("Copy the Code");
-		layout.putConstraint(SpringLayout.WEST, resetButton, 20, SpringLayout.EAST, copyButton);
-		layout.putConstraint(SpringLayout.SOUTH, copyButton, -20, SpringLayout.SOUTH, this);
 		submitButton = new JButton("Submit");
-		layout.putConstraint(SpringLayout.WEST, submitButton, 16, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, submitButton, -20, SpringLayout.SOUTH, this);
+		renumberButton = new JButton("Re-Number");
 		homeButton = new JButton("Home");
 		
 		String buttonLoc = "/resources/netButton.png";
 		setupButton(resetButton, buttonLoc);
 		setupButton(copyButton, buttonLoc);
 		setupButton(submitButton, buttonLoc);
+		setupButton(renumberButton, buttonLoc);
 		setupButton(homeButton, buttonLoc);
 		
 		switchLabel = new JLabel("Select the Switch");
 		portLabel = new JLabel("Select the Amount of Ports");
 		stackLabel = new JLabel("Select the position in the stack");
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
+		homePicture = new JLabel();
+		homePicture.setIcon(new ImageIcon(IRFPanel.class.getResource("/resources/home.png")));
 		setupLabels(this.switchLabel);
 		setupLabels(this.portLabel);
 		setupLabels(this.stackLabel);
@@ -151,9 +154,6 @@ public class IRFPanel extends JPanel
 		codePane.setLineWrap(true);
 		codePane.setWrapStyleWord(true);
 		textScrollPane = new JScrollPane(codePane);
-		layout.putConstraint(SpringLayout.WEST, copyButton, -17, SpringLayout.WEST, textScrollPane);
-		layout.putConstraint(SpringLayout.EAST, copyButton, 131, SpringLayout.WEST, textScrollPane);
-		layout.putConstraint(SpringLayout.EAST, textScrollPane, -25, SpringLayout.EAST, this);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -167,7 +167,6 @@ public class IRFPanel extends JPanel
 	private void updateTextCode(int positionC, String domainC, int priorityC, int interfaceInt)
 	{
 		int interfaceInt2 = interfaceInt + 1;
-		
 		this.codePane.setText("sys"
 		+ "\nirf domain " + domainC + "\nirf member " + positionC + " priority " + priorityC 
 		+ "\nInterface Ten " + positionC + "/0/" +  interfaceInt
@@ -235,7 +234,9 @@ public class IRFPanel extends JPanel
 		add(this.textScrollPane);
 		add(this.copyButton);
 		add(this.resetButton);
+		add(this.renumberButton);
 		add(this.submitButton);
+		add(this.homePicture);
 		add(this.homeButton);
 		add(this.switchLabel);
 		add(this.portLabel);
@@ -279,6 +280,16 @@ public class IRFPanel extends JPanel
 			}
 		});
 		
+		this.homeButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				setVisible(false);
+				panel.getMenuPanel().setVisible(true);
+				panel.setupBackground("/resources/menuBackground.png");
+			}
+		});
+		
 		// Listener for Copy Button
 		this.copyButton.addActionListener(new ActionListener()
 		{
@@ -298,12 +309,48 @@ public class IRFPanel extends JPanel
 				resetPanel();
 			}
 		});
+		
+		this.renumberButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				String firstSwitch = JOptionPane.showInputDialog("Enter Current Switch Number");
+				String renumberSwitch = JOptionPane.showInputDialog("Enter New Switch Number");
+				
+				codePane.setText("sys"
+						+ "\nirf-port-configuration active"
+						+ "\nirf member " + firstSwitch + " renumber " + renumberSwitch
+						+ "\nYes"
+						+ "\nquit"
+						+ "\nreboot"
+						+ "\n#"
+						+ "\nYes"
+						+ "\n#"
+						+ "\nYes"
+						+ "\n#");
+				
+			}
+		});
 	}
 	/**
 	 * Window Builder Generated Code Garbage
 	 */
 	private void buildPlacements()
 	{
+		layout.putConstraint(SpringLayout.WEST, resetButton, -10, SpringLayout.EAST, copyButton);
+		layout.putConstraint(SpringLayout.EAST, homeButton, 0, SpringLayout.EAST, textScrollPane);
+		layout.putConstraint(SpringLayout.WEST, copyButton, -17, SpringLayout.WEST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, copyButton, 131, SpringLayout.WEST, textScrollPane);
+		layout.putConstraint(SpringLayout.EAST, textScrollPane, -25, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, renumberButton, 0, SpringLayout.NORTH, copyButton);
+		layout.putConstraint(SpringLayout.WEST, renumberButton, -10, SpringLayout.EAST, resetButton);
+		layout.putConstraint(SpringLayout.SOUTH, resetButton, -20, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, submitButton, 16, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, -20, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, homeButton, 0, SpringLayout.SOUTH, submitButton);
+		layout.putConstraint(SpringLayout.NORTH, homePicture, 12, SpringLayout.NORTH, homeButton);
+		layout.putConstraint(SpringLayout.WEST, homePicture, 17, SpringLayout.WEST, homeButton);
+		layout.putConstraint(SpringLayout.SOUTH, copyButton, -20, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, switchLabel, 25, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 30, SpringLayout.EAST, stackLabel);
 		layout.putConstraint(SpringLayout.EAST, switchNumbers, 0, SpringLayout.EAST, stackLabel);

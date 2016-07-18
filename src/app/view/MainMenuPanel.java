@@ -31,6 +31,7 @@ public class MainMenuPanel extends JPanel
 		panel.setupBackground("/resources/menuBackground.png");
 		
 		title = new JLabel();
+		layout.putConstraint(SpringLayout.WEST, title, 200, SpringLayout.WEST, this);
 		title.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netLogoLong.png")));
 		
 		irfButton = new JButton("IRF SETUP");
@@ -121,9 +122,6 @@ public class MainMenuPanel extends JPanel
 	private void setupPlacements()
 	{
 		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, title, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, title, 180, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, title, -100, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 10, SpringLayout.SOUTH, irfButton);
 		layout.putConstraint(SpringLayout.WEST, linkAggButton, 200, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, linkAggButton, -200, SpringLayout.EAST, this);
