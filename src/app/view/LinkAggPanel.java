@@ -1,7 +1,6 @@
 package app.view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,7 +60,6 @@ public class LinkAggPanel extends JPanel
 
 	private JLabel bridgeLabel;
 	private JLabel amountLabel;
-	private JLabel moduleLabel;
 	private JLabel portSpeedLabel;
 	private JLabel port1Label;
 	private JLabel port2Label;
@@ -95,40 +93,22 @@ public class LinkAggPanel extends JPanel
 		moduleList = new ArrayList<JComboBox>();
 		moduleList.add(moduleNumber1 = new JComboBox<Integer>());
 		moduleList.add(moduleNumber2 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber2, 0, SpringLayout.NORTH, switchNumber2);
-		layout.putConstraint(SpringLayout.WEST, moduleNumber2, 0, SpringLayout.EAST, switchNumber2);
 		moduleList.add(moduleNumber3 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber3, 0, SpringLayout.EAST, switchNumber3);
 		moduleList.add(moduleNumber4 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber4, 0, SpringLayout.EAST, switchNumber4);
 		moduleList.add(moduleNumber5 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber5, 0, SpringLayout.EAST, switchNumber5);
 		moduleList.add(moduleNumber6 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber6, 0, SpringLayout.EAST, switchNumber6);
 		moduleList.add(moduleNumber7 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber7, 0, SpringLayout.EAST, switchNumber7);
 		moduleList.add(moduleNumber8 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, moduleNumber8, 0, SpringLayout.EAST, switchNumber8);
-		layout.putConstraint(SpringLayout.SOUTH, moduleNumber8, 0, SpringLayout.SOUTH, switchNumber8);
 		
 		portNumberList = new ArrayList<JComboBox>();
 		portNumberList.add(portNumber1 = new JComboBox<Integer>());
 		portNumberList.add(portNumber2 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.NORTH, portNumber2, 0, SpringLayout.NORTH, moduleNumber2);
-		layout.putConstraint(SpringLayout.WEST, portNumber2, 0, SpringLayout.EAST, moduleNumber2);
 		portNumberList.add(portNumber3 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber3, 0, SpringLayout.EAST, moduleNumber3);
 		portNumberList.add(portNumber4 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber4, 0, SpringLayout.EAST, moduleNumber4);
 		portNumberList.add(portNumber5 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber5, 0, SpringLayout.EAST, moduleNumber5);
 		portNumberList.add(portNumber6 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber6, 0, SpringLayout.EAST, moduleNumber6);
 		portNumberList.add(portNumber7 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber7, 0, SpringLayout.EAST, moduleNumber7);
 		portNumberList.add(portNumber8 = new JComboBox<Integer>());
-		layout.putConstraint(SpringLayout.WEST, portNumber8, 0, SpringLayout.EAST, moduleNumber8);
-		layout.putConstraint(SpringLayout.SOUTH, portNumber8, 0, SpringLayout.SOUTH, moduleNumber8);
 		
 				for(int spot = 0; spot <= 7; spot ++)
 				{
@@ -151,56 +131,16 @@ public class LinkAggPanel extends JPanel
 		labelList = new ArrayList<JLabel>();
 		labelList.add(port1Label = new JLabel("Switch / Module / Port"));
 		labelList.add(port2Label = new JLabel("Port 2:"));
-		layout.putConstraint(SpringLayout.NORTH, switchNumber2, 0, SpringLayout.SOUTH, port2Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber2, 0, SpringLayout.WEST, port2Label);
-		layout.putConstraint(SpringLayout.NORTH, port2Label, 50, SpringLayout.SOUTH, port1Label);
-		layout.putConstraint(SpringLayout.WEST, port2Label, 0, SpringLayout.WEST, port1Label);
 		labelList.add(port3Label = new JLabel("Port 3:"));
-		layout.putConstraint(SpringLayout.NORTH, portNumber3, 0, SpringLayout.SOUTH, port3Label);
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber3, 0, SpringLayout.SOUTH, port3Label);
-		layout.putConstraint(SpringLayout.NORTH, switchNumber3, 0, SpringLayout.SOUTH, port3Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber3, 0, SpringLayout.WEST, port3Label);
-		labelList.add(port4Label = new JLabel("Port 4:"));
-		layout.putConstraint(SpringLayout.NORTH, portNumber4, 0, SpringLayout.SOUTH, port4Label);
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber4, 0, SpringLayout.SOUTH, port4Label);
-		layout.putConstraint(SpringLayout.NORTH, switchNumber4, 0, SpringLayout.SOUTH, port4Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber4, 0, SpringLayout.WEST, port4Label);
-		layout.putConstraint(SpringLayout.NORTH, port4Label, 50, SpringLayout.SOUTH, port3Label);
-		layout.putConstraint(SpringLayout.WEST, port4Label, 0, SpringLayout.WEST, port3Label);
+		labelList.add(port4Label = new JLabel("Port 4:"));		
 		labelList.add(port5Label = new JLabel("Port 5:"));
-		layout.putConstraint(SpringLayout.WEST, port5Label, 0, SpringLayout.WEST, port3Label);
-		layout.putConstraint(SpringLayout.NORTH, portNumber5, 0, SpringLayout.SOUTH, port5Label);
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber5, 0, SpringLayout.SOUTH, port5Label);
-		layout.putConstraint(SpringLayout.NORTH, switchNumber5, 0, SpringLayout.SOUTH, port5Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber5, 0, SpringLayout.WEST, port5Label);
-		layout.putConstraint(SpringLayout.NORTH, port5Label, 50, SpringLayout.SOUTH, port4Label);
 		labelList.add(port6Label = new JLabel("Port 6:"));
-		layout.putConstraint(SpringLayout.NORTH, portNumber6, 0, SpringLayout.SOUTH, port6Label);
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber6, 0, SpringLayout.SOUTH, port6Label);
-		layout.putConstraint(SpringLayout.NORTH, switchNumber6, 0, SpringLayout.SOUTH, port6Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber6, 0, SpringLayout.WEST, port6Label);
-		layout.putConstraint(SpringLayout.NORTH, port6Label, 50, SpringLayout.SOUTH, port5Label);
-		layout.putConstraint(SpringLayout.WEST, port6Label, 0, SpringLayout.WEST, port3Label);
 		labelList.add(port7Label = new JLabel("Port 7:"));
-		layout.putConstraint(SpringLayout.NORTH, moduleNumber7, 0, SpringLayout.SOUTH, port7Label);
-		layout.putConstraint(SpringLayout.NORTH, portNumber7, 0, SpringLayout.SOUTH, port7Label);
-		layout.putConstraint(SpringLayout.NORTH, switchNumber7, 0, SpringLayout.SOUTH, port7Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber7, 0, SpringLayout.WEST, port7Label);
-		layout.putConstraint(SpringLayout.NORTH, port7Label, 50, SpringLayout.SOUTH, port6Label);
-		layout.putConstraint(SpringLayout.WEST, port7Label, 0, SpringLayout.WEST, port6Label);
 		labelList.add(port8Label = new JLabel("Port 8:"));
-		layout.putConstraint(SpringLayout.NORTH, switchNumber8, 0, SpringLayout.SOUTH, port8Label);
-		layout.putConstraint(SpringLayout.WEST, switchNumber8, 0, SpringLayout.WEST, port8Label);
-		layout.putConstraint(SpringLayout.NORTH, port8Label, 50, SpringLayout.SOUTH, port7Label);
-		layout.putConstraint(SpringLayout.WEST, port8Label, 0, SpringLayout.WEST, port7Label);
 		port1Label.setFont(font);
 		port1Label.setForeground(Color.WHITE);
 
 		labelList.add(bridgeLabel = new JLabel("Enter Bridge :"));
-		layout.putConstraint(SpringLayout.NORTH, port3Label, 0, SpringLayout.NORTH, bridgeLabel);
-		layout.putConstraint(SpringLayout.WEST, port3Label, 125, SpringLayout.EAST, bridgeLabel);
-		layout.putConstraint(SpringLayout.WEST, bridgeGroupField, 0, SpringLayout.WEST, bridgeLabel);
-		layout.putConstraint(SpringLayout.EAST, bridgeGroupField, 0, SpringLayout.EAST, bridgeLabel);
 		labelList.add(portSpeedLabel = new JLabel("Enter Port Speed :"));
 		labelList.add(amountLabel = new JLabel("Ports in bridge group :"));
 
@@ -244,7 +184,6 @@ public class LinkAggPanel extends JPanel
 		codeArea.setLineWrap(true);
 		codeArea.setWrapStyleWord(true);
 		scrollPane = new JScrollPane(codeArea);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, clearButton);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -305,6 +244,65 @@ public class LinkAggPanel extends JPanel
 
 	private void setupPlacements()
 	{
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber2, 0, SpringLayout.NORTH, switchNumber2);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber2, 0, SpringLayout.EAST, switchNumber2);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber3, 0, SpringLayout.EAST, switchNumber3);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber4, 0, SpringLayout.EAST, switchNumber4);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber5, 0, SpringLayout.EAST, switchNumber5);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber6, 0, SpringLayout.EAST, switchNumber6);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber7, 0, SpringLayout.EAST, switchNumber7);
+		layout.putConstraint(SpringLayout.WEST, moduleNumber8, 0, SpringLayout.EAST, switchNumber8);
+		layout.putConstraint(SpringLayout.SOUTH, moduleNumber8, 0, SpringLayout.SOUTH, switchNumber8);
+		layout.putConstraint(SpringLayout.NORTH, portNumber2, 0, SpringLayout.NORTH, moduleNumber2);
+		layout.putConstraint(SpringLayout.WEST, portNumber2, 0, SpringLayout.EAST, moduleNumber2);
+		layout.putConstraint(SpringLayout.WEST, portNumber3, 0, SpringLayout.EAST, moduleNumber3);
+		layout.putConstraint(SpringLayout.WEST, portNumber4, 0, SpringLayout.EAST, moduleNumber4);
+		layout.putConstraint(SpringLayout.WEST, portNumber5, 0, SpringLayout.EAST, moduleNumber5);
+		layout.putConstraint(SpringLayout.WEST, portNumber6, 0, SpringLayout.EAST, moduleNumber6);
+		layout.putConstraint(SpringLayout.WEST, portNumber7, 0, SpringLayout.EAST, moduleNumber7);
+		layout.putConstraint(SpringLayout.WEST, portNumber8, 0, SpringLayout.EAST, moduleNumber8);
+		layout.putConstraint(SpringLayout.SOUTH, portNumber8, 0, SpringLayout.SOUTH, moduleNumber8);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber2, 0, SpringLayout.SOUTH, port2Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber2, 0, SpringLayout.WEST, port2Label);
+		layout.putConstraint(SpringLayout.NORTH, port2Label, 50, SpringLayout.SOUTH, port1Label);
+		layout.putConstraint(SpringLayout.WEST, port2Label, 0, SpringLayout.WEST, port1Label);
+		layout.putConstraint(SpringLayout.NORTH, portNumber3, 0, SpringLayout.SOUTH, port3Label);
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber3, 0, SpringLayout.SOUTH, port3Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber3, 0, SpringLayout.SOUTH, port3Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber3, 0, SpringLayout.WEST, port3Label);
+		layout.putConstraint(SpringLayout.NORTH, portNumber4, 0, SpringLayout.SOUTH, port4Label);
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber4, 0, SpringLayout.SOUTH, port4Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber4, 0, SpringLayout.SOUTH, port4Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber4, 0, SpringLayout.WEST, port4Label);
+		layout.putConstraint(SpringLayout.NORTH, port4Label, 50, SpringLayout.SOUTH, port3Label);
+		layout.putConstraint(SpringLayout.WEST, port4Label, 0, SpringLayout.WEST, port3Label);
+		layout.putConstraint(SpringLayout.WEST, port5Label, 0, SpringLayout.WEST, port3Label);
+		layout.putConstraint(SpringLayout.NORTH, portNumber5, 0, SpringLayout.SOUTH, port5Label);
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber5, 0, SpringLayout.SOUTH, port5Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber5, 0, SpringLayout.SOUTH, port5Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber5, 0, SpringLayout.WEST, port5Label);
+		layout.putConstraint(SpringLayout.NORTH, port5Label, 50, SpringLayout.SOUTH, port4Label);
+		layout.putConstraint(SpringLayout.NORTH, portNumber6, 0, SpringLayout.SOUTH, port6Label);
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber6, 0, SpringLayout.SOUTH, port6Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber6, 0, SpringLayout.SOUTH, port6Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber6, 0, SpringLayout.WEST, port6Label);
+		layout.putConstraint(SpringLayout.NORTH, port6Label, 50, SpringLayout.SOUTH, port5Label);
+		layout.putConstraint(SpringLayout.WEST, port6Label, 0, SpringLayout.WEST, port3Label);
+		layout.putConstraint(SpringLayout.NORTH, moduleNumber7, 0, SpringLayout.SOUTH, port7Label);
+		layout.putConstraint(SpringLayout.NORTH, portNumber7, 0, SpringLayout.SOUTH, port7Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber7, 0, SpringLayout.SOUTH, port7Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber7, 0, SpringLayout.WEST, port7Label);
+		layout.putConstraint(SpringLayout.NORTH, port7Label, 50, SpringLayout.SOUTH, port6Label);
+		layout.putConstraint(SpringLayout.WEST, port7Label, 0, SpringLayout.WEST, port6Label);
+		layout.putConstraint(SpringLayout.NORTH, switchNumber8, 0, SpringLayout.SOUTH, port8Label);
+		layout.putConstraint(SpringLayout.WEST, switchNumber8, 0, SpringLayout.WEST, port8Label);
+		layout.putConstraint(SpringLayout.NORTH, port8Label, 50, SpringLayout.SOUTH, port7Label);
+		layout.putConstraint(SpringLayout.WEST, port8Label, 0, SpringLayout.WEST, port7Label);
+		layout.putConstraint(SpringLayout.NORTH, port3Label, 0, SpringLayout.NORTH, bridgeLabel);
+		layout.putConstraint(SpringLayout.WEST, port3Label, 125, SpringLayout.EAST, bridgeLabel);
+		layout.putConstraint(SpringLayout.WEST, bridgeGroupField, 0, SpringLayout.WEST, bridgeLabel);
+		layout.putConstraint(SpringLayout.EAST, bridgeGroupField, 0, SpringLayout.EAST, bridgeLabel);
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, clearButton);
 		layout.putConstraint(SpringLayout.NORTH, portNumber1, 0, SpringLayout.SOUTH, port1Label);
 		layout.putConstraint(SpringLayout.NORTH, moduleNumber1, 0, SpringLayout.SOUTH, port1Label);
 		layout.putConstraint(SpringLayout.NORTH, switchNumber1, 0, SpringLayout.SOUTH, port1Label);
