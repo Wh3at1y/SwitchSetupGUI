@@ -15,7 +15,7 @@ public class AppFrame extends JFrame
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ImageRotator");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setTitle("Switch-Setup v.2");
 		this.setSize(800, 600);
 		this.setContentPane(panel);

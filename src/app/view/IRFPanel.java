@@ -87,8 +87,8 @@ public class IRFPanel extends JPanel
 		radioButtons = new ButtonGroup();
 		radioButtons.add(this.fortyPortButton);
 		radioButtons.add(this.twentyPortButton);
-
 		codePane = new JTextArea();
+		codePane.setBackground(new Color(240,240,240));
 
 		resetButton = new JButton("Reset All");
 		copyButton = new JButton("Copy the Code");
@@ -114,7 +114,7 @@ public class IRFPanel extends JPanel
 		setupLabels(this.stackLabel);
 		setupLabels(this.domainLabel);
 		
-		panel.setupBackground("/resources/irfBackground.png");
+		//panel.setupBackground("/resources/irfBackground.png");
 		
 		setupChatPane();
 		buildPanel();
@@ -143,7 +143,7 @@ public class IRFPanel extends JPanel
 	private void setupLabels(Component label)
 	{
 		label.setFont(font);
-		label.setForeground(Color.DARK_GRAY);
+		label.setForeground(Color.WHITE);
 	}
 	
 	/**
@@ -154,6 +154,7 @@ public class IRFPanel extends JPanel
 		codePane.setLineWrap(true);
 		codePane.setWrapStyleWord(true);
 		textScrollPane = new JScrollPane(codePane);
+		//textScrollPane.setBackground(Color.LIGHT_GRAY);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -182,7 +183,12 @@ public class IRFPanel extends JPanel
 		+ "\nInterface Ten " + positionC + "/0/" + interfaceInt2
 		+ "\nundo shut"
 		+ "\nqu"
-		+ "\nsave");
+		+ "\nsave"
+		+ "\nYes"
+		+ "\n"
+		+ "\nYes"
+		+ "\nQuit"
+		+ "\n#");
 	}
 
 	/**
@@ -268,7 +274,7 @@ public class IRFPanel extends JPanel
 				}
 					
 				if(switchName.contains("5800") && fortyPortButton.isSelected())
-					interfaceInt = 51;
+					interfaceInt = 49;
 				else if(switchName.contains("5800") && twentyPortButton.isSelected())
 					interfaceInt = 25;
 				else if(switchName.contains("5500") && fortyPortButton.isSelected())
@@ -328,7 +334,6 @@ public class IRFPanel extends JPanel
 						+ "\n#"
 						+ "\nYes"
 						+ "\n#");
-				
 			}
 		});
 	}
