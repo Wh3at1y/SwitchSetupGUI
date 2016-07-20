@@ -126,6 +126,7 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				JOptionPane.showMessageDialog(null, "V.2"
+						+"\n"
 						+"\n[Main Changes]"
 						+"\nAdded Main Menu With a New Look And Feel"
 						+"\nAdded some code the IRF Setup to speed things up"
@@ -133,11 +134,11 @@ public class MainMenuPanel extends JPanel
 						+"\nAdded Link Aggregation Feature (WIP)"
 						+"\nOptimized panel changing"
 						+"\nAdded Icon"
-
+						+"\n"
 						+"\n[Bugs]"
 						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
 						+"\nIRF Priority Algorithm has been fixed"
-						+"\nIRF 5800 Switch Interface Ten port has been fixed"
+						+"\nIRF 5800 Switch Interface Ten port has been fixed", "Change Log", 2
 						);
 			}
 		});
