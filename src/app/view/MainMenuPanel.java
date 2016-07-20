@@ -1,73 +1,180 @@
 package app.view;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class MainMenuPanel extends JPanel
 {
 	private SpringLayout layout;
 	
-	private JLabel background;
+	private AppPanel panel;
+	
 	private JLabel title;
 	private JButton irfButton;
 	private JButton linkAggButton;
 	private JButton snmpButton;
+	private JButton settingsButton;
+	private JButton aboutButton;
+	private JButton changelogButton;
 	
-	public MainMenuPanel()
+	private String buttonLoc = "/resources/netButtonMenu.png";
+	
+	public MainMenuPanel(AppPanel panel)
 	{
 		layout = new SpringLayout();
 		
-		background = new JLabel();
-		background.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/menuBackground.jpg")));
-		title = new JLabel();
-		layout.putConstraint(SpringLayout.NORTH, title, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, title, 100, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, title, -100, SpringLayout.EAST, this);
-		title.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/switchSetup.png")));
+		this.panel = panel;
 		
-		irfButton = new JButton("IRF BUTTON");
-		layout.putConstraint(SpringLayout.WEST, irfButton, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, irfButton, 200, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.EAST, irfButton, 0, SpringLayout.EAST, this);
-		//irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/button (4).png")));
-		irfButton.setHorizontalTextPosition(JButton.CENTER);
-		irfButton.setVerticalTextPosition(JButton.CENTER);
-		layout.putConstraint(SpringLayout.NORTH, irfButton, 20, SpringLayout.SOUTH, title);
-		linkAggButton = new JButton("LINK BUTTON");
-		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 56, SpringLayout.SOUTH, irfButton);
-		layout.putConstraint(SpringLayout.WEST, linkAggButton, 100, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, linkAggButton, -100, SpringLayout.EAST, this);
-		snmpButton = new JButton("SNMP Button");
-		layout.putConstraint(SpringLayout.SOUTH, linkAggButton, -70, SpringLayout.NORTH, snmpButton);
-		layout.putConstraint(SpringLayout.NORTH, snmpButton, 409, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, snmpButton, 100, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, snmpButton, -100, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, snmpButton, -100, SpringLayout.SOUTH, this);
+		panel.setupBackground("/resources/menuBackground.png");
+		
+		title = new JLabel();
+		setupLogo(title);
+		
+		irfButton = new JButton("IRF SETUP");
+		//irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
+		setupMenuButton(irfButton, buttonLoc);
+		
+		linkAggButton = new JButton("LINK AGGREGATION");
+		//linkAggButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
+		setupMenuButton(linkAggButton, buttonLoc);
+		
+		snmpButton = new JButton("SNMP SETUP");
+		//snmpButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
+		setupMenuButton(snmpButton, buttonLoc);
+		
+		aboutButton = new JButton("ABOUT");
+		setupButton(aboutButton, buttonLoc);
+		
+		settingsButton = new JButton("SETTINGS");
+		setupButton(settingsButton, buttonLoc);
+		
+		changelogButton = new JButton("CHANGELOG");
+		setupButton(changelogButton, buttonLoc);
 		
 		setupPanel();
 		setupPlacements();
 		setupListeners();
 	}
 	
+	private void setupLogo(JLabel pic)
+	{
+			ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource("/resources/netLogoLong.png"));
+			Image image = backgroundImage.getImage();
+			image = image.getScaledInstance(450, 175, java.awt.Image.SCALE_SMOOTH);
+			backgroundImage = new ImageIcon(image);
+			pic.setIcon(backgroundImage);
+	}
+		
+	private void setupButton(JButton button, String pictureLoc)
+	{
+		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
+		Image image = backgroundImage.getImage();
+		image = image.getScaledInstance(150, 50, java.awt.Image.SCALE_FAST);
+		backgroundImage = new ImageIcon(image);
+		button.setIcon(backgroundImage);
+		
+		button.setBorderPainted(false);
+		button.setHorizontalTextPosition(JButton.CENTER);
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setFont(new Font("Neue", Font.BOLD, 16));
+		button.setForeground(Color.DARK_GRAY);
+	}
+	
+	private void setupMenuButton(JButton button, String pictureLoc)
+	{
+		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
+		Image image = backgroundImage.getImage();
+		image = image.getScaledInstance(800, 75, java.awt.Image.SCALE_FAST);
+		backgroundImage = new ImageIcon(image);
+		button.setIcon(backgroundImage);
+		
+		button.setBorderPainted(false);
+		button.setHorizontalTextPosition(JButton.CENTER);
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setFont(new Font("Neue", Font.BOLD, 16));
+		button.setForeground(Color.DARK_GRAY);
+	}
+	
 	private void setupPanel()
 	{
-		this.setVisible(false);
+		this.setVisible(true);
+		this.setOpaque(false);
 		setLayout(layout);
 		
 		add(this.irfButton);
 		add(this.linkAggButton);
 		add(this.snmpButton);
+		add(this.aboutButton);
+		add(this.settingsButton);
+		add(this.changelogButton);
 		add(this.title);
-		add(this.background);
 	}
 	
 	private void setupListeners()
 	{
+		irfButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.getIRFPanel().setVisible(true);
+				panel.getMenuPanel().setVisible(false);
+			}
+		});
 		
+		linkAggButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.getLinkPanel().setVisible(true);
+				panel.setupBackground("/resources/linkBackground.png");
+				panel.getMenuPanel().setVisible(false);
+			}
+		});
+		
+		changelogButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				JOptionPane.showMessageDialog(null, "V.2"
+						+"\n"
+						+"\n[Main Changes]"
+						+"\nAdded Main Menu With a New Look And Feel"
+						+"\nAdded some code the IRF Setup to speed things up"
+						+"\nAdded Re-Number in IRF Setup"
+						+"\nAdded Link Aggregation Feature (WIP)"
+						+"\nOptimized panel changing"
+						+"\nAdded Icon"
+						+"\n"
+						+"\n[Bugs]"
+						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
+						+"\nIRF Priority Algorithm has been fixed"
+						+"\nIRF 5800 Switch Interface Ten port has been fixed", "Change Log", 2
+						);
+			}
+		});
 	}
 	
 	private void setupPlacements()
 	{
-		
+		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, irfButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, changelogButton, 0, SpringLayout.SOUTH, settingsButton);
+		layout.putConstraint(SpringLayout.WEST, title, 180, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 10, SpringLayout.SOUTH, irfButton);
+		layout.putConstraint(SpringLayout.WEST, linkAggButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, linkAggButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, snmpButton, 10, SpringLayout.SOUTH, linkAggButton);
+		layout.putConstraint(SpringLayout.WEST, snmpButton, 200, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, snmpButton, -200, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, aboutButton, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, aboutButton, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, settingsButton, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, settingsButton, -10, SpringLayout.WEST, aboutButton);
+		layout.putConstraint(SpringLayout.NORTH, irfButton, 0, SpringLayout.SOUTH, title);
 	}
 }
 
