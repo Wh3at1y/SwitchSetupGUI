@@ -2,6 +2,7 @@ package app.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,13 +13,15 @@ public class LinkAggPanel extends JPanel
 {
 	private SpringLayout layout;
 
+	private AppPanel panel;
+
 	private JTextField bridgeGroupField;
-	
+
 	private JTextArea codeArea;
 	private JScrollPane scrollPane;
 
 	private JComboBox<Integer> irfNumbers;
-	
+
 	private JComboBox<Integer> switchNumber1;
 	private JComboBox<Integer> switchNumber2;
 	private JComboBox<Integer> switchNumber3;
@@ -27,7 +30,7 @@ public class LinkAggPanel extends JPanel
 	private JComboBox<Integer> switchNumber6;
 	private JComboBox<Integer> switchNumber7;
 	private JComboBox<Integer> switchNumber8;
-	
+
 	private JComboBox<Integer> moduleNumber1;
 	private JComboBox<Integer> moduleNumber2;
 	private JComboBox<Integer> moduleNumber3;
@@ -36,7 +39,7 @@ public class LinkAggPanel extends JPanel
 	private JComboBox<Integer> moduleNumber6;
 	private JComboBox<Integer> moduleNumber7;
 	private JComboBox<Integer> moduleNumber8;
-	
+
 	private JComboBox<Integer> portNumber1;
 	private JComboBox<Integer> portNumber2;
 	private JComboBox<Integer> portNumber3;
@@ -51,7 +54,8 @@ public class LinkAggPanel extends JPanel
 	private JRadioButton onegigButton;
 
 	private JButton copyButton;
-	private JButton clearButton;
+	private JButton submitButton;
+	private JButton homeButton;
 
 	private ArrayList<JComboBox> switchList;
 	private ArrayList<JComboBox> moduleList;
@@ -69,6 +73,7 @@ public class LinkAggPanel extends JPanel
 	private JLabel port6Label;
 	private JLabel port7Label;
 	private JLabel port8Label;
+	private JLabel homeIcon;
 
 	private Font font;
 
@@ -76,16 +81,17 @@ public class LinkAggPanel extends JPanel
 	{
 		this.setVisible(false);
 		layout = new SpringLayout();
-		font = new Font("Candara", Font.BOLD, 14);
+		font = new Font("Neue", Font.BOLD, 14);
+
+		this.panel = panel;
 
 		bridgeGroupField = new JTextField();
 
 		/**
-		 * Format:
-		 * 				Switch / Module / Port
+		 * Format: Switch / Module / Port
 		 */
-		//Switch ComboBox List
-		switchList = new ArrayList<JComboBox>();	
+		// Switch ComboBox List
+		switchList = new ArrayList<JComboBox>();
 		switchList.add(switchNumber1 = new JComboBox<Integer>());
 		switchList.add(switchNumber2 = new JComboBox<Integer>());
 		switchList.add(switchNumber3 = new JComboBox<Integer>());
@@ -94,8 +100,8 @@ public class LinkAggPanel extends JPanel
 		switchList.add(switchNumber6 = new JComboBox<Integer>());
 		switchList.add(switchNumber7 = new JComboBox<Integer>());
 		switchList.add(switchNumber8 = new JComboBox<Integer>());
-		
-		//Module List
+
+		// Module List
 		moduleList = new ArrayList<JComboBox>();
 		moduleList.add(moduleNumber1 = new JComboBox<Integer>());
 		moduleList.add(moduleNumber2 = new JComboBox<Integer>());
@@ -105,8 +111,8 @@ public class LinkAggPanel extends JPanel
 		moduleList.add(moduleNumber6 = new JComboBox<Integer>());
 		moduleList.add(moduleNumber7 = new JComboBox<Integer>());
 		moduleList.add(moduleNumber8 = new JComboBox<Integer>());
-		
-		//Port List
+
+		// Port List
 		portNumberList = new ArrayList<JComboBox>();
 		portNumberList.add(portNumber1 = new JComboBox<Integer>());
 		portNumberList.add(portNumber2 = new JComboBox<Integer>());
@@ -116,8 +122,7 @@ public class LinkAggPanel extends JPanel
 		portNumberList.add(portNumber6 = new JComboBox<Integer>());
 		portNumberList.add(portNumber7 = new JComboBox<Integer>());
 		portNumberList.add(portNumber8 = new JComboBox<Integer>());
-				
-		
+
 		/**
 		 * Label Lists
 		 */
@@ -125,7 +130,7 @@ public class LinkAggPanel extends JPanel
 		labelList.add(port1Label = new JLabel("Switch / Module / Port"));
 		labelList.add(port2Label = new JLabel("Port 2:"));
 		labelList.add(port3Label = new JLabel("Port 3:"));
-		labelList.add(port4Label = new JLabel("Port 4:"));		
+		labelList.add(port4Label = new JLabel("Port 4:"));
 		labelList.add(port5Label = new JLabel("Port 5:"));
 		labelList.add(port6Label = new JLabel("Port 6:"));
 		labelList.add(port7Label = new JLabel("Port 7:"));
@@ -136,6 +141,9 @@ public class LinkAggPanel extends JPanel
 		labelList.add(bridgeLabel = new JLabel("Enter Bridge :"));
 		labelList.add(portSpeedLabel = new JLabel("Enter Port Speed :"));
 		labelList.add(amountLabel = new JLabel("Ports in bridge group :"));
+
+		homeIcon = new JLabel();
+		homeIcon.setIcon(new ImageIcon(LinkAggPanel.class.getResource("/resources/home.png")));
 
 		for (int spot = 1; spot <= 7; spot++)
 		{
@@ -149,7 +157,7 @@ public class LinkAggPanel extends JPanel
 				labelList.get(place).setForeground(Color.WHITE);
 			}
 		}
-		
+
 		radioButtons = new ButtonGroup();
 		radioButtons.add(tengigButton = new JRadioButton("10 gig", true));
 		radioButtons.add(onegigButton = new JRadioButton("1 gig"));
@@ -158,8 +166,13 @@ public class LinkAggPanel extends JPanel
 		onegigButton.setForeground(Color.WHITE);
 		onegigButton.setFont(font);
 
+		String buttonLoc = "/resources/netButton.png";
 		copyButton = new JButton("Copy");
-		clearButton = new JButton("Clear");
+		submitButton = new JButton("Submit");
+		homeButton = new JButton("Home");
+		setupButton(copyButton, buttonLoc);
+		setupButton(submitButton, buttonLoc);
+		setupButton(homeButton, buttonLoc);
 
 		setupComboBoxes();
 		setupChatPane();
@@ -168,22 +181,36 @@ public class LinkAggPanel extends JPanel
 		setupListeners();
 	}
 
+	private void setupButton(JButton button, String pictureLoc)
+	{
+		ImageIcon backgroundImage = new ImageIcon(LinkAggPanel.class.getResource(pictureLoc));
+		Image image = backgroundImage.getImage();
+		image = image.getScaledInstance(120, 35, java.awt.Image.SCALE_FAST);
+		backgroundImage = new ImageIcon(image);
+		button.setIcon(backgroundImage);
+
+		button.setBorderPainted(false);
+		button.setHorizontalTextPosition(JButton.CENTER);
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setFont(font);
+		button.setForeground(Color.DARK_GRAY);
+	}
+
 	private void setupComboBoxes()
 	{
 		irfNumbers = new JComboBox<Integer>();
 		for (int spot = 1; spot <= 8; spot++)
 			irfNumbers.addItem(new Integer(spot));
-		
-		
-		for(int spot = 0; spot <= 7; spot ++)
+
+		for (int spot = 0; spot <= 7; spot++)
 		{
-			for(int number = 1; number <= 9; number++)
+			for (int number = 1; number <= 9; number++)
 				switchList.get(spot).addItem(number);
-			for(int number = 0; number <= 2; number++)
+			for (int number = 0; number <= 2; number++)
 				moduleList.get(spot).addItem(number);
-			for(int number = 1; number <= 54; number++)
+			for (int number = 1; number <= 54; number++)
 				portNumberList.get(spot).addItem(number);
-			
+
 			switchList.get(spot).setVisible(false);
 			moduleList.get(spot).setVisible(false);
 			portNumberList.get(spot).setVisible(false);
@@ -193,7 +220,7 @@ public class LinkAggPanel extends JPanel
 		portNumberList.get(0).setVisible(true);
 
 	}
-	
+
 	private void setupChatPane()
 	{
 		codeArea = new JTextArea();
@@ -203,12 +230,47 @@ public class LinkAggPanel extends JPanel
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
+
+	private void sendText()
+	{
+		this.codeArea.setText("sys"
+				+"\nsys"
+				+"\ninterface bridge-aggregation (PORT BRDIGE GROUP SELECTED)"
+				+"\ndefault"
+				+"\nyes"
+				+"\nlink-aggregation mode dynamic"
+				+ "\nquit"
+
+				+"\ninterface ten (SwitchNumber) / (MODULE 0 for No Yes for 1 or 2) / port info number (1-54)"
+				+"\ndefault"
+				+"\nyes"
+				+"\nshut"
+				+"\nport link-aggregation group (top bridge group text)"
+				+"\ninterface ten (SwitchNumber) / (MODULE 0 for No Yes for 1 or 2) / port info number (1-54)"
+				+"\ndefault"
+
+				+"\nyes"
+				+"\nshut"
+				+"\nport link-aggregation group (top bridge group text)"
+				+"\nquit"
+				
+				+"\ninterface bridge-aggregation (group bridge group text)"
+				+"\nport link-type trunk"
+				+"\nport trunk permit vlan 1 40 200 240 250"
+
+				+"\ninterface ten 1/0/1 (first port info) - combine to string"
+				+"\nundo shut"
+				+"\ninterface ten 1/0/2 (second port info)"
+				+"\nundo shut"
+				);
+	}
 	
 	private void setupPanel()
 	{
 		setLayout(layout);
 		this.setOpaque(false);
-		
+
+		add(this.homeIcon);
 		add(this.bridgeLabel);
 		add(this.amountLabel);
 		add(this.bridgeGroupField);
@@ -217,12 +279,13 @@ public class LinkAggPanel extends JPanel
 		add(this.tengigButton);
 		add(this.onegigButton);
 		add(this.copyButton);
+		add(this.submitButton);
+		add(this.homeButton);
 		add(this.scrollPane);
-		add(this.clearButton);
 
 		for (int spot = 0; spot <= 10; spot++)
 			add(labelList.get(spot));
-		for(int spot = 0; spot <= 7; spot ++)
+		for (int spot = 0; spot <= 7; spot++)
 		{
 			add(switchList.get(spot));
 			add(moduleList.get(spot));
@@ -238,13 +301,13 @@ public class LinkAggPanel extends JPanel
 			{
 				int irfSelectedNum = Integer.parseInt(irfNumbers.getSelectedItem().toString());
 
-				if(irfSelectedNum <= 2)
-					layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, copyButton);
+				if (irfSelectedNum <= 2)
+					layout.putConstraint(SpringLayout.WEST, copyButton, 175, SpringLayout.EAST, submitButton);
 				else
-					layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, clearButton);
-					
+					layout.putConstraint(SpringLayout.WEST, copyButton, 300, SpringLayout.EAST, submitButton);
+
 				irfSelectedNum--;
-				
+
 				for (int spot = 0; spot <= 7; spot++)
 				{
 					switchList.get(spot).setVisible(false);
@@ -262,10 +325,39 @@ public class LinkAggPanel extends JPanel
 				}
 			}
 		});
+
+		homeButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				panel.setupBackground("/resources/menuBackground.png");
+				panel.getLinkPanel().setVisible(false);
+				panel.getMenuPanel().setVisible(true);
+			}
+		});
+		
+		submitButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				sendText();
+			}
+		});
 	}
 
 	private void setupPlacements()
 	{
+		layout.putConstraint(SpringLayout.SOUTH, homeIcon, -12, SpringLayout.SOUTH, submitButton);
+		layout.putConstraint(SpringLayout.WEST, copyButton, 175, SpringLayout.EAST, submitButton);
+		layout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, submitButton, 0, SpringLayout.WEST, bridgeLabel);
+		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, portSpeedLabel);
+		layout.putConstraint(SpringLayout.WEST, homeIcon, 15, SpringLayout.WEST, homeButton);
+		layout.putConstraint(SpringLayout.SOUTH, homeButton, 0, SpringLayout.SOUTH, submitButton);
+		layout.putConstraint(SpringLayout.EAST, homeButton, -25, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, copyButton);
+		layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -100, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, moduleNumber2, 0, SpringLayout.NORTH, switchNumber2);
 		layout.putConstraint(SpringLayout.WEST, moduleNumber2, 0, SpringLayout.EAST, switchNumber2);
 		layout.putConstraint(SpringLayout.WEST, moduleNumber3, 0, SpringLayout.EAST, switchNumber3);
@@ -324,21 +416,13 @@ public class LinkAggPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, port3Label, 125, SpringLayout.EAST, bridgeLabel);
 		layout.putConstraint(SpringLayout.WEST, bridgeGroupField, 0, SpringLayout.WEST, bridgeLabel);
 		layout.putConstraint(SpringLayout.EAST, bridgeGroupField, 0, SpringLayout.EAST, bridgeLabel);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, copyButton);
 		layout.putConstraint(SpringLayout.NORTH, portNumber1, 0, SpringLayout.SOUTH, port1Label);
 		layout.putConstraint(SpringLayout.NORTH, moduleNumber1, 0, SpringLayout.SOUTH, port1Label);
 		layout.putConstraint(SpringLayout.NORTH, switchNumber1, 0, SpringLayout.SOUTH, port1Label);
 		layout.putConstraint(SpringLayout.WEST, switchNumber1, 0, SpringLayout.WEST, port1Label);
 		layout.putConstraint(SpringLayout.WEST, portNumber1, 0, SpringLayout.EAST, moduleNumber1);
 		layout.putConstraint(SpringLayout.WEST, moduleNumber1, 0, SpringLayout.EAST, switchNumber1);
-		layout.putConstraint(SpringLayout.WEST, copyButton, 325, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, copyButton, -12, SpringLayout.WEST, clearButton);
-		layout.putConstraint(SpringLayout.WEST, clearButton, 484, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, clearButton, -25, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, clearButton, -10, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 0, SpringLayout.NORTH, bridgeLabel);
-		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, scrollPane, -25, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -10, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.WEST, irfNumbers, 25, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, irfNumbers, 167, SpringLayout.WEST, this);

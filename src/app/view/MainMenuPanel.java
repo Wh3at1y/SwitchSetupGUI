@@ -103,7 +103,6 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				panel.getIRFPanel().setVisible(true);
-				//panel.setupBackground("/resources/irfBackground.png");
 				panel.getMenuPanel().setVisible(false);
 			}
 		});
