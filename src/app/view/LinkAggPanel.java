@@ -169,7 +169,7 @@ public class LinkAggPanel extends JPanel
 		onegigButton.setForeground(Color.WHITE);
 		onegigButton.setFont(font);
 
-		String buttonLoc = "/resources/netButton.png";
+		String buttonLoc = "/resources/netButtonMenu.png";
 		copyButton = new JButton("Copy");
 		submitButton = new JButton("Submit");
 		homeButton = new JButton("Home");
@@ -241,39 +241,54 @@ public class LinkAggPanel extends JPanel
 		clipboard.setContents(selection, selection);
 	}
 	
-	private void sendText()
+	private void sendText(int portsEntered, String speed)
 	{
+		String bridgeGroup = this.bridgeGroupField.getText();
 		this.codeArea.setText("sys"
-				+"\nsys"
-				+"\ninterface bridge-aggregation (PORT BRDIGE GROUP SELECTED)"
+				+"\ninterface bridge-aggregation " + bridgeGroup
 				+"\ndefault"
 				+"\nyes"
 				+"\nlink-aggregation mode dynamic"
-				+ "\nquit"
-
-				+"\ninterface ten (SwitchNumber) / (MODULE 0 for No Yes for 1 or 2) / port info number (1-54)"
+				+"\nquit"
+				+"\n");
+		
+				for(int spot=0; spot <= portsEntered-1; spot++)
+				{
+				codeArea.append(
+				"\ninterface " + speed + " " + switchList.get(spot).getSelectedItem() + "/" + moduleList.get(spot).getSelectedItem() + "/" + portNumberList.get(spot).getSelectedItem()
 				+"\ndefault"
 				+"\nyes"
 				+"\nshut"
-				+"\nport link-aggregation group (top bridge group text)"
-				+"\ninterface ten (SwitchNumber) / (MODULE 0 for No Yes for 1 or 2) / port info number (1-54)"
-				+"\ndefault"
-
-				+"\nyes"
-				+"\nshut"
-				+"\nport link-aggregation group (top bridge group text)"
+				+"\nport link-aggregation group " + bridgeGroup
+				);
+				}
+				
+				codeArea.append(
+				"\n"
 				+"\nquit"
 				
-				+"\ninterface bridge-aggregation (group bridge group text)"
+				+"\ninterface bridge-aggregation " + bridgeGroup
 				+"\nport link-type trunk"
 				+"\nport trunk permit vlan 1 40 200 240 250"
-
-				+"\ninterface ten 1/0/1 (first port info) - combine to string"
-				+"\nundo shut"
-				+"\ninterface ten 1/0/2 (second port info)"
-				+"\nundo shut"
 				);
-	}
+
+				for(int spot = 0; spot <= portsEntered-1; spot++)
+				{
+						codeArea.append(
+					"\ninterface " + speed + " " + switchList.get(spot).getSelectedItem() + "/" + moduleList.get(spot).getSelectedItem() + "/" + portNumberList.get(spot).getSelectedItem()
+					+"\nundo shut"
+					);
+				}
+					
+				codeArea.append("\n"
+							+"quit"
+							+ "\nsave"
+							+ "\nYes"
+							+ "\n"
+							+ "\nYes"
+							+ "\nQuit"
+							+ "\n");
+				}
 	
 	private void setupPanel()
 	{
@@ -350,7 +365,12 @@ public class LinkAggPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
-				sendText();
+				String speed = "";
+				if(tengigButton.isSelected())
+					speed = "ten";
+					else
+						speed = "gig";
+				sendText(Integer.parseInt(irfNumbers.getSelectedItem().toString()), speed);
 			}
 		});
 		

@@ -96,7 +96,7 @@ public class IRFPanel extends JPanel
 		renumberButton = new JButton("Re-Number");
 		homeButton = new JButton("Home");
 		
-		String buttonLoc = "/resources/netButton.png";
+		String buttonLoc = "/resources/netButtonMenu.png";
 		setupButton(resetButton, buttonLoc);
 		setupButton(copyButton, buttonLoc);
 		setupButton(submitButton, buttonLoc);
