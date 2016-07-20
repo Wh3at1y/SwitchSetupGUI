@@ -3,6 +3,9 @@ package app.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -231,6 +234,13 @@ public class LinkAggPanel extends JPanel
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
 
+	private void copyText() 
+	{
+		StringSelection selection = new StringSelection(codeArea.getText());
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(selection, selection);
+	}
+	
 	private void sendText()
 	{
 		this.codeArea.setText("sys"
@@ -341,6 +351,14 @@ public class LinkAggPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				sendText();
+			}
+		});
+		
+		copyButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				copyText();
 			}
 		});
 	}
