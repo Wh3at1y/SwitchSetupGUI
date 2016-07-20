@@ -19,6 +19,7 @@ public class MainMenuPanel extends JPanel
 	private JButton snmpButton;
 	private JButton settingsButton;
 	private JButton aboutButton;
+	private JButton changelogButton;
 	
 	private String buttonLoc = "/resources/netButton.png";
 	
@@ -31,7 +32,6 @@ public class MainMenuPanel extends JPanel
 		panel.setupBackground("/resources/menuBackground.png");
 		
 		title = new JLabel();
-		layout.putConstraint(SpringLayout.WEST, title, 200, SpringLayout.WEST, this);
 		title.setIcon(new ImageIcon(MainMenuPanel.class.getResource("/resources/netLogoLong.png")));
 		
 		irfButton = new JButton("IRF SETUP");
@@ -52,6 +52,9 @@ public class MainMenuPanel extends JPanel
 		settingsButton = new JButton("SETTINGS");
 		setupButton(settingsButton, buttonLoc);
 		
+		changelogButton = new JButton("CHANGELOG");
+		layout.putConstraint(SpringLayout.SOUTH, changelogButton, 0, SpringLayout.SOUTH, settingsButton);
+		setupButton(changelogButton, buttonLoc);
 		
 		setupPanel();
 		setupPlacements();
@@ -93,6 +96,7 @@ public class MainMenuPanel extends JPanel
 		add(this.snmpButton);
 		add(this.aboutButton);
 		add(this.settingsButton);
+		add(this.changelogButton);
 		add(this.title);
 	}
 	
@@ -116,10 +120,32 @@ public class MainMenuPanel extends JPanel
 				panel.getMenuPanel().setVisible(false);
 			}
 		});
+		
+		changelogButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent clicked)
+			{
+				JOptionPane.showMessageDialog(null, "V.2"
+						+"\n[Main Changes]"
+						+"\nAdded Main Menu With a New Look And Feel"
+						+"\nAdded some code the IRF Setup to speed things up"
+						+"\nAdded Re-Number in IRF Setup"
+						+"\nAdded Link Aggregation Feature (WIP)"
+						+"\nOptimized panel changing"
+						+"\nAdded Icon"
+
+						+"\n[Bugs]"
+						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
+						+"\nIRF Priority Algorithm has been fixed"
+						+"\nIRF 5800 Switch Interface Ten port has been fixed"
+						);
+			}
+		});
 	}
 	
 	private void setupPlacements()
 	{
+		layout.putConstraint(SpringLayout.WEST, title, 200, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.WEST, irfButton, 200, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, linkAggButton, 10, SpringLayout.SOUTH, irfButton);
 		layout.putConstraint(SpringLayout.WEST, linkAggButton, 200, SpringLayout.WEST, this);
