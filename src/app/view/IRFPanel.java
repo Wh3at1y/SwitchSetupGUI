@@ -131,6 +131,7 @@ public class IRFPanel extends JPanel
 		button.setIcon(backgroundImage);
 		
 		button.setBorderPainted(false);
+		button.setBorder(null);
 		button.setHorizontalTextPosition(JButton.CENTER);
 		button.setVerticalTextPosition(JButton.CENTER);
 		button.setFont(font);
