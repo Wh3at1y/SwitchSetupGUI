@@ -155,7 +155,6 @@ public class IRFPanel extends JPanel
 		codePane.setLineWrap(true);
 		codePane.setWrapStyleWord(true);
 		textScrollPane = new JScrollPane(codePane);
-		//textScrollPane.setBackground(Color.LIGHT_GRAY);
 		textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
