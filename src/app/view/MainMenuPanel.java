@@ -35,15 +35,12 @@ public class MainMenuPanel extends JPanel
 		setupLogo(title);
 		
 		irfButton = new JButton("IRF SETUP");
-		//irfButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupMenuButton(irfButton, buttonLoc);
 		
 		linkAggButton = new JButton("LINK AGGREGATION");
-		//linkAggButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupMenuButton(linkAggButton, buttonLoc);
 		
 		snmpButton = new JButton("SNMP SETUP");
-		//snmpButton.setIcon(new ImageIcon(MainMenuPanel.class.getResource(buttonLoc)));
 		setupMenuButton(snmpButton, buttonLoc);
 		
 		aboutButton = new JButton("ABOUT");
@@ -80,7 +77,7 @@ public class MainMenuPanel extends JPanel
 		button.setBorderPainted(false);
 		button.setHorizontalTextPosition(JButton.CENTER);
 		button.setVerticalTextPosition(JButton.CENTER);
-		button.setFont(new Font("Neue", Font.BOLD, 16));
+		button.setFont(new Font("Neue", Font.BOLD, 17));
 		button.setForeground(Color.DARK_GRAY);
 	}
 	
