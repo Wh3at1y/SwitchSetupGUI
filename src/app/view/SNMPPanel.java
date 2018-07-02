@@ -227,7 +227,8 @@ snmp-agent sys-into location ()
 
          */
         this.codePane.setText(
-                "#"
+                "system-view"
+                + "\n#"
                 + "\nsysname " + sysName.getText()
                 + "\n#"
                 + "\nlocal-user " + localUsername.getText()
