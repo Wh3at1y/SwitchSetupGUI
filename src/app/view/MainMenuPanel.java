@@ -210,6 +210,7 @@ public class MainMenuPanel extends JPanel
 						+"\nOptimized panel changing"
 						+"\nAdded Icon"
 						+"\nAdded Vlan port in Link Aggregation Setup"
+						+"\nAdded functionality to the SNMP button"
 						+"\n"
 						+"\n[Bugs]"
 						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"

@@ -51,10 +51,11 @@ public class SNMPPanel extends JPanel{
     private JTextField ipRoute3;
     private JTextField sourceInterface;
     private JTextField unicastServer;
-    private JPasswordField snmpPassword;
-    private JPasswordField localPassword;
+    private JTextField snmpPassword;
+    private JTextField localPassword;
     private JTextField localUsername;
     private JTextField encKey;
+    private JTextField domainField;
 
 
     private JLabel phoneNumLabel;
@@ -70,6 +71,7 @@ public class SNMPPanel extends JPanel{
     private JLabel localPasswordLabel;
     private JLabel localUsernameLabel;
     private JLabel encKeyLabel;
+    private JLabel domainLabel;
 
 
 
@@ -98,19 +100,20 @@ public class SNMPPanel extends JPanel{
         ipAddressLabel = setupLabels(ipAddressLabel, "IP Address            ");
         ipSubnetLabel = setupLabels(ipSubnetLabel, "Subnet Mask");
         ipRouteStaticLabel = setupLabels(ipRouteStaticLabel, "Default Gateway");
-        sourceInterfaceLabel = setupLabels(sourceInterfaceLabel, "Source Interface");
-        unicastServerLabel = setupLabels(unicastServerLabel, "Unicast Server");
+        sourceInterfaceLabel = setupLabels(sourceInterfaceLabel, "NTP Source Interface");
+        unicastServerLabel = setupLabels(unicastServerLabel, "NTP Server IP");
         snmpPasswordLabel = setupLabels(snmpPasswordLabel, "SNMP Password");
         localPasswordLabel = setupLabels(localPasswordLabel, "Local User Password");
         localUsernameLabel = setupLabels(localUsernameLabel, "Local User Name");
         encKeyLabel = setupLabels(encKeyLabel, "Encryption Key");
+        domainLabel = setupLabels(domainLabel,"Domain IP Address");
 
 
         //set up the components
         agentPhoneNum = new JTextField();
         agentLoc = new JTextField();
         sysName = new JTextField();
-        vlanInterface = new JTextField();
+        vlanInterface = new JTextField("1");
         ipAddress1 = new JTextField();
         ipAddress2 = new JTextField();
         ipRoute1 = new JTextField("0.0.0.0");
@@ -118,10 +121,11 @@ public class SNMPPanel extends JPanel{
         ipRoute3 = new JTextField();
         sourceInterface = new JTextField();
         unicastServer = new JTextField();
-        snmpPassword = new JPasswordField();
-        localPassword = new JPasswordField();
+        snmpPassword = new JTextField();
+        localPassword = new JTextField();
         localUsername = new JTextField();
         encKey = new JTextField();
+        domainField = new JTextField();
 
 
         //sets up the panels
@@ -213,6 +217,13 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
  snmp-agent group v3 cavemin authentication write-view ViewDefault
  snmp-agent target-host trap address udp-domain 10.25.11.13 (SNMP SERVER) params securityname cavemin v3 privacy
  snmp-agent usm-user v3 cavemin cavemin cipher authentication-mode sha (SNMP Password) privacy-mode aes128 (Encryption Key)
+#
+ntp-service source-interface  ()
+ntp-service unicast-server ()
+#
+snmp-agent sys-info contact ()
+snmp-agent sys-into location ()
+#
 
          */
         this.codePane.setText(
@@ -220,11 +231,11 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
                 + "\nsysname " + sysName.getText()
                 + "\n#"
                 + "\nlocal-user " + localUsername.getText()
-                + "\npassword simple " + String.valueOf(localPassword.getPassword())
+                + "\npassword simple " + localPassword.getText()
                 + "\nauthorization-attribute level 3"
                 + "\nservice-type ssh terminal"
                 + "\n#"
-                + "\ninterface Vlan-interface 1"
+                + "\ninterface Vlan-interface " + vlanInterface.getText()
                 + "\nip address " + ipAddress1.getText() + " " + ipAddress2.getText()
                 + "\n#"
                 + "\npublic-key local create rsa"
@@ -242,14 +253,13 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
                 + "\n#"
                 + "\nip route-static " + ipRoute1.getText() + " " + ipRoute2.getText() + " " + ipRoute3.getText()
                 + "\nsnmp-agent group v3 " + localUsername.getText() + " authentication write-view ViewDefault"
-                + "\nsnmp-agent target-host trap address udp-domain 10.25.11.13 (SNMP SERVER) params securityname " +
+                + "\nsnmp-agent target-host trap address udp-domain " + domainField.getText() + " params securityname " +
                         localUsername.getText() + " v3 privacy"
                 + "snmp-agent usm-user v3 " + localUsername.getText() + " " + localUsername.getText() +
-                        " cipher authentication-mode sha " + String.valueOf(snmpPassword.getPassword()) + " privacy-mode aes128 " + encKey.getText()
+                        " cipher authentication-mode sha " + snmpPassword.getText() + " privacy-mode aes128 " + encKey.getText()
                 + "\n#"
-
-
-
+                + ntpText()
+                + snmpAgentText()
 
         );
     }
@@ -272,7 +282,7 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
         sysName.setText("");
 
         //Reset Vlan interface
-        vlanInterface.setText("");
+        vlanInterface.setText("1");
 
         //Reset ip addresses
         ipAddress1.setText("");
@@ -289,6 +299,9 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
         //Reset unicast server
         unicastServer.setText("");
 
+        //Resets domain ip address
+        domainField.setText("");
+
         // Reset TextBox
         codePane.setText("");
     }
@@ -298,6 +311,31 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
         StringSelection selection = new StringSelection(codePane.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
+    }
+
+    private String ntpText(){
+        if (sourceInterface.getText().equals("") && unicastServer.getText().equals("")){
+            return "";
+        }else{
+            return ""
+                    + "\nntp-service source-interface  " + sourceInterface.getText()
+                    + "\nntp-service unicast-server " + unicastServer.getText()
+                    +"\n#"
+                    ;
+        }
+
+    }
+
+    private String snmpAgentText(){
+        if (agentPhoneNum.getText().equals("") && agentLoc.getText().equals("")){
+            return "";
+        }else{
+            return ""
+                    + "\nsnmp-agent sys-info contact " + agentPhoneNum.getText()
+                    + "\nsnmp-agent sys-into location " + agentLoc.getText()
+                    + "\n#"
+                    ;
+        }
     }
 
     private void buildPanels()
@@ -310,6 +348,8 @@ ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
         colLayout.add(localUsername);
         colLayout.add(localPasswordLabel);
         colLayout.add(localPassword);
+        colLayout.add(domainLabel);
+        colLayout.add(domainField);
         colLayout.add(snmpPasswordLabel);
         colLayout.add(snmpPassword);
         colLayout.add(encKeyLabel);
