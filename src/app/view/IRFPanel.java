@@ -114,7 +114,7 @@ public class IRFPanel extends JPanel
 		setupLabels(this.stackLabel);
 		setupLabels(this.domainLabel);
 		
-		//panel.setupBackground("/resources/irfBackground.png");
+
 		
 		setupChatPane();
 		buildPanel();
@@ -183,11 +183,7 @@ public class IRFPanel extends JPanel
 		+ "\nInterface Ten " + positionC + "/0/" + interfaceInt2
 		+ "\nundo shut"
 		+ "\nqu"
-		+ "\nsave"
-		+ "\nYes"
-		+ "\n"
-		+ "\nYes"
-		+ "\nQuit"
+		+ "\nsave force"
 		+ "\n#");
 	}
 
@@ -255,6 +251,7 @@ public class IRFPanel extends JPanel
 	 */
 	private void buildListeners()
 	{
+		// Listener for the Submit Button
 		this.submitButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)
@@ -285,7 +282,8 @@ public class IRFPanel extends JPanel
 				updateTextCode(positionC, domainC, priority, interfaceInt);
 			}
 		});
-		
+
+		// Listener for Home Button
 		this.homeButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)
@@ -315,7 +313,8 @@ public class IRFPanel extends JPanel
 				resetPanel();
 			}
 		});
-		
+
+		// Listener or the  Renumber Button
 		this.renumberButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent clicked)

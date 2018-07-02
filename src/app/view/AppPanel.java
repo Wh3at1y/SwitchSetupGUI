@@ -8,6 +8,7 @@ public class AppPanel extends JPanel
 {
 	private IRFPanel irfPanel;
 	private LinkAggPanel linkaggPanel;
+	private SNMPPanel snmpPanel;
 	private MainMenuPanel menuPanel;
 	
 	private JLabel background;
@@ -18,16 +19,16 @@ public class AppPanel extends JPanel
 		irfPanel = new IRFPanel(this);
 		linkaggPanel = new LinkAggPanel(this);
 		menuPanel = new MainMenuPanel(this);
-		
+		snmpPanel = new SNMPPanel(this);
 		buildPanel();
-		buildPlacements();
+
 	}
 
 	public void setupBackground(String pictureLoc)
 	{
 		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
 		Image image = backgroundImage.getImage();
-		image = image.getScaledInstance(900, 600, java.awt.Image.SCALE_FAST);
+		image = image.getScaledInstance(800, 600, java.awt.Image.SCALE_FAST);
 		backgroundImage = new ImageIcon(image);
 		background.setIcon(backgroundImage);
 	}
@@ -37,6 +38,12 @@ public class AppPanel extends JPanel
 		SpringLayout springLayout = new SpringLayout();
 		springLayout.putConstraint(SpringLayout.EAST, linkaggPanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.EAST, irfPanel, 0, SpringLayout.EAST, this);
+
+		springLayout.putConstraint(SpringLayout.EAST, snmpPanel, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, snmpPanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, snmpPanel, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, snmpPanel, 0, SpringLayout.NORTH, this);
+
 		springLayout.putConstraint(SpringLayout.NORTH, menuPanel, 0, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, menuPanel, 0, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, menuPanel, 0, SpringLayout.SOUTH, this);
@@ -50,15 +57,14 @@ public class AppPanel extends JPanel
 
 		this.setLayout(springLayout);
 
+		add(this.snmpPanel);
 		add(this.irfPanel);
 		add(this.linkaggPanel);
 		add(this.menuPanel);
 		add(this.background);
 	}
 
-	private void buildPlacements()
-	{
-	}
+	public SNMPPanel getSNMPPanel() { return this.snmpPanel;}
 	
 	public LinkAggPanel getLinkPanel()
 	{
