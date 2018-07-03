@@ -3,11 +3,13 @@ package app.view;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.*;
+import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SNMPPanel extends JPanel{
 
@@ -39,6 +41,8 @@ public class SNMPPanel extends JPanel{
     private JButton copyButton;
     private JButton homeButton;
     private JButton resetButton;
+    private JButton importConf;
+    private JButton exportConf;
 
     private JTextField agentPhoneNum;
     private JTextField agentLoc;
@@ -73,6 +77,8 @@ public class SNMPPanel extends JPanel{
     private JLabel encKeyLabel;
     private JLabel domainLabel;
 
+    private JLabel configInput;
+
 
 
     public SNMPPanel(AppPanel panel)
@@ -87,10 +93,14 @@ public class SNMPPanel extends JPanel{
         submitButton = new JButton("Submit");
         homeButton = new JButton("HOME");
         resetButton = new JButton("Reset");
+        importConf = new JButton("<html>Import<br>Config<html>");
+        exportConf = new JButton("<html>Export To<br>Desktop<html>");
         setupButton(copyButton, buttonLoc);
         setupButton(submitButton, buttonLoc);
         setupButton(homeButton, buttonLoc);
         setupButton(resetButton, buttonLoc);
+        setupButton(importConf, buttonLoc);
+        setupButton(exportConf, buttonLoc);
 
         //sets up the labels
         phoneNumLabel = setupLabels(phoneNumLabel, "Phone Number");
@@ -107,6 +117,7 @@ public class SNMPPanel extends JPanel{
         localUsernameLabel = setupLabels(localUsernameLabel, "Local User Name");
         encKeyLabel = setupLabels(encKeyLabel, "Encryption Key");
         domainLabel = setupLabels(domainLabel,"Domain IP Address");
+        configInput = setupLabels(configInput,"Drag config file here");
 
 
         //set up the components
@@ -152,7 +163,7 @@ public class SNMPPanel extends JPanel{
     {
         ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
         Image image = backgroundImage.getImage();
-        image = image.getScaledInstance(100, 35, java.awt.Image.SCALE_FAST);
+        image = image.getScaledInstance(75, 45, java.awt.Image.SCALE_FAST);
         backgroundImage = new ImageIcon(image);
         button.setIcon(backgroundImage);
 
@@ -314,6 +325,21 @@ snmp-agent sys-into location ()
         clipboard.setContents(selection, selection);
     }
 
+    private void getFile(){
+
+        Object[] options = {"Submit","Cancel"};
+        int n = JOptionPane.showOptionDialog(new JFrame(),configInput,"",
+                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+                null, options, options[1]);
+        if (n==JOptionPane.OK_OPTION){
+
+        }else if (n == JOptionPane.NO_OPTION){
+            System.out.println("no");
+        }else if (n == JOptionPane.CLOSED_OPTION){
+            System.out.println("close");
+        }
+    }
+
     private String ntpText(){
         if (sourceInterface.getText().equals("") && unicastServer.getText().equals("")){
             return "";
@@ -400,7 +426,7 @@ snmp-agent sys-into location ()
         minPanel.setOpaque(false);
 
         morePanel.setLayout(new BoxLayout(morePanel, BoxLayout.PAGE_AXIS));
-        morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields - WIP"));
+        morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields"));
 //        morePanel.add(serverLayout);
         morePanel.add(sourceInterfaceLabel);
         morePanel.add(sourceInterface);
@@ -437,6 +463,10 @@ snmp-agent sys-into location ()
         buttonsLayout.setLayout(new FlowLayout());
         buttonsLayout.add(submitButton);
         buttonsLayout.add(copyButton);
+        buttonsLayout.add(exportConf);
+        
+        importConf.setEnabled(false);
+        buttonsLayout.add(importConf);
         buttonsLayout.add(resetButton);
         buttonsLayout.add(homeButton);
         buttonsLayout.setOpaque(false);
@@ -510,9 +540,70 @@ snmp-agent sys-into location ()
             }
         });
 
+        // Listener for the Import Button
+        this.importConf.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent clicked)
+            {
+                getFile();
+            }
+        });
+
+        // Listener for the Export Button
+        this.exportConf.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String fileName = "";
+                String desktop = System.getProperty("user.home") + "/Desktop";
+                JTextField fileNameInput = new JTextField();
+                JLabel fileNameLabel = new JLabel("Enter file name here");
+
+                JPanel fileNamePanel = new JPanel();
+                fileNamePanel.setLayout(new BoxLayout(fileNamePanel, BoxLayout.PAGE_AXIS));
+
+                fileNamePanel.add(fileNameLabel);
+                fileNamePanel.add(fileNameInput);
+                fileNamePanel.setOpaque(false);
+                fileNamePanel.setVisible(true);
+
+                Object[] options = {"Submit","Cancel"};
+                int n = JOptionPane.showOptionDialog(new JFrame(),fileNamePanel,"",
+                        JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[1]);
+                if (n==JOptionPane.OK_OPTION){
+                    fileName = fileNameInput.getText();
+
+                }else if (n == JOptionPane.NO_OPTION){
+
+                }else if (n == JOptionPane.CLOSED_OPTION) {
+
+                }
+                if (!(fileName.equals(""))){
+                    try{
+
+                        File f = new File(desktop,fileName);
+                        BufferedWriter out = new BufferedWriter(new FileWriter(f));
+                        out.write(codePane.getText());
+                        out.close();
+                    }catch(FileNotFoundException e1)
+                    {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+
+
+            }
+        });
+
 
 
 
     }
+
 
 }
