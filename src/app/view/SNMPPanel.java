@@ -2,11 +2,14 @@ package app.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -107,7 +110,7 @@ public class SNMPPanel extends JPanel{
         agentLocLabel = setupLabels(agentLocLabel, "Agent Location");
         sysNameLabel = setupLabels(sysNameLabel, "Switch Name");
         vlanInterfaceLabel = setupLabels(vlanInterfaceLabel, "Vlan-interface");
-        ipAddressLabel = setupLabels(ipAddressLabel, "IP Address            ");
+        ipAddressLabel = setupLabels(ipAddressLabel, "IP Address     ");
         ipSubnetLabel = setupLabels(ipSubnetLabel, "Subnet Mask");
         ipRouteStaticLabel = setupLabels(ipRouteStaticLabel, "Default Gateway");
         sourceInterfaceLabel = setupLabels(sourceInterfaceLabel, "NTP Source Interface");
@@ -116,8 +119,9 @@ public class SNMPPanel extends JPanel{
         localPasswordLabel = setupLabels(localPasswordLabel, "Local User Password");
         localUsernameLabel = setupLabels(localUsernameLabel, "Local User Name");
         encKeyLabel = setupLabels(encKeyLabel, "Encryption Key");
-        domainLabel = setupLabels(domainLabel,"Domain IP Address");
+        domainLabel = setupLabels(domainLabel,"SNMP Server IP");
         configInput = setupLabels(configInput,"Drag config file here");
+
 
 
         //set up the components
@@ -127,9 +131,10 @@ public class SNMPPanel extends JPanel{
         vlanInterface = new JTextField("1");
         ipAddress1 = new JTextField();
         ipAddress2 = new JTextField();
-        ipRoute1 = new JTextField("0.0.0.0");
-        ipRoute2 = new JTextField("0");
-        ipRoute3 = new JTextField();
+        ipRoute1 = greyedOut(ipRoute1,"Source (0.0.0.0)");
+        ipRoute2 = greyedOut(ipRoute2,"Destination (0)");
+        ipRoute3 = greyedOut(ipRoute3, "Next Hop (192.168.1.0)");
+
         sourceInterface = new JTextField();
         unicastServer = new JTextField();
         snmpPassword = new JTextField();
@@ -156,6 +161,33 @@ public class SNMPPanel extends JPanel{
         setupChatPane();
         buildPanels();
         buildListeners();
+
+    }
+
+    private JTextField greyedOut(JTextField field, String text)
+    {
+        field = new JTextField();
+        field.setText(text);
+        field.setForeground(Color.GRAY);
+        JTextField finalField = field;
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (finalField.getText().equals(text)){
+                    finalField.setText("");
+                }
+                finalField.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (finalField.getText().equals("")){
+                    finalField.setText(text);
+                    finalField.setForeground(Color.GRAY);
+                }
+            }
+        });
+        return finalField;
 
     }
 
@@ -397,11 +429,11 @@ snmp-agent sys-into location ()
         ipLayout.add(ipAddress1);
 //        ipLayout.add(numLabel(1));
 //        ipLayout.add(numLabel(2));
+        ipLayout.add(ipSubnetLabel);
         ipLayout.add(ipAddress2);
 //        ipLayout.add(numLabel(2));
         ipLayout.add(ipRoute2);
 //        ipLayout.add(fillerLabel());
-        ipLayout.add(fillerLabel());
 //        ipLayout.add(numLabel(3));
         ipLayout.setOpaque(false);
 
@@ -445,6 +477,8 @@ snmp-agent sys-into location ()
         westPanels.setOpaque(false);
 
         westScrollPane = new JScrollPane();
+        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         westScrollPane.setPreferredSize(new Dimension(300,200));
         westScrollPane.revalidate();
 
@@ -464,7 +498,7 @@ snmp-agent sys-into location ()
         buttonsLayout.add(submitButton);
         buttonsLayout.add(copyButton);
         buttonsLayout.add(exportConf);
-        
+
         importConf.setEnabled(false);
         buttonsLayout.add(importConf);
         buttonsLayout.add(resetButton);
@@ -599,9 +633,6 @@ snmp-agent sys-into location ()
 
             }
         });
-
-
-
 
     }
 
