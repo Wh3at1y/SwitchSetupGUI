@@ -1,20 +1,24 @@
 package app.view;
 
+import com.sun.codemodel.internal.JOp;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.io.*;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SNMPPanel extends JPanel{
+public class SNMPPanel extends JPanel implements MouseListener{
+
+    private JFrame fileIO = new JFrame();
+    private final String[] fileDest = {""};
+    private String fileName = "";
 
     private JPanel colLayout;
     private JPanel ipLayout;
@@ -23,6 +27,9 @@ public class SNMPPanel extends JPanel{
 
     private JPanel minPanel;
     private JPanel morePanel;
+
+    private JPanel moreSubPanel1;
+    private JPanel moreSubPanel2;
 
     private JPanel westPanels;
     private JPanel eastPanels;
@@ -81,7 +88,6 @@ public class SNMPPanel extends JPanel{
     private JLabel domainLabel;
 
     private JLabel configInput;
-
 
 
     public SNMPPanel(AppPanel panel)
@@ -155,6 +161,8 @@ public class SNMPPanel extends JPanel{
         buttonsLayout = new JPanel();
         minPanel = new JPanel();
         morePanel = new JPanel();
+        moreSubPanel1 = new JPanel();
+        moreSubPanel2 = new JPanel();
 
         springPanels = new Container();
 
@@ -357,20 +365,36 @@ snmp-agent sys-into location ()
         clipboard.setContents(selection, selection);
     }
 
-    private void getFile(){
-
-        Object[] options = {"Submit","Cancel"};
-        int n = JOptionPane.showOptionDialog(new JFrame(),configInput,"",
-                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-                null, options, options[1]);
-        if (n==JOptionPane.OK_OPTION){
-
-        }else if (n == JOptionPane.NO_OPTION){
-            System.out.println("no");
-        }else if (n == JOptionPane.CLOSED_OPTION){
-            System.out.println("close");
-        }
-    }
+//    private String getFile(){
+//
+//        final String[] fileDest = {""};
+//
+//        new FileDrop( codePane, /*dragBorder,*/ new FileDrop.Listener()
+//        {
+//            public void filesDropped( java.io.File[] files )
+//            {   for( int i = 0; i < files.length; i++ )
+//                {   try
+//                    {   fileDest[0] += files[i].getCanonicalPath();
+//                    }   // end try
+//                    catch( java.io.IOException e ) {}
+//                }   // end for: through each dropped file
+//            }   // end filesDropped
+//        }); // end FileDrop.Listener
+//
+//        return fileDest[0];
+//        Object[] options = {"Submit","Cancel"};
+//        int n = JOptionPane.showOptionDialog(fileIO,configInput,"",
+//                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+//                null, options, options[1]);
+//        if (n==JOptionPane.OK_OPTION){
+//            return fileDest[0];
+//        }else if (n == JOptionPane.NO_OPTION){
+//            return null;
+//        }else if (n == JOptionPane.CLOSED_OPTION){
+//            return null;
+//        }
+//        return null;
+//    }
 
     private String ntpText(){
         if (sourceInterface.getText().equals("") && unicastServer.getText().equals("")){
@@ -460,15 +484,25 @@ snmp-agent sys-into location ()
         morePanel.setLayout(new BoxLayout(morePanel, BoxLayout.PAGE_AXIS));
         morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields"));
 //        morePanel.add(serverLayout);
-        morePanel.add(sourceInterfaceLabel);
-        morePanel.add(sourceInterface);
-        morePanel.add(unicastServerLabel);
-        morePanel.add(unicastServer);
-        morePanel.add(phoneNumLabel);
-        morePanel.add(agentPhoneNum);
-        morePanel.add(agentLocLabel);
-        morePanel.add(agentLoc);
+        moreSubPanel1.setLayout(new BoxLayout(moreSubPanel1, BoxLayout.PAGE_AXIS));
+        moreSubPanel1.setBorder(BorderFactory.createLoweredBevelBorder());
+        moreSubPanel1.add(sourceInterfaceLabel);
+        moreSubPanel1.add(sourceInterface);
+        moreSubPanel1.add(unicastServerLabel);
+        moreSubPanel1.add(unicastServer);
 
+        moreSubPanel2.setLayout(new BoxLayout(moreSubPanel2, BoxLayout.PAGE_AXIS));
+        moreSubPanel2.setBorder(BorderFactory.createLoweredBevelBorder());
+        moreSubPanel2.add(phoneNumLabel);
+        moreSubPanel2.add(agentPhoneNum);
+        moreSubPanel2.add(agentLocLabel);
+        moreSubPanel2.add(agentLoc);
+
+        morePanel.add(moreSubPanel1);
+        morePanel.add(moreSubPanel2);
+
+        moreSubPanel1.setOpaque(false);
+        moreSubPanel2.setOpaque(false);
         morePanel.setOpaque(false);
 
         westPanels.setLayout(new BoxLayout(westPanels, BoxLayout.PAGE_AXIS));
@@ -476,7 +510,10 @@ snmp-agent sys-into location ()
         westPanels.add(morePanel);
         westPanels.setOpaque(false);
 
-        westScrollPane = new JScrollPane();
+        JScrollBar scrollBar = new JScrollBar();
+        scrollBar.setVisibleAmount(2);
+        scrollBar.setOpaque(false);
+        westScrollPane = new JScrollPane(scrollBar);
         westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         westScrollPane.setPreferredSize(new Dimension(300,200));
@@ -498,7 +535,6 @@ snmp-agent sys-into location ()
         buttonsLayout.add(submitButton);
         buttonsLayout.add(copyButton);
         buttonsLayout.add(exportConf);
-
         importConf.setEnabled(false);
         buttonsLayout.add(importConf);
         buttonsLayout.add(resetButton);
@@ -531,6 +567,63 @@ snmp-agent sys-into location ()
 //
 //        return label;
 //    }
+
+    private boolean checkFields(){
+        if (agentLoc.getText().equals("") || agentLoc.getText().equals("") || sysName.getText().equals("")
+                || vlanInterface.getText().equals("") || ipAddress1.getText().equals("")
+                || ipAddress2.getText().equals("") || ipRoute1.getText().equals("") || ipRoute2.getText().equals("")
+                || ipRoute3.getText().equals("")){
+            Object[] options = {"Continue","Cancel"};
+            int n = JOptionPane.showOptionDialog(new JFrame(),new JLabel(
+                    "<html>Not all required fields have been submitted<br>" +
+                            "are you sure you want to continue?<html>"),"",
+                    JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[1]);
+            if (n==JOptionPane.OK_OPTION){
+                return true;
+            }else if (n == JOptionPane.NO_OPTION){
+
+                return false;
+            }else if (n == JOptionPane.CLOSED_OPTION) {
+                return false;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
+        }
+
+
+    }
+
+    public File createImportableFile(String fileName){
+        fileName = this.fileName;
+        String extension = org.apache.commons.io.FilenameUtils.getExtension(fileName);
+        return new File("");
+    }
+
+    private void dropMethod(){
+        new FileDrop( codePane, true, new FileDrop.Listener()
+        {
+            public void filesDropped( java.io.File[] files )
+            {   for( int i = 0; i < files.length; i++ )
+            {   try
+            {
+                fileDest[0] = files[i].getCanonicalPath();
+                File f = new File(fileDest[0]);
+                BufferedReader br = new BufferedReader(new FileReader(f));
+                codePane.setText("");
+                String line;
+                while ((line = br.readLine()) != null) {
+                    codePane.append(line + "\n");
+                }
+                fileDest[0] = null;
+            }   // end try
+            catch( java.io.IOException e ) {}
+            }   // end for: through each dropped file
+            }   // end filesDropped
+        }); // end FileDrop.Listener
+    }
 
     private void buildListeners()
     {
@@ -575,13 +668,28 @@ snmp-agent sys-into location ()
         });
 
         // Listener for the Import Button
-        this.importConf.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent clicked)
-            {
-                getFile();
-            }
-        });
+//        this.importConf.addActionListener(new ActionListener()
+//        {
+//            public void actionPerformed(ActionEvent clicked)
+//            {
+//                String fileDest = getFile();
+//                if (fileDest != null){
+//                    try{
+//
+//                        File f = new File(fileDest);
+//                        FileOutputStream out = new FileOutputStream(f);
+//
+//                        codePane.setText(String.valueOf(out));
+//                        out.close();
+//                    }catch (FileNotFoundException e){e.printStackTrace();
+//                    }catch (IOException e){}
+//
+//                }
+//
+//
+//            }
+//        });
+
 
         // Listener for the Export Button
         this.exportConf.addActionListener(new ActionListener()
@@ -589,11 +697,10 @@ snmp-agent sys-into location ()
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String fileName = "";
+                fileName = "";
                 String desktop = System.getProperty("user.home") + "/Desktop";
                 JTextField fileNameInput = new JTextField();
-                JLabel fileNameLabel = new JLabel("Enter file name here");
-
+                JLabel fileNameLabel = new JLabel("<html>Enter file name here<br><strong>WITH FILE EXTENSION<strong><html>");
                 JPanel fileNamePanel = new JPanel();
                 fileNamePanel.setLayout(new BoxLayout(fileNamePanel, BoxLayout.PAGE_AXIS));
 
@@ -602,39 +709,82 @@ snmp-agent sys-into location ()
                 fileNamePanel.setOpaque(false);
                 fileNamePanel.setVisible(true);
 
-                Object[] options = {"Submit","Cancel"};
-                int n = JOptionPane.showOptionDialog(new JFrame(),fileNamePanel,"",
-                        JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-                        null, options, options[1]);
-                if (n==JOptionPane.OK_OPTION){
-                    fileName = fileNameInput.getText();
+                if (checkFields()){
+                    Object[] options = {"Cancel","Submit"};
+                    int n = JOptionPane.showOptionDialog(new JFrame(),fileNamePanel,"",
+                            JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+                            null, options, options[1]);
+                    if (n==JOptionPane.OK_OPTION){
 
-                }else if (n == JOptionPane.NO_OPTION){
+                    }else if (n == JOptionPane.NO_OPTION){
+                        fileName = fileNameInput.getText();
 
-                }else if (n == JOptionPane.CLOSED_OPTION) {
+                    }else if (n == JOptionPane.CLOSED_OPTION) {
 
-                }
-                if (!(fileName.equals(""))){
-                    try{
+                    }
+                    if (!(fileName.equals("")) && fileName.trim().equals(fileName)){
+                        try{
 
-                        File f = new File(desktop,fileName);
-                        BufferedWriter out = new BufferedWriter(new FileWriter(f));
-                        out.write(codePane.getText());
-                        out.close();
-                    }catch(FileNotFoundException e1)
-                    {
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                            File f = new File(desktop,fileName);
+                            BufferedWriter out = new BufferedWriter(new FileWriter(f));
+                            out.write(codePane.getText());
+                            out.close();
+                        }catch(FileNotFoundException e1)
+                        {
+                            e1.printStackTrace();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null,
+                                "File must have something as a name and have no spaces",
+                                "Invalid File Name",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
+
+
 
 
 
             }
         });
 
+        this.codePane.addMouseListener(this);
+
+
+
+
+
+
+
+
+
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        dropMethod();
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
