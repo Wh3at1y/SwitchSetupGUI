@@ -19,6 +19,7 @@ public class SNMPPanel extends JPanel implements MouseListener{
     private JFrame fileIO = new JFrame();
     private final String[] fileDest = {""};
     private String fileName = "";
+    private ArrayList<JTextField> fields = new ArrayList<>();
 
     private JPanel colLayout;
     private JPanel ipLayout;
@@ -139,7 +140,7 @@ public class SNMPPanel extends JPanel implements MouseListener{
         ipAddress2 = new JTextField();
         ipRoute1 = greyedOut(ipRoute1,"Source (0.0.0.0)");
         ipRoute2 = greyedOut(ipRoute2,"Destination (0)");
-        ipRoute3 = greyedOut(ipRoute3, "Next Hop (192.168.1.0)");
+        ipRoute3 = greyedOut(ipRoute3, "Next Hop (10.0.0.0)");
 
         sourceInterface = new JTextField();
         unicastServer = new JTextField();
@@ -148,6 +149,24 @@ public class SNMPPanel extends JPanel implements MouseListener{
         localUsername = new JTextField();
         encKey = new JTextField();
         domainField = new JTextField();
+
+        fields.add(localUsername);
+        fields.add(localPassword);
+        fields.add(domainField);
+        fields.add(snmpPassword);
+        fields.add(encKey);
+        fields.add(sysName);
+        fields.add(vlanInterface);
+        fields.add(ipAddress1);
+        fields.add(ipAddress2);
+        fields.add(ipRoute1);
+        fields.add(ipRoute2);
+        fields.add(ipRoute3);
+        fields.add(sourceInterface);
+        fields.add(unicastServer);
+        fields.add(agentPhoneNum);
+        fields.add(agentLoc);
+
 
 
         //sets up the panels
@@ -194,6 +213,8 @@ public class SNMPPanel extends JPanel implements MouseListener{
                     finalField.setForeground(Color.GRAY);
                 }
             }
+
+
         });
         return finalField;
 
@@ -226,13 +247,13 @@ public class SNMPPanel extends JPanel implements MouseListener{
 
     private void setupChatPane()
     {
-        codePane = new JTextArea(31,37);
+        codePane = new JTextArea(30,36);
         codePane.setLineWrap(false);
         codePane.setWrapStyleWord(true);
         textScrollPane = new JScrollPane(codePane);
 
-        textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
     }
 
@@ -303,7 +324,8 @@ snmp-agent sys-into location ()
                 + "\nauthentication-mode scheme"
                 + "\nprotocol inbound ssh"
                 + "\n#"
-                + "\nip route-static " + ipRoute1.getText() + " " + ipRoute2.getText() + " " + ipRoute3.getText()
+                + ipRouteCheck()
+                + "\n#"
                 + "\nsnmp-agent group v3 " + localUsername.getText() + " authentication write-view ViewDefault"
                 + "\nsnmp-agent target-host trap address udp-domain " + domainField.getText() + " params securityname " +
                         localUsername.getText() + " v3 privacy"
@@ -341,9 +363,13 @@ snmp-agent sys-into location ()
         ipAddress2.setText("");
 
         //Reset ip routes
-        ipRoute1.setText("0.0.0.0");
-        ipRoute2.setText("0");
+        ipRoute1.setText("");
+        ipRoute2.setText("");
         ipRoute3.setText("");
+        ipRoute1.requestFocus();
+        ipRoute2.requestFocus();
+        ipRoute3.requestFocus();
+        localUsername.requestFocus();
 
         //Reset source interface
         sourceInterface.setText("");
@@ -419,6 +445,35 @@ snmp-agent sys-into location ()
                     + "\n#"
                     ;
         }
+    }
+    //"\nip route-static " + ipRoute1.getText() + " " + ipRoute2.getText() + " " + ipRoute3.getText()
+
+    private String ipRouteCheck()
+    {
+        String ipRouteLine = "";
+
+        if ((!ipRoute1.getText().equals("Source (0.0.0.0)"))){
+            ipRouteLine += "\nip route-static " + ipRoute1.getText() + " ";
+        }
+        else{
+            ipRouteLine += "\nip route-static 0.0.0.0 ";
+        }
+
+        if (!ipRoute2.getText().equals("Destination (0)")){
+            ipRouteLine += ipRoute2.getText() + " ";
+        }
+        else{
+            ipRouteLine += "0 ";
+        }
+
+        if (!ipRoute3.getText().equals("Next Hop (10.0.0.0)")){
+            ipRouteLine += ipRoute3.getText() + " ";
+        }
+        else{
+            ipRouteLine += "10.0.0.0";
+        }
+
+        return ipRouteLine;
     }
 
     private void buildPanels()
@@ -514,8 +569,8 @@ snmp-agent sys-into location ()
         scrollBar.setVisibleAmount(2);
         scrollBar.setOpaque(false);
         westScrollPane = new JScrollPane(scrollBar);
-        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         westScrollPane.setPreferredSize(new Dimension(300,200));
         westScrollPane.revalidate();
 
@@ -596,31 +651,47 @@ snmp-agent sys-into location ()
 
     }
 
-    public File createImportableFile(String fileName){
-        fileName = this.fileName;
-        String extension = org.apache.commons.io.FilenameUtils.getExtension(fileName);
-        return new File("");
+    private void updateField(JTextField field, String text)
+    {
+        field.setText(text);
     }
 
     private void dropMethod(){
-        new FileDrop( codePane, true, new FileDrop.Listener()
+        new FileDrop( this, true, new FileDrop.Listener()
         {
             public void filesDropped( java.io.File[] files )
             {   for( int i = 0; i < files.length; i++ )
-            {   try
-            {
-                fileDest[0] = files[i].getCanonicalPath();
-                File f = new File(fileDest[0]);
-                BufferedReader br = new BufferedReader(new FileReader(f));
-                codePane.setText("");
-                String line;
-                while ((line = br.readLine()) != null) {
-                    codePane.append(line + "\n");
-                }
-                fileDest[0] = null;
-            }   // end try
-            catch( java.io.IOException e ) {}
-            }   // end for: through each dropped file
+                {
+                    try
+                    {
+                        fileDest[0] = files[i].getCanonicalPath();
+                        File f = new File(fileDest[0]);
+                        BufferedReader br = new BufferedReader(new FileReader(f));
+
+                        String line;
+                        int counter = 0;
+
+                        while ((line = br.readLine()) != null) {
+                            if(line.equals("#")){
+
+                            }else{
+                                if(counter >= fields.size()){
+
+                                }else{
+                                    updateField(fields.get(counter),line);
+                                    counter++;
+                                }
+
+                            }
+
+                        }
+
+
+                        updateTextCode();
+                        fileDest[0] = null;
+                    }   // end try
+                    catch( java.io.IOException e ) {}
+                }   // end for: through each dropped file
             }   // end filesDropped
         }); // end FileDrop.Listener
     }
@@ -697,7 +768,7 @@ snmp-agent sys-into location ()
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                fileName = "";
+//                fileName = "";
                 String desktop = System.getProperty("user.home") + "/Desktop";
                 JTextField fileNameInput = new JTextField();
                 JLabel fileNameLabel = new JLabel("<html>Enter file name here<br><strong>WITH FILE EXTENSION<strong><html>");
@@ -725,10 +796,21 @@ snmp-agent sys-into location ()
                     if (!(fileName.equals("")) && fileName.trim().equals(fileName)){
                         try{
 
+                            //exported info to be put into switch
                             File f = new File(desktop,fileName);
                             BufferedWriter out = new BufferedWriter(new FileWriter(f));
                             out.write(codePane.getText());
                             out.close();
+
+                            //exported info for dropping in program
+                            File f2 = new File(desktop,"DRAG_AND_DROP_ME-" + fileName);
+                            BufferedWriter out2 = new BufferedWriter(new FileWriter(f2));
+                            for (JTextField field :
+                                    fields)
+                            {
+                                out2.write(field.getText() + "\n");
+                            }
+                            out2.close();
                         }catch(FileNotFoundException e1)
                         {
                             e1.printStackTrace();
@@ -750,7 +832,7 @@ snmp-agent sys-into location ()
             }
         });
 
-        this.codePane.addMouseListener(this);
+        this.addMouseListener(this);
 
 
 

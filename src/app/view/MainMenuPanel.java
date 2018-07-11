@@ -200,7 +200,7 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.2"
+				JOptionPane.showMessageDialog(null, "V.3.5"
 						+"\n"
 						+"\n[Main Changes]"
 						+"\nAdded Main Menu With a New Look And Feel"
@@ -211,6 +211,7 @@ public class MainMenuPanel extends JPanel
 						+"\nAdded Icon"
 						+"\nAdded Vlan port in Link Aggregation Setup"
 						+"\nAdded functionality to the SNMP button"
+						+"\nAdded fully functional drag and drop feature in SNMP setup"
 						+"\n"
 						+"\n[Bugs]"
 						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
