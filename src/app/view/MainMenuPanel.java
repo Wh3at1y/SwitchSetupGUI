@@ -165,6 +165,7 @@ public class MainMenuPanel extends JPanel
 			{
 				//changes panel from the menu to the IRF setup
 				panel.getIRFPanel().setVisible(true);
+				panel.getIRFPanel().getSwitchList().setVisible(true);
 				panel.setupBackground("/resources/irfBackground.png");
 				panel.getMenuPanel().setVisible(false);
 			}
@@ -177,6 +178,7 @@ public class MainMenuPanel extends JPanel
 			{
 				//changes panel from the menu to the Link Aggregation setup
 				panel.getLinkPanel().setVisible(true);
+
 				panel.setupBackground("/resources/linkBackground.png");
 				panel.getMenuPanel().setVisible(false);
 			}
@@ -200,7 +202,7 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.3.5"
+				JOptionPane.showMessageDialog(null, "V.3.6"
 						+"\n"
 						+"\n[Main Changes]"
 						+"\nAdded Main Menu With a New Look And Feel"
@@ -217,7 +219,8 @@ public class MainMenuPanel extends JPanel
 						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
 						+"\nIRF Priority Algorithm has been fixed"
 						+"\nIRF 5800 Switch Interface Ten port has been fixed"
-						+"\nCleaned up code around spacing GUI apart", "Change Log", 2
+						+"\nCleaned up code around spacing GUI apart"
+						+"\nFixed spacing for Link Aggregation setup", "Change Log", 2
 						);
 			}
 		});

@@ -393,11 +393,13 @@ public class LinkAggPanel extends JPanel
 			{
 				int irfSelectedNum = Integer.parseInt(irfNumbers.getSelectedItem().toString());
 
-				if (irfSelectedNum <= 2)
+				if (irfSelectedNum <= 2) {
 					layout.putConstraint(SpringLayout.WEST, copyButton, 175, SpringLayout.EAST, submitButton);
-				else
-					layout.putConstraint(SpringLayout.WEST, copyButton, 300, SpringLayout.EAST, submitButton);
-
+					layout.putConstraint(SpringLayout.EAST, submitButton, 100, SpringLayout.WEST, vlanLabel);
+				}else {
+					layout.putConstraint(SpringLayout.WEST, copyButton, -200, SpringLayout.EAST, submitButton);
+					layout.putConstraint(SpringLayout.EAST, submitButton, 650, SpringLayout.WEST, vlanLabel);
+				}
 				irfSelectedNum--;
 
 				for (int spot = 0; spot <= 7; spot++)

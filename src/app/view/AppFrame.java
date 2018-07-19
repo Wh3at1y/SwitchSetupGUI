@@ -18,7 +18,7 @@ public class AppFrame extends JFrame
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setTitle("Switch-Setup v.3.5");
+		this.setTitle("Switch-Setup v.3.6");
 		this.setSize(new Dimension(800, 600));
 		this.setContentPane(panel);
 		this.setVisible(true);

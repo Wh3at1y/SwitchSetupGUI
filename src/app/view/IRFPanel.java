@@ -113,15 +113,18 @@ public class IRFPanel extends JPanel
 		setupLabels(this.portLabel);
 		setupLabels(this.stackLabel);
 		setupLabels(this.domainLabel);
-		
 
-		
+
 		setupChatPane();
 		buildPanel();
 		buildPlacements();
 		buildListeners();
 	}
-	
+
+	public List getSwitchList(){
+		return switchList;
+	}
+
 	private void setupButton(JButton button, String pictureLoc)
 	{
 		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
@@ -288,6 +291,7 @@ public class IRFPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent clicked)
 			{
+				switchList.setVisible(false);
 				setVisible(false);
 				panel.getMenuPanel().setVisible(true);
 				panel.setupBackground("/resources/menuBackground.png");
@@ -352,8 +356,8 @@ public class IRFPanel extends JPanel
 		layout.putConstraint(SpringLayout.WEST, submitButton, 16, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, submitButton, -20, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, homeButton, 0, SpringLayout.SOUTH, submitButton);
-		layout.putConstraint(SpringLayout.NORTH, homePicture, 12, SpringLayout.NORTH, homeButton);
-		layout.putConstraint(SpringLayout.WEST, homePicture, 17, SpringLayout.WEST, homeButton);
+		layout.putConstraint(SpringLayout.NORTH, homePicture, 6, SpringLayout.NORTH, homeButton);
+		layout.putConstraint(SpringLayout.WEST, homePicture, 11, SpringLayout.WEST, homeButton);
 		layout.putConstraint(SpringLayout.SOUTH, copyButton, -20, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, switchLabel, 25, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, textScrollPane, 30, SpringLayout.EAST, stackLabel);

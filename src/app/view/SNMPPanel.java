@@ -1,26 +1,28 @@
 package app.view;
 
-import com.sun.codemodel.internal.JOp;
-
+//import statements
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class SNMPPanel extends JPanel implements MouseListener{
+/**
+ * Class that acts as a JPanel for when the 'SNMP Setup' button is pressed from the main menu
+ * works to take in data inputs from the user, organize/compile it effectively, and give options for exportation of data
+ */
+public class SNMPPanel extends JPanel{
 
-    private JFrame fileIO = new JFrame();
+    //All of the class's instance variables
+    //variables for file IO
     private final String[] fileDest = {""};
     private String fileName = "";
+
+    //ArrayList for organizing all the JTextFields
     private ArrayList<JTextField> fields = new ArrayList<>();
 
+    //panels for organizing the JComponents
     private JPanel colLayout;
     private JPanel ipLayout;
     private JPanel ipRoute;
@@ -38,23 +40,28 @@ public class SNMPPanel extends JPanel implements MouseListener{
     private JPanel codeLayout;
     private JPanel buttonsLayout;
 
+    //container to help mobilize components and their panels from their individual layout to a SpringLayout
     private Container springPanels;
 
+    //font used in text for the buttons and labels
     private Font font;
+
+    //menu panel for if the user decides to click the home button
     private AppPanel panel;
 
+    //major components of program to help organize JComponents
     private JTextArea codePane;
-    private JScrollPane textScrollPane;
+    private JScrollPane eastScrollPane;
     private JScrollPane westScrollPane;
 
-
+    //JButtons with action listeners added later on
     private JButton submitButton;
     private JButton copyButton;
     private JButton homeButton;
     private JButton resetButton;
-    private JButton importConf;
-    private JButton exportConf;
+    private JButton exportInfo;
 
+    //JTextFields for user input
     private JTextField agentPhoneNum;
     private JTextField agentLoc;
     private JTextField sysName;
@@ -72,7 +79,7 @@ public class SNMPPanel extends JPanel implements MouseListener{
     private JTextField encKey;
     private JTextField domainField;
 
-
+    //JLabels for better user understanding of functionality
     private JLabel phoneNumLabel;
     private JLabel agentLocLabel;
     private JLabel sysNameLabel;
@@ -90,27 +97,31 @@ public class SNMPPanel extends JPanel implements MouseListener{
 
     private JLabel configInput;
 
-
+    /**
+     * Constructor to initialize all the components and variables
+     * @param panel from main menu
+     */
     public SNMPPanel(AppPanel panel)
     {
+        //sets the entire panel visible
         this.setVisible(false);
-        font = new Font("Neue", Font.BOLD, 13);
         this.panel = panel;
 
+        //initializes the font
+        font = new Font("Neue", Font.BOLD, 13);
+
         //sets up the action buttons
-        String buttonLoc = "/resources/netButtonMenu.png";
+        String buttonLoc = "/resources/netButtonSmall.png";
         copyButton = new JButton("Copy");
         submitButton = new JButton("Submit");
         homeButton = new JButton("HOME");
         resetButton = new JButton("Reset");
-        importConf = new JButton("<html>Import<br>Config<html>");
-        exportConf = new JButton("<html>Export To<br>Desktop<html>");
+        exportInfo = new JButton("<html>Export To<br>Desktop<html>");
         setupButton(copyButton, buttonLoc);
         setupButton(submitButton, buttonLoc);
         setupButton(homeButton, buttonLoc);
         setupButton(resetButton, buttonLoc);
-        setupButton(importConf, buttonLoc);
-        setupButton(exportConf, buttonLoc);
+        setupButton(exportInfo, buttonLoc);
 
         //sets up the labels
         phoneNumLabel = setupLabels(phoneNumLabel, "Phone Number");
@@ -138,6 +149,9 @@ public class SNMPPanel extends JPanel implements MouseListener{
         vlanInterface = new JTextField("1");
         ipAddress1 = new JTextField();
         ipAddress2 = new JTextField();
+        ipRoute1 = new JTextField();
+        ipRoute2 = new JTextField();
+        ipRoute3 = new JTextField();
         ipRoute1 = greyedOut(ipRoute1,"Source (0.0.0.0)");
         ipRoute2 = greyedOut(ipRoute2,"Destination (0)");
         ipRoute3 = greyedOut(ipRoute3, "Next Hop (10.0.0.0)");
@@ -150,6 +164,7 @@ public class SNMPPanel extends JPanel implements MouseListener{
         encKey = new JTextField();
         domainField = new JTextField();
 
+        //populates the ArrayList
         fields.add(localUsername);
         fields.add(localPassword);
         fields.add(domainField);
@@ -183,46 +198,40 @@ public class SNMPPanel extends JPanel implements MouseListener{
         moreSubPanel1 = new JPanel();
         moreSubPanel2 = new JPanel();
 
+        //sets up the main Container
         springPanels = new Container();
 
+        //calls helper methods
         setupChatPane();
         buildPanels();
         buildListeners();
 
     }
 
-    private JTextField greyedOut(JTextField field, String text)
+    /**
+     * Helper method to dry out code
+     * sets up JLabel components
+     * @param label to be set up
+     * @param text to be displayed on the label
+     * @return the newly factored JLabel
+     */
+    private JLabel setupLabels(JLabel label, String text)
     {
-        field = new JTextField();
-        field.setText(text);
-        field.setForeground(Color.GRAY);
-        JTextField finalField = field;
-        field.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (finalField.getText().equals(text)){
-                    finalField.setText("");
-                }
-                finalField.setForeground(Color.BLACK);
-            }
+        label = new JLabel(text);
+        label.setFont(font);
+        label.setForeground(Color.WHITE);
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (finalField.getText().equals("")){
-                    finalField.setText(text);
-                    finalField.setForeground(Color.GRAY);
-                }
-            }
-
-
-        });
-        return finalField;
-
+        return label;
     }
 
+    /**
+     * helper method that sets up the buttons visually
+     * @param button to be set up
+     * @param pictureLoc
+     */
     private void setupButton(JButton button, String pictureLoc)
     {
-        ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
+        ImageIcon backgroundImage = new ImageIcon(SNMPPanel.class.getResource(pictureLoc));
         Image image = backgroundImage.getImage();
         image = image.getScaledInstance(75, 45, java.awt.Image.SCALE_FAST);
         backgroundImage = new ImageIcon(image);
@@ -236,68 +245,68 @@ public class SNMPPanel extends JPanel implements MouseListener{
         button.setForeground(Color.DARK_GRAY);
     }
 
-    private JLabel setupLabels(JLabel label, String text)
+    /**
+     * helper method to make the JTextField have grayed out text
+     * that disappears when the field is selected, and reappears when deselected
+     * @param field to be grayed out
+     * @param text to display in the field
+     * @return a modified JTextField
+     */
+    private JTextField greyedOut(JTextField field, String text)
     {
-        label = new JLabel(text);
-        label.setFont(font);
-        label.setForeground(Color.WHITE);
+        //declares the initial grayed out text
+//        field = new JTextField();
+        field.setText(text);
+        field.setForeground(Color.GRAY);
+//        JTextField finalField = field;
 
-        return label;
+        //adds the focus listeners
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (field.getText().equals(text)){
+                    field.setText("");
+                }
+                field.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (field.getText().equals("")){
+                    field.setText(text);
+                    field.setForeground(Color.GRAY);
+                }
+            }
+
+
+        });
+        return field;
+
     }
 
+    /**
+     * Sets up the JTextArea that displays the script for setting up the switch
+     */
     private void setupChatPane()
     {
+        //sets up the JTextArea
         codePane = new JTextArea(30,36);
         codePane.setLineWrap(false);
         codePane.setWrapStyleWord(true);
-        textScrollPane = new JScrollPane(codePane);
+        eastScrollPane = new JScrollPane(codePane);
 
-        textScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        textScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        //scrollbar policies
+        eastScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        eastScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
     }
 
+    /**
+     * Prints out text to the JTextArea @app.view.SNMPPanel#codePane
+     * updates the corresponding variables based on what is in their JTextFields
+     */
     private void updateTextCode()
     {
-        /*
-        #
-sysname name (Switch Name)
-#
-local-user cavemin (local user name)
- password simple password (Local user password)
- authorization-attribute level 3
- service-type ssh terminal
-#
-interface Vlan-interface1
- ip address 10.27.0.1 255.255.0.0 (IP address & Subnet mask or Subnet Prefix)
-#
-public-key local create rsa
-2048
-y
-y
-#
-ssh server enable
-#
-user-interface vty 0 15
-#
-user-interface vty 0 15
- authentication-mode scheme
- protocol inbound ssh
-#  
-ip route-static 0.0.0.0 0 XXX.XXX.XXX.XXX (Default Gateway)
-#
- snmp-agent group v3 cavemin authentication write-view ViewDefault
- snmp-agent target-host trap address udp-domain 10.25.11.13 (SNMP SERVER) params securityname cavemin v3 privacy
- snmp-agent usm-user v3 cavemin cavemin cipher authentication-mode sha (SNMP Password) privacy-mode aes128 (Encryption Key)
-#
-ntp-service source-interface  ()
-ntp-service unicast-server ()
-#
-snmp-agent sys-info contact ()
-snmp-agent sys-into location ()
-#
-
-         */
         this.codePane.setText(
                 "system-view"
                 + "\n#"
@@ -324,7 +333,7 @@ snmp-agent sys-into location ()
                 + "\nauthentication-mode scheme"
                 + "\nprotocol inbound ssh"
                 + "\n#"
-                + ipRouteCheck()
+                + ipRouteCheck() //helper method triggered if a field is filled
                 + "\n#"
                 + "\nsnmp-agent group v3 " + localUsername.getText() + " authentication write-view ViewDefault"
                 + "\nsnmp-agent target-host trap address udp-domain " + domainField.getText() + " params securityname " +
@@ -332,12 +341,90 @@ snmp-agent sys-into location ()
                 + "snmp-agent usm-user v3 " + localUsername.getText() + " " + localUsername.getText() +
                         " cipher authentication-mode sha " + snmpPassword.getText() + " privacy-mode aes128 " + encKey.getText()
                 + "\n#"
-                + ntpText()
-                + snmpAgentText()
+                + ntpText() //helper method triggered if a field is filled
+                + snmpAgentText() //helper method triggered if a field is filled
 
         );
+
+        ipRoute1.grabFocus();
+        ipRoute2.grabFocus();
+        ipRoute3.grabFocus();
+        localUsername.grabFocus();
     }
 
+    /**
+     * if any NTP field is filled out, then build the corresponding code
+     * @return optional code in the codePane
+     */
+    private String ntpText(){
+        if (sourceInterface.getText().equals("") && unicastServer.getText().equals("")){
+            return "";
+        }else{
+            return ""
+                    + "\nntp-service source-interface  " + sourceInterface.getText()
+                    + "\nntp-service unicast-server " + unicastServer.getText()
+                    +"\n#"
+                    ;
+        }
+
+    }
+
+    /**
+     * if any SNMP agent field is filled out, then build the corresponding code
+     * @return optional code in the codePane
+     */
+    private String snmpAgentText(){
+        if (agentPhoneNum.getText().equals("") && agentLoc.getText().equals("")){
+            return "";
+        }else{
+            return ""
+                    + "\nsnmp-agent sys-info contact " + agentPhoneNum.getText()
+                    + "\nsnmp-agent sys-into location " + agentLoc.getText()
+                    + "\n#"
+                    ;
+        }
+    }
+
+    /**
+     * builds correct IP route code instead of what the grayed out text is
+     * @return ipRouteLine
+     */
+    private String ipRouteCheck()
+    {
+        //line to be built
+        String ipRouteLine = "";
+
+        //1st part
+        if ((!ipRoute1.getText().equals("Source (0.0.0.0)"))){
+            ipRouteLine += "\nip route-static " + ipRoute1.getText() + " ";
+        }
+        else{
+            ipRouteLine += "\nip route-static 0.0.0.0 ";
+        }
+
+        //2nd part
+        if (!ipRoute2.getText().equals("Destination (0)")){
+            ipRouteLine += ipRoute2.getText() + " ";
+        }
+        else{
+            ipRouteLine += "0 ";
+        }
+
+        //3rd part
+        if (!ipRoute3.getText().equals("Next Hop (10.0.0.0)")){
+            ipRouteLine += ipRoute3.getText() + " ";
+        }
+        else{
+            ipRouteLine += "10.0.0.0";
+        }
+
+        //return statement
+        return ipRouteLine;
+    }
+
+    /**
+     * Sets all JTextFields back to their original states at the start of the program
+     */
     private void resetPanel()
     {
         //Reset username and passwords
@@ -366,6 +453,7 @@ snmp-agent sys-into location ()
         ipRoute1.setText("");
         ipRoute2.setText("");
         ipRoute3.setText("");
+        //requesting focus to trigger the FocusLost event and set gray text
         ipRoute1.requestFocus();
         ipRoute2.requestFocus();
         ipRoute3.requestFocus();
@@ -384,6 +472,9 @@ snmp-agent sys-into location ()
         codePane.setText("");
     }
 
+    /**
+     * acts as a CMD + C for the text in the codePane
+     */
     private void copyText()
     {
         StringSelection selection = new StringSelection(codePane.getText());
@@ -391,94 +482,14 @@ snmp-agent sys-into location ()
         clipboard.setContents(selection, selection);
     }
 
-//    private String getFile(){
-//
-//        final String[] fileDest = {""};
-//
-//        new FileDrop( codePane, /*dragBorder,*/ new FileDrop.Listener()
-//        {
-//            public void filesDropped( java.io.File[] files )
-//            {   for( int i = 0; i < files.length; i++ )
-//                {   try
-//                    {   fileDest[0] += files[i].getCanonicalPath();
-//                    }   // end try
-//                    catch( java.io.IOException e ) {}
-//                }   // end for: through each dropped file
-//            }   // end filesDropped
-//        }); // end FileDrop.Listener
-//
-//        return fileDest[0];
-//        Object[] options = {"Submit","Cancel"};
-//        int n = JOptionPane.showOptionDialog(fileIO,configInput,"",
-//                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-//                null, options, options[1]);
-//        if (n==JOptionPane.OK_OPTION){
-//            return fileDest[0];
-//        }else if (n == JOptionPane.NO_OPTION){
-//            return null;
-//        }else if (n == JOptionPane.CLOSED_OPTION){
-//            return null;
-//        }
-//        return null;
-//    }
-
-    private String ntpText(){
-        if (sourceInterface.getText().equals("") && unicastServer.getText().equals("")){
-            return "";
-        }else{
-            return ""
-                    + "\nntp-service source-interface  " + sourceInterface.getText()
-                    + "\nntp-service unicast-server " + unicastServer.getText()
-                    +"\n#"
-                    ;
-        }
-
-    }
-
-    private String snmpAgentText(){
-        if (agentPhoneNum.getText().equals("") && agentLoc.getText().equals("")){
-            return "";
-        }else{
-            return ""
-                    + "\nsnmp-agent sys-info contact " + agentPhoneNum.getText()
-                    + "\nsnmp-agent sys-into location " + agentLoc.getText()
-                    + "\n#"
-                    ;
-        }
-    }
-    //"\nip route-static " + ipRoute1.getText() + " " + ipRoute2.getText() + " " + ipRoute3.getText()
-
-    private String ipRouteCheck()
-    {
-        String ipRouteLine = "";
-
-        if ((!ipRoute1.getText().equals("Source (0.0.0.0)"))){
-            ipRouteLine += "\nip route-static " + ipRoute1.getText() + " ";
-        }
-        else{
-            ipRouteLine += "\nip route-static 0.0.0.0 ";
-        }
-
-        if (!ipRoute2.getText().equals("Destination (0)")){
-            ipRouteLine += ipRoute2.getText() + " ";
-        }
-        else{
-            ipRouteLine += "0 ";
-        }
-
-        if (!ipRoute3.getText().equals("Next Hop (10.0.0.0)")){
-            ipRouteLine += ipRoute3.getText() + " ";
-        }
-        else{
-            ipRouteLine += "10.0.0.0";
-        }
-
-        return ipRouteLine;
-    }
-
+    /**
+     * sets all the components in their corresponding panels/containers
+     */
     private void buildPanels()
     {
+        //setting parent panel to be visible
         this.setOpaque(false);
+        //setting up the leftmost side of components in a GridLayout
         colLayout.setLayout(new GridLayout(0,1));
         colLayout.setBorder(BorderFactory.createLoweredBevelBorder());
 
@@ -499,23 +510,17 @@ snmp-agent sys-into location ()
         colLayout.add(vlanInterface);
         colLayout.setOpaque(false);
 
+        //nested panel to set up the IP layout in a GridLayout
         ipLayout.setLayout(new GridLayout(0, 1,20,0));
         ipLayout.setBorder(BorderFactory.createLoweredBevelBorder());
-//        ipLayout.add(fillerLabel());
         ipLayout.add(ipAddressLabel);
-//        ipLayout.add(fillerLabel());
-//        ipLayout.add(numLabel(1));
         ipLayout.add(ipAddress1);
-//        ipLayout.add(numLabel(1));
-//        ipLayout.add(numLabel(2));
         ipLayout.add(ipSubnetLabel);
         ipLayout.add(ipAddress2);
-//        ipLayout.add(numLabel(2));
         ipLayout.add(ipRoute2);
-//        ipLayout.add(fillerLabel());
-//        ipLayout.add(numLabel(3));
         ipLayout.setOpaque(false);
 
+        //setting up the IP route in a GridLayout
         ipRoute.setLayout(new GridLayout(0, 1,20,0));
         ipRoute.setBorder(BorderFactory.createLoweredBevelBorder());
 
@@ -525,20 +530,24 @@ snmp-agent sys-into location ()
         ipRoute.add(ipRoute3);
         ipRoute.setOpaque(false);
 
+        //combining both the ip and route layouts
         ipPanels.setLayout(new BoxLayout(ipPanels, BoxLayout.LINE_AXIS));
         ipPanels.add(ipLayout);
         ipPanels.add(ipRoute);
         ipPanels.setOpaque(false);
 
+        //combining the column layout and ip layout in a BoxLayout
         minPanel.setLayout(new BoxLayout(minPanel, BoxLayout.PAGE_AXIS));
         minPanel.setBorder(BorderFactory.createTitledBorder("Minimum requirements for setup"));
         minPanel.add(colLayout);
         minPanel.add(ipPanels);
         minPanel.setOpaque(false);
 
+        //panel to be added below the column layout and ip layout
         morePanel.setLayout(new BoxLayout(morePanel, BoxLayout.PAGE_AXIS));
         morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields"));
-//        morePanel.add(serverLayout);
+
+        //nested panel to be separated with a border and placed under the ip layout
         moreSubPanel1.setLayout(new BoxLayout(moreSubPanel1, BoxLayout.PAGE_AXIS));
         moreSubPanel1.setBorder(BorderFactory.createLoweredBevelBorder());
         moreSubPanel1.add(sourceInterfaceLabel);
@@ -546,6 +555,7 @@ snmp-agent sys-into location ()
         moreSubPanel1.add(unicastServerLabel);
         moreSubPanel1.add(unicastServer);
 
+        //nested panel to be separated with a border and placed under the moreSubPanel1 panel
         moreSubPanel2.setLayout(new BoxLayout(moreSubPanel2, BoxLayout.PAGE_AXIS));
         moreSubPanel2.setBorder(BorderFactory.createLoweredBevelBorder());
         moreSubPanel2.add(phoneNumLabel);
@@ -553,18 +563,22 @@ snmp-agent sys-into location ()
         moreSubPanel2.add(agentLocLabel);
         moreSubPanel2.add(agentLoc);
 
+        //combining the two panels listed above
         morePanel.add(moreSubPanel1);
         morePanel.add(moreSubPanel2);
 
+        //setting them all to be visible
         moreSubPanel1.setOpaque(false);
         moreSubPanel2.setOpaque(false);
         morePanel.setOpaque(false);
 
+        //combining ALL west panels into one nicely organized BoxLayout panel in the frame
         westPanels.setLayout(new BoxLayout(westPanels, BoxLayout.PAGE_AXIS));
         westPanels.add(minPanel);
         westPanels.add(morePanel);
         westPanels.setOpaque(false);
 
+        //setting the west panels in a scrollPane to activate scrolling capabilities
         JScrollBar scrollBar = new JScrollBar();
         scrollBar.setVisibleAmount(2);
         scrollBar.setOpaque(false);
@@ -580,122 +594,85 @@ snmp-agent sys-into location ()
         westScrollPane.getViewport().setOpaque(false);
         westScrollPane.setOpaque(false);
 
+        //setting the codeLayout on the East side of the frame
         codeLayout.setLayout(new BoxLayout(codeLayout, BoxLayout.PAGE_AXIS));
         codeLayout.setBorder(BorderFactory.createTitledBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder()),"Code Output"));
-        codeLayout.add(textScrollPane);
+        codeLayout.add(eastScrollPane);
         codeLayout.setOpaque(false);
 
-//        buttonsLayout.setLayout(new BoxLayout(buttonsLayout, BoxLayout.LINE_AXIS));
+        //setting the buttonLayout to go below the codeLayout but be alligned horizontally
         buttonsLayout.setLayout(new FlowLayout());
         buttonsLayout.add(submitButton);
         buttonsLayout.add(copyButton);
-        buttonsLayout.add(exportConf);
-        importConf.setEnabled(false);
-        buttonsLayout.add(importConf);
+        buttonsLayout.add(exportInfo);
         buttonsLayout.add(resetButton);
         buttonsLayout.add(homeButton);
         buttonsLayout.setOpaque(false);
 
+        //putting the codeLayout and buttonLayout into one nicely fitted panel
         eastPanels.setLayout(new BoxLayout(eastPanels, BoxLayout.PAGE_AXIS));
         eastPanels.add(codeLayout);
         eastPanels.add(buttonsLayout);
         eastPanels.setOpaque(false);
 
+        //putting the east and west panels into one panel
         springPanels.setLayout(new BoxLayout(springPanels, BoxLayout.LINE_AXIS));
         springPanels.add(westScrollPane);
         springPanels.add(eastPanels);
         springPanels.setFont(font);
 
+        //setting the parent as a SpringLayout to be compatible with the rest of the program
         this.setLayout(new SpringLayout());
+        //adding components
         this.add(springPanels);
 
     }
 
-    private JLabel fillerLabel()
+    /**
+     * Method to help user know that they haven't filled out all the required fields to make a functioning script
+     * with the added ability to bypass the check
+     * @return true to build code, false to not
+     */
+    private boolean checkFields()
     {
-        return new JLabel(" ");
-    }
-
-//    private JLabel numLabel(int num){
-//        String strNum = String.valueOf(num);
-//        JLabel label = new JLabel(strNum, SwingConstants.RIGHT);
-//
-//        return label;
-//    }
-
-    private boolean checkFields(){
+        //checks if any of the fields are empty
         if (agentLoc.getText().equals("") || agentLoc.getText().equals("") || sysName.getText().equals("")
                 || vlanInterface.getText().equals("") || ipAddress1.getText().equals("")
                 || ipAddress2.getText().equals("") || ipRoute1.getText().equals("") || ipRoute2.getText().equals("")
                 || ipRoute3.getText().equals("")){
+
+            //builds the option Objects
             Object[] options = {"Continue","Cancel"};
+            //builds the pop up window for user input
             int n = JOptionPane.showOptionDialog(new JFrame(),new JLabel(
                     "<html>Not all required fields have been submitted<br>" +
                             "are you sure you want to continue?<html>"),"",
                     JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
                     null, options, options[1]);
+
+            //'Continue' is selected
             if (n==JOptionPane.OK_OPTION){
                 return true;
+            //'Cancel' is selected
             }else if (n == JOptionPane.NO_OPTION){
-
                 return false;
+            //red X is pressed
             }else if (n == JOptionPane.CLOSED_OPTION) {
                 return false;
+            //anything else happens
             }else{
                 return false;
             }
+
+        //all fields are filled out
         }else{
             return true;
         }
-
-
     }
 
-    private void updateField(JTextField field, String text)
-    {
-        field.setText(text);
-    }
-
-    private void dropMethod(){
-        new FileDrop( this, true, new FileDrop.Listener()
-        {
-            public void filesDropped( java.io.File[] files )
-            {   for( int i = 0; i < files.length; i++ )
-                {
-                    try
-                    {
-                        fileDest[0] = files[i].getCanonicalPath();
-                        File f = new File(fileDest[0]);
-                        BufferedReader br = new BufferedReader(new FileReader(f));
-
-                        String line;
-                        int counter = 0;
-
-                        while ((line = br.readLine()) != null) {
-                            if(line.equals("#")){
-
-                            }else{
-                                if(counter >= fields.size()){
-
-                                }else{
-                                    updateField(fields.get(counter),line);
-                                    counter++;
-                                }
-
-                            }
-
-                        }
-
-
-                        updateTextCode();
-                        fileDest[0] = null;
-                    }   // end try
-                    catch( java.io.IOException e ) {}
-                }   // end for: through each dropped file
-            }   // end filesDropped
-        }); // end FileDrop.Listener
-    }
-
+    /**
+     * Builds all the other Listeners for buttons and mouse actions
+     */
     private void buildListeners()
     {
         // Listener for the Submit Button
@@ -738,32 +715,8 @@ snmp-agent sys-into location ()
             }
         });
 
-        // Listener for the Import Button
-//        this.importConf.addActionListener(new ActionListener()
-//        {
-//            public void actionPerformed(ActionEvent clicked)
-//            {
-//                String fileDest = getFile();
-//                if (fileDest != null){
-//                    try{
-//
-//                        File f = new File(fileDest);
-//                        FileOutputStream out = new FileOutputStream(f);
-//
-//                        codePane.setText(String.valueOf(out));
-//                        out.close();
-//                    }catch (FileNotFoundException e){e.printStackTrace();
-//                    }catch (IOException e){}
-//
-//                }
-//
-//
-//            }
-//        });
-
-
         // Listener for the Export Button
-        this.exportConf.addActionListener(new ActionListener()
+        this.exportInfo.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -790,83 +743,91 @@ snmp-agent sys-into location ()
                     }else if (n == JOptionPane.NO_OPTION){
                         fileName = fileNameInput.getText();
 
+                        if (!(fileName.equals("")) && fileName.trim().equals(fileName)){
+                            try{
+
+                                //exported info to be put into switch
+                                File f = new File(desktop,fileName);
+                                BufferedWriter out = new BufferedWriter(new FileWriter(f));
+                                out.write(codePane.getText());
+                                out.close();
+
+                                //exported info for dropping in program
+                                File f2 = new File(desktop,"DRAG_AND_DROP_ME-" + fileName);
+                                BufferedWriter out2 = new BufferedWriter(new FileWriter(f2));
+                                for (JTextField field :
+                                        fields)
+                                {
+                                    out2.write(field.getText() + "\n");
+                                }
+                                out2.close();
+                            }catch(FileNotFoundException e1)
+                            {
+                                e1.printStackTrace();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }else{
+                            JOptionPane.showMessageDialog(null,
+                                    "File must have something as a name and have no spaces",
+                                    "Invalid File Name",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }else if (n == JOptionPane.CLOSED_OPTION) {
 
                     }
-                    if (!(fileName.equals("")) && fileName.trim().equals(fileName)){
-                        try{
-
-                            //exported info to be put into switch
-                            File f = new File(desktop,fileName);
-                            BufferedWriter out = new BufferedWriter(new FileWriter(f));
-                            out.write(codePane.getText());
-                            out.close();
-
-                            //exported info for dropping in program
-                            File f2 = new File(desktop,"DRAG_AND_DROP_ME-" + fileName);
-                            BufferedWriter out2 = new BufferedWriter(new FileWriter(f2));
-                            for (JTextField field :
-                                    fields)
-                            {
-                                out2.write(field.getText() + "\n");
-                            }
-                            out2.close();
-                        }catch(FileNotFoundException e1)
-                        {
-                            e1.printStackTrace();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }else{
-                        JOptionPane.showMessageDialog(null,
-                                "File must have something as a name and have no spaces",
-                                "Invalid File Name",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
                 }
-
-
-
-
-
             }
         });
 
-        this.addMouseListener(this);
+        //Object that builds a FileDrop listener on the entire SNMPPanel
+        new FileDrop( this, true, new FileDrop.Listener()
+        {
+            public void filesDropped( java.io.File[] files )
+            {
+                for( int i = 0; i < files.length; i++ )
+                {
+                    try
+                    {
+                        fileDest[0] = files[i].getCanonicalPath();
+                        File f = new File(fileDest[0]);
+                        BufferedReader br = new BufferedReader(new FileReader(f));
+
+                        String line;
+                        int counter = 0;
+
+                        while ((line = br.readLine()) != null)
+                        {
+                            if(line.equals("#"))
+                            {
+                                //do nothing
+                            }
+                            else
+                            {
+                                if(counter >= fields.size())
+                                {
 
 
 
+                                }
+                                else
+                                {
+                                    fields.get(counter).setText(line);
+                                    counter++;
+                                }
 
+                            }
 
+                        }
 
+                        updateTextCode();
+                        fileDest[0] = null;
 
-
-
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        dropMethod();
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+                    }   // end try
+                    catch( java.io.IOException e ) {}
+                }   // end for: through each dropped file
+            }   // end filesDropped
+        }); // end FileDrop.Listener
     }
 }
