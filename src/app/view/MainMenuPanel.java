@@ -202,25 +202,15 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.3.6"
+				JOptionPane.showMessageDialog(null, "V.3.7"
 						+"\n"
 						+"\n[Main Changes]"
-						+"\nAdded Main Menu With a New Look And Feel"
-						+"\nAdded some code the IRF Setup to speed things up"
-						+"\nAdded Re-Number in IRF Setup"
-						+"\nAdded Link Aggregation Feature (WIP)"
-						+"\nOptimized panel changing"
-						+"\nAdded Icon"
-						+"\nAdded Vlan port in Link Aggregation Setup"
-						+"\nAdded functionality to the SNMP button"
-						+"\nAdded fully functional drag and drop feature in SNMP setup"
+						+"\nFixed problem with accessing second port info under Link Aggregation"
+						+"\nModified data output under SNMP Panel to include optional fields that were previously required"
 						+"\n"
 						+"\n[Bugs]"
-						+"\nSubmit button on IRF Panel has been changed from 'sumbit'"
-						+"\nIRF Priority Algorithm has been fixed"
-						+"\nIRF 5800 Switch Interface Ten port has been fixed"
-						+"\nCleaned up code around spacing GUI apart"
-						+"\nFixed spacing for Link Aggregation setup", "Change Log", 2
+						+"\nCleaned up code"
+						+"\nSanitized input variables", "Change Log", 2
 						);
 			}
 		});

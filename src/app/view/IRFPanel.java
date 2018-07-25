@@ -109,22 +109,32 @@ public class IRFPanel extends JPanel
 		domainLabel = new JLabel("Type Domain (Numbers Only)");
 		homePicture = new JLabel();
 		homePicture.setIcon(new ImageIcon(IRFPanel.class.getResource("/resources/home.png")));
+
 		setupLabels(this.switchLabel);
 		setupLabels(this.portLabel);
 		setupLabels(this.stackLabel);
 		setupLabels(this.domainLabel);
 
-
+		//helper methods
 		setupChatPane();
 		buildPanel();
 		buildPlacements();
 		buildListeners();
 	}
 
-	public List getSwitchList(){
+	/**
+	 * helper method to fix scope problems
+	 * @return The list of possible switch options
+	 */
+	protected List getSwitchList(){
 		return switchList;
 	}
 
+	/**
+	 * helper method to set up the JButtons in the class
+	 * @param button
+	 * @param pictureLoc
+	 */
 	private void setupButton(JButton button, String pictureLoc)
 	{
 		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));

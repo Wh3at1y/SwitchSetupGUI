@@ -33,6 +33,7 @@ public class SNMPPanel extends JPanel{
 
     private JPanel moreSubPanel1;
     private JPanel moreSubPanel2;
+    private JPanel moreSubPanel3;
 
     private JPanel westPanels;
     private JPanel eastPanels;
@@ -197,6 +198,7 @@ public class SNMPPanel extends JPanel{
         morePanel = new JPanel();
         moreSubPanel1 = new JPanel();
         moreSubPanel2 = new JPanel();
+        moreSubPanel3 = new JPanel();
 
         //sets up the main Container
         springPanels = new Container();
@@ -328,21 +330,13 @@ public class SNMPPanel extends JPanel{
                 + "\nssh server enable"
                 + "\n#"
                 + "\nuser-interface vty 0 15"
-                + "\n#"
-                + "\nuser-interface vty 0 15"
                 + "\nauthentication-mode scheme"
                 + "\nprotocol inbound ssh"
                 + "\n#"
                 + ipRouteCheck() //helper method triggered if a field is filled
-                + "\n#"
-                + "\nsnmp-agent group v3 " + localUsername.getText() + " authentication write-view ViewDefault"
-                + "\nsnmp-agent target-host trap address udp-domain " + domainField.getText() + " params securityname " +
-                        localUsername.getText() + " v3 privacy"
-                + "snmp-agent usm-user v3 " + localUsername.getText() + " " + localUsername.getText() +
-                        " cipher authentication-mode sha " + snmpPassword.getText() + " privacy-mode aes128 " + encKey.getText()
-                + "\n#"
+                + snmpTarget() //helper method triggered if a field is filled
                 + ntpText() //helper method triggered if a field is filled
-                + snmpAgentText() //helper method triggered if a field is filled
+                + snmpContact() //helper method triggered if a field is filled
 
         );
 
@@ -373,7 +367,7 @@ public class SNMPPanel extends JPanel{
      * if any SNMP agent field is filled out, then build the corresponding code
      * @return optional code in the codePane
      */
-    private String snmpAgentText(){
+    private String snmpContact(){
         if (agentPhoneNum.getText().equals("") && agentLoc.getText().equals("")){
             return "";
         }else{
@@ -382,6 +376,20 @@ public class SNMPPanel extends JPanel{
                     + "\nsnmp-agent sys-into location " + agentLoc.getText()
                     + "\n#"
                     ;
+        }
+    }
+
+    private String snmpTarget(){
+        if (domainField.getText().equals("") && snmpPassword.getText().equals("") && encKey.getText().equals("")){
+            return "";
+        }else{
+            return "\n#"
+                    + "\nsnmp-agent group v3 " + localUsername.getText() + " authentication write-view ViewDefault"
+                    + "\nsnmp-agent target-host trap address udp-domain " + domainField.getText() + " params securityname " +
+                    localUsername.getText() + " v3 privacy"
+                    + "snmp-agent usm-user v3 " + localUsername.getText() + " " + localUsername.getText() +
+                    " cipher authentication-mode sha " + snmpPassword.getText() + " privacy-mode aes128 " + encKey.getText()
+                    + "\n#";
         }
     }
 
@@ -497,12 +505,12 @@ public class SNMPPanel extends JPanel{
         colLayout.add(localUsername);
         colLayout.add(localPasswordLabel);
         colLayout.add(localPassword);
-        colLayout.add(domainLabel);
-        colLayout.add(domainField);
-        colLayout.add(snmpPasswordLabel);
-        colLayout.add(snmpPassword);
-        colLayout.add(encKeyLabel);
-        colLayout.add(encKey);
+//        colLayout.add(domainLabel);
+//        colLayout.add(domainField);
+//        colLayout.add(snmpPasswordLabel);
+//        colLayout.add(snmpPassword);
+//        colLayout.add(encKeyLabel);
+//        colLayout.add(encKey);
 
         colLayout.add(sysNameLabel);
         colLayout.add(sysName);
@@ -547,7 +555,7 @@ public class SNMPPanel extends JPanel{
         morePanel.setLayout(new BoxLayout(morePanel, BoxLayout.PAGE_AXIS));
         morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields"));
 
-        //nested panel to be separated with a border and placed under the ip layout
+        //nested panel to be separated with a border and placed under the morePanel panel
         moreSubPanel1.setLayout(new BoxLayout(moreSubPanel1, BoxLayout.PAGE_AXIS));
         moreSubPanel1.setBorder(BorderFactory.createLoweredBevelBorder());
         moreSubPanel1.add(sourceInterfaceLabel);
@@ -555,7 +563,7 @@ public class SNMPPanel extends JPanel{
         moreSubPanel1.add(unicastServerLabel);
         moreSubPanel1.add(unicastServer);
 
-        //nested panel to be separated with a border and placed under the moreSubPanel1 panel
+        //nested panel to be separated with a border and placed under the morePanel panel
         moreSubPanel2.setLayout(new BoxLayout(moreSubPanel2, BoxLayout.PAGE_AXIS));
         moreSubPanel2.setBorder(BorderFactory.createLoweredBevelBorder());
         moreSubPanel2.add(phoneNumLabel);
@@ -563,13 +571,26 @@ public class SNMPPanel extends JPanel{
         moreSubPanel2.add(agentLocLabel);
         moreSubPanel2.add(agentLoc);
 
+        //nested panel to be separated with a border and placed under the morePanel panel
+        moreSubPanel3.setLayout(new BoxLayout(moreSubPanel3, BoxLayout.PAGE_AXIS));
+        moreSubPanel3.setBorder(BorderFactory.createLoweredBevelBorder());
+        moreSubPanel3.add(domainLabel);
+        moreSubPanel3.add(domainField);
+        moreSubPanel3.add(snmpPasswordLabel);
+        moreSubPanel3.add(snmpPassword);
+        moreSubPanel3.add(encKeyLabel);
+        moreSubPanel3.add(encKey);
+
+
         //combining the two panels listed above
         morePanel.add(moreSubPanel1);
         morePanel.add(moreSubPanel2);
+        morePanel.add(moreSubPanel3);
 
         //setting them all to be visible
         moreSubPanel1.setOpaque(false);
         moreSubPanel2.setOpaque(false);
+        moreSubPanel3.setOpaque(false);
         morePanel.setOpaque(false);
 
         //combining ALL west panels into one nicely organized BoxLayout panel in the frame
@@ -633,13 +654,14 @@ public class SNMPPanel extends JPanel{
      * with the added ability to bypass the check
      * @return true to build code, false to not
      */
-    private boolean checkFields()
+    private boolean noEmptyFields()
     {
         //checks if any of the fields are empty
         if (agentLoc.getText().equals("") || agentLoc.getText().equals("") || sysName.getText().equals("")
                 || vlanInterface.getText().equals("") || ipAddress1.getText().equals("")
                 || ipAddress2.getText().equals("") || ipRoute1.getText().equals("") || ipRoute2.getText().equals("")
-                || ipRoute3.getText().equals("")){
+                || ipRoute3.getText().equals("") || localUsername.getText().equals("")
+                || localPassword.getText().equals("")){
 
             //builds the option Objects
             Object[] options = {"Continue","Cancel"};
@@ -721,7 +743,6 @@ public class SNMPPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e)
             {
-//                fileName = "";
                 String desktop = System.getProperty("user.home") + "/Desktop";
                 JTextField fileNameInput = new JTextField();
                 JLabel fileNameLabel = new JLabel("<html>Enter file name here<br><strong>WITH FILE EXTENSION<strong><html>");
@@ -733,7 +754,7 @@ public class SNMPPanel extends JPanel{
                 fileNamePanel.setOpaque(false);
                 fileNamePanel.setVisible(true);
 
-                if (checkFields()){
+                if (noEmptyFields()){
                     Object[] options = {"Cancel","Submit"};
                     int n = JOptionPane.showOptionDialog(new JFrame(),fileNamePanel,"",
                             JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
@@ -753,7 +774,7 @@ public class SNMPPanel extends JPanel{
                                 out.close();
 
                                 //exported info for dropping in program
-                                File f2 = new File(desktop,"DRAG_AND_DROP_ME-" + fileName);
+                                File f2 = new File(desktop,"DRAG_AND_DROP-" + fileName);
                                 BufferedWriter out2 = new BufferedWriter(new FileWriter(f2));
                                 for (JTextField field :
                                         fields)

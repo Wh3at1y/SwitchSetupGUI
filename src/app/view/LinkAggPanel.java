@@ -204,7 +204,7 @@ public class LinkAggPanel extends JPanel
 	}
 
 	/**
-	 *
+	 * Helper method that sets up the JButtons in the class
 	 * @param button to be given attributes
 	 * @param pictureLoc to be used as a graphical icon for the button
 	 */
@@ -393,12 +393,16 @@ public class LinkAggPanel extends JPanel
 			{
 				int irfSelectedNum = Integer.parseInt(irfNumbers.getSelectedItem().toString());
 
-				if (irfSelectedNum <= 2) {
+				if (irfSelectedNum <= 1) {
 					layout.putConstraint(SpringLayout.WEST, copyButton, 175, SpringLayout.EAST, submitButton);
-					layout.putConstraint(SpringLayout.EAST, submitButton, 100, SpringLayout.WEST, vlanLabel);
+					layout.putConstraint(SpringLayout.EAST, submitButton, 130, SpringLayout.WEST, portSpeedLabel);
+
+
 				}else {
-					layout.putConstraint(SpringLayout.WEST, copyButton, -200, SpringLayout.EAST, submitButton);
-					layout.putConstraint(SpringLayout.EAST, submitButton, 650, SpringLayout.WEST, vlanLabel);
+					layout.putConstraint(SpringLayout.WEST, copyButton, 70, SpringLayout.EAST, submitButton);
+					layout.putConstraint(SpringLayout.EAST, submitButton, 375, SpringLayout.WEST, portSpeedLabel);
+
+
 				}
 				irfSelectedNum--;
 
@@ -461,10 +465,7 @@ public class LinkAggPanel extends JPanel
 		layout.putConstraint(SpringLayout.SOUTH, homeIcon, -12, SpringLayout.SOUTH, submitButton);
 		layout.putConstraint(SpringLayout.WEST, copyButton, 175, SpringLayout.EAST, submitButton);
 		layout.putConstraint(SpringLayout.SOUTH, submitButton, -10, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, submitButton, 0, SpringLayout.WEST, bridgeLabel);
-		layout.putConstraint(SpringLayout.WEST, submitButton, 0, SpringLayout.WEST, vlanLabel);
-
-		layout.putConstraint(SpringLayout.EAST, submitButton, 0, SpringLayout.EAST, portSpeedLabel);
+		layout.putConstraint(SpringLayout.EAST, submitButton, 130, SpringLayout.WEST, portSpeedLabel);
 		layout.putConstraint(SpringLayout.WEST, homeIcon, 15, SpringLayout.WEST, homeButton);
 		layout.putConstraint(SpringLayout.SOUTH, homeButton, 0, SpringLayout.SOUTH, submitButton);
 		layout.putConstraint(SpringLayout.EAST, homeButton, -25, SpringLayout.EAST, this);
