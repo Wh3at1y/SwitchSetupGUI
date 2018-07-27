@@ -1,6 +1,5 @@
 package app.view;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
 
 public class AppFrame extends JFrame
@@ -11,6 +10,7 @@ public class AppFrame extends JFrame
 	{
 		panel = new AppPanel();
 
+
 		String OS = System.getProperty("os.name").toLowerCase();
 		//System.out.println(OS);
 		if(OS.contains("mac"))
@@ -18,10 +18,11 @@ public class AppFrame extends JFrame
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setTitle("Switch-Setup v.3.7");
+		this.setTitle("Switch-Setup v.3.8");
 		this.setSize(new Dimension(800, 600));
 		this.setContentPane(panel);
 		this.setVisible(true);
+
 	}
 
 	public AppPanel getPanel()

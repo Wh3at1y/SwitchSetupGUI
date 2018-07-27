@@ -46,6 +46,7 @@ public class SNMPPanel extends JPanel{
 
     //font used in text for the buttons and labels
     private Font font;
+    private Font titleFont;
 
     //menu panel for if the user decides to click the home button
     private AppPanel panel;
@@ -110,6 +111,7 @@ public class SNMPPanel extends JPanel{
 
         //initializes the font
         font = new Font("Neue", Font.BOLD, 13);
+        titleFont = new Font("Title", Font.BOLD, 20);
 
         //sets up the action buttons
         String buttonLoc = "/resources/netButtonSmall.png";
@@ -300,6 +302,10 @@ public class SNMPPanel extends JPanel{
         //scrollbar policies
         eastScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         eastScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        eastScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
+        eastScrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0,0));
+
 
     }
 
@@ -546,14 +552,19 @@ public class SNMPPanel extends JPanel{
 
         //combining the column layout and ip layout in a BoxLayout
         minPanel.setLayout(new BoxLayout(minPanel, BoxLayout.PAGE_AXIS));
-        minPanel.setBorder(BorderFactory.createTitledBorder("Minimum requirements for setup"));
+//        minPanel.setBorder(BorderFactory.createTitledBorder("<html><strong>Minimum requirements for setup<strong><html>"));
+        minPanel.setBorder(BorderFactory.createTitledBorder(null, "Required Fields", 0, 0, titleFont));
+
+
         minPanel.add(colLayout);
         minPanel.add(ipPanels);
         minPanel.setOpaque(false);
 
         //panel to be added below the column layout and ip layout
         morePanel.setLayout(new BoxLayout(morePanel, BoxLayout.PAGE_AXIS));
-        morePanel.setBorder(BorderFactory.createTitledBorder("Optional fields"));
+//        morePanel.setBorder(BorderFactory.createTitledBorder("<html><strong>Optional fields<strong><html>"));
+        morePanel.setBorder(BorderFactory.createTitledBorder(null, "Optional Fields", 0, 0, titleFont));
+
 
         //nested panel to be separated with a border and placed under the morePanel panel
         moreSubPanel1.setLayout(new BoxLayout(moreSubPanel1, BoxLayout.PAGE_AXIS));
@@ -600,14 +611,17 @@ public class SNMPPanel extends JPanel{
         westPanels.setOpaque(false);
 
         //setting the west panels in a scrollPane to activate scrolling capabilities
-        JScrollBar scrollBar = new JScrollBar();
-        scrollBar.setVisibleAmount(2);
-        scrollBar.setOpaque(false);
-        westScrollPane = new JScrollPane(scrollBar);
-        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//        JScrollBar scrollBar = new JScrollBar();
+//        scrollBar.setVisible(false);
+        westScrollPane = new JScrollPane();
+        westScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
+        westScrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0,0));
+
+//        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         westScrollPane.setPreferredSize(new Dimension(300,200));
-        westScrollPane.revalidate();
+//        westScrollPane.revalidate();
+
 
         JViewport viewport = new JViewport();
         viewport.setView(westPanels);
@@ -617,7 +631,7 @@ public class SNMPPanel extends JPanel{
 
         //setting the codeLayout on the East side of the frame
         codeLayout.setLayout(new BoxLayout(codeLayout, BoxLayout.PAGE_AXIS));
-        codeLayout.setBorder(BorderFactory.createTitledBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder()),"Code Output"));
+        codeLayout.setBorder(BorderFactory.createTitledBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder()),"Code Output",0,0,titleFont));
         codeLayout.add(eastScrollPane);
         codeLayout.setOpaque(false);
 

@@ -202,11 +202,10 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.3.7"
+				JOptionPane.showMessageDialog(null, "V.3.8"
 						+"\n"
 						+"\n[Main Changes]"
-						+"\nFixed problem with accessing second port info under Link Aggregation"
-						+"\nModified data output under SNMP Panel to include optional fields that were previously required"
+						+"\nMade UI more user friendly"
 						+"\n"
 						+"\n[Bugs]"
 						+"\nCleaned up code"
