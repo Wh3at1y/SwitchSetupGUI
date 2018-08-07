@@ -1,6 +1,8 @@
 package app.view;
 
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.*;
 
@@ -31,11 +33,20 @@ public class AppPanel extends JPanel
 
 	public void setupBackground(String pictureLoc)
 	{
-		ImageIcon backgroundImage = new ImageIcon(IRFPanel.class.getResource(pictureLoc));
-		Image image = backgroundImage.getImage();
-		image = image.getScaledInstance(800, 600, java.awt.Image.SCALE_FAST);
-		backgroundImage = new ImageIcon(image);
-		background.setIcon(backgroundImage);
+		final ImageIcon[] backgroundImage = {new ImageIcon(IRFPanel.class.getResource(pictureLoc))};
+		final Image[] image = {backgroundImage[0].getImage()};
+		image[0] = image[0].getScaledInstance(800 + getWidth(), 600 + getHeight(), java.awt.Image.SCALE_FAST);
+		backgroundImage[0] = new ImageIcon(image[0]);
+		background.setIcon(backgroundImage[0]);
+
+		this.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				image[0] = image[0].getScaledInstance(AppPanel.this.getWidth(),AppPanel.this.getHeight(),Image.SCALE_FAST);
+				backgroundImage[0] = new ImageIcon(image[0]);
+				background.setIcon(backgroundImage[0]);
+			}
+		});
 	}
 
 

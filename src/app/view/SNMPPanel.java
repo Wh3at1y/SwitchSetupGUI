@@ -619,7 +619,7 @@ public class SNMPPanel extends JPanel{
 
 //        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        westScrollPane.setPreferredSize(new Dimension(300,200));
+//        westScrollPane.setPreferredSize(new Dimension(300,this.getHeight()));
 //        westScrollPane.revalidate();
 
 
@@ -636,7 +636,7 @@ public class SNMPPanel extends JPanel{
         codeLayout.setOpaque(false);
 
         //setting the buttonLayout to go below the codeLayout but be alligned horizontally
-        buttonsLayout.setLayout(new FlowLayout());
+        buttonsLayout.setLayout(new GridLayout(1,0));
         buttonsLayout.add(submitButton);
         buttonsLayout.add(copyButton);
         buttonsLayout.add(exportInfo);
@@ -864,5 +864,28 @@ public class SNMPPanel extends JPanel{
                 }   // end for: through each dropped file
             }   // end filesDropped
         }); // end FileDrop.Listener
+
+        //resizes components as the window does
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                codeLayout.setPreferredSize(new Dimension(SNMPPanel.this.getWidth() - 300, SNMPPanel.this.getHeight() - 50));
+                codeLayout.revalidate();
+                buttonsLayout.setPreferredSize(new Dimension(SNMPPanel.this.getWidth() - 300, 50));
+                buttonsLayout.revalidate();
+                if (SNMPPanel.this.getHeight() < 700){
+                    westScrollPane.setPreferredSize(new Dimension(300,SNMPPanel.this.getHeight()));
+                    westScrollPane.revalidate();
+                }
+                else
+                {
+                    westScrollPane.setPreferredSize(new Dimension(300, 700));
+                    westScrollPane.revalidate();
+                }
+
+                
+
+            }
+        });
     }
 }

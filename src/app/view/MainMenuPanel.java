@@ -202,10 +202,11 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.3.8"
+				JOptionPane.showMessageDialog(null, "V.3.9"
 						+"\n"
 						+"\n[Main Changes]"
 						+"\nMade UI more user friendly"
+						+"\nAdded resizing functionality"
 						+"\n"
 						+"\n[Bugs]"
 						+"\nCleaned up code"
