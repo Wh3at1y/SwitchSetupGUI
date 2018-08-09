@@ -151,6 +151,8 @@ public class MainMenuPanel extends JPanel
 		add(this.settingsButton);
 		add(this.changelogButton);
 		add(this.title);
+
+		settingsButton.setEnabled(false);			//button is useless, remove line if adding functionality
 	}
 
 	/**
@@ -202,16 +204,32 @@ public class MainMenuPanel extends JPanel
 			public void actionPerformed(ActionEvent clicked)
 			{
 				//text to be shown
-				JOptionPane.showMessageDialog(null, "V.3.9"
+				JOptionPane.showMessageDialog(null, "V.3.9.1"
 						+"\n"
 						+"\n[Main Changes]"
 						+"\nMade UI more user friendly"
-						+"\nAdded resizing functionality"
+						+"\nAdded resizing functionality - now doesn't stretch text fields"
 						+"\n"
 						+"\n[Bugs]"
 						+"\nCleaned up code"
 						+"\nSanitized input variables", "Change Log", 2
 						);
+			}
+		});
+
+		aboutButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent clicked)
+			{
+				JOptionPane.showMessageDialog( null, "Purpose of program:"
+					+"\n"
+					+"\nBuilds scripts to more efficiently"
+					+"\nset up switches reliably and effectively"
+					+"\n"
+					+"\nAuthored by:"
+					+"\nSam Montoya"
+					+"\nAlec Parent");
 			}
 		});
 	}

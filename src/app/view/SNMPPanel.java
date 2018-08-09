@@ -1,6 +1,8 @@
 package app.view;
 
 //import statements
+import javafx.geometry.Pos;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -616,6 +618,7 @@ public class SNMPPanel extends JPanel{
         westScrollPane = new JScrollPane();
         westScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
         westScrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0,0));
+        westScrollPane.setMaximumSize(new Dimension(300, 700));
 
 //        westScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //        westScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -654,7 +657,6 @@ public class SNMPPanel extends JPanel{
         springPanels.setLayout(new BoxLayout(springPanels, BoxLayout.LINE_AXIS));
         springPanels.add(westScrollPane);
         springPanels.add(eastPanels);
-        springPanels.setFont(font);
 
         //setting the parent as a SpringLayout to be compatible with the rest of the program
         this.setLayout(new SpringLayout());
@@ -865,23 +867,31 @@ public class SNMPPanel extends JPanel{
             }   // end filesDropped
         }); // end FileDrop.Listener
 
+
+
         //resizes components as the window does
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                codeLayout.setPreferredSize(new Dimension(SNMPPanel.this.getWidth() - 300, SNMPPanel.this.getHeight() - 50));
-                codeLayout.revalidate();
-                buttonsLayout.setPreferredSize(new Dimension(SNMPPanel.this.getWidth() - 300, 50));
-                buttonsLayout.revalidate();
+
+                int panelHeight = SNMPPanel.this.getHeight();
+                int panelWidth = SNMPPanel.this.getWidth();
+
+                codeLayout.setPreferredSize(new Dimension(panelWidth - 300, panelHeight - 50));
+                buttonsLayout.setPreferredSize(new Dimension(panelWidth - 300, 50));
+
                 if (SNMPPanel.this.getHeight() < 700){
-                    westScrollPane.setPreferredSize(new Dimension(300,SNMPPanel.this.getHeight()));
-                    westScrollPane.revalidate();
+                    westScrollPane.setPreferredSize(new Dimension(300, panelHeight));
                 }
                 else
                 {
                     westScrollPane.setPreferredSize(new Dimension(300, 700));
-                    westScrollPane.revalidate();
                 }
+
+                codeLayout.revalidate();
+                buttonsLayout.revalidate();
+                westScrollPane.revalidate();
+
 
                 
 
